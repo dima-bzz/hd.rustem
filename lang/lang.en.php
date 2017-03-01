@@ -1,6 +1,77 @@
 <?php 
 function lang ($phrase) {
 	static $lang = array (
+'NAVBAR_files'=>'Ticket\' files',
+'NAVBAR_live'=>'Active users',
+
+'ALLSTATS_main' => 'General Statistics',
+'ALLSTATS_help' => 'This section contains statistics of all departments and their users for which you have permissions.',
+'ALLSTATS_unit' => 'Information about the applications of your departments',
+'ALLSTATS_unit_free' => 'Free bids',
+'ALLSTATS_unit_lock' => 'Busy applications',
+'ALLSTATS_unit_ok' => 'Executed orders',
+'ALLSTATS_user' => 'Current information on the applications of users of your departments',
+'ALLSTATS_user_fio' => 'Name',
+'ALLSTATS_user_free' => 'Free',
+'ALLSTATS_user_lock' => 'blocking',
+'ALLSTATS_user_ok' => 'Executed',
+'ALLSTATS_user_out_all' => 'Create (of)',
+'ALLSTATS_user_out_all_not' => 'Create (not performance)',
+
+'stats_last_time'=>'Last login: ',
+'T_from'=>'from',
+'FILES_title' => 'Files of applications',
+'FILES_off' => 'Currently disabled downloading files to applications. To activate, <a href="./config">go here </a> and activate downloading files to the application. ',
+'FILES_info' => 'In this section you can view all the attachments to the applications, as well as remove them.',
+'FILES_name' => 'Filename',
+'FILES_ticket' => 'Application',
+'FILES_size' => 'Size',
+'FILES_del'=>'Delete',
+'FILES_down'=>'Download',
+
+'Live_title'=>'Active users',
+'Live_info'=>'In this section, you can view the status of all system users.',
+'Live_units'=>'Department',
+
+'DEPS_off'=>'Currently disabled fixed list of those applications. To enable it, <a href="./config">go here </a> applications and select the theme "fixity" list.',
+
+
+'CONF_title' => 'System Settings',
+'CONF_mains' => 'General Settings',
+'CONF_name' => 'Name of Organization',
+'CONF_title_org' => 'Title of the system',
+'CONF_url' => 'URL of the system',
+'CONF_2arch' => 'How many days a request to the archive',
+'CONF_2arch_info' => 'For automatic migration of applications to the archive, add a cron-scheduler line:',
+'CONF_f_login' => 'The first input and activation',
+'CONF_f_login_opt_true' => 'Available link',
+'CONF_false' => 'Inactive',
+'CONF_f_login_info' => 'If you already have a user base (or rather their email), each new users will enter email, and if it already is in the database, then it will be sent a password. This eliminates the administrator create a password and activation uchёtok. ',
+'CONF_subj' => 'Topics applications',
+'CONF_fix_list' => 'fixity list',
+'CONF_subj_text' => 'Input field',
+'CONF_subj_info' => 'When creating applications, you can define the fixity of themes or text box that fits the topic name of the application.',
+'CONF_fup' => 'Upload files to the application',
+'CONF_true' => 'active',
+'CONF_fup_info' => 'The ability to attach files to the application.',
+'CONF_act_edit' => 'Edit',
+'CONF_mail_name' => 'Mail Settings',
+'CONF_mail_status' => 'Email notifications',
+'CONF_mail_host' => 'Address SMTP-server',
+'CONF_mail_port' => 'Port SMTP-server',
+'CONF_mail_auth' => 'Authorization',
+'CONF_mail_type' => 'Authentication type',
+'CONF_mail_login' => 'Username',
+'CONF_mail_pass' => 'Password',
+'CONF_mail_from' => 'Opravitel',
+'CONF_mail_debug' => 'Debug mode',
+'CONF_mail'=>'E-mail of admin',
+'CONF_info'=>'This section contains the basic system configuration.',
+'CONF_mail_type'=>'Type',
+'CONF_file_types'=>'Permitted file types',
+'CONF_file_size'=>'Maximum file size',
+
+        'HELPER_info'=>'This section can contain instructions and documentation for solutions to common problems.',
 	'LIST_pin' => 'Units',
 	'DASHBOARD_TITLE' => 'Dashboard',
 	'DASHBOARD_ticket_stats' => 'Statistics Tickets',
@@ -12,8 +83,10 @@ function lang ($phrase) {
 'DASHBOARD_ticket_out_desc' => 'Tickets you have created and have remained unfulfilled',
 'DASHBOARD_last_news' => 'Recent changes',
 'DASHBOARD_last_help' => 'Last of the Knowledge Center',
+'APPROVED_info' => 'This section contains a query system users to change information about the client (user).',
 'DASHBOARD_author' => 'Author',
 'DASHBOARD_last_in' => 'Last inbound claims',
+'WORKERS_info' => 'This section contains information about the users (clients), you can find and send the request to change the information. If you have sufficient rights, you can change the information immediately, without asking.',
 'NEW_title' => 'Create a new request',
 'NEW_ok' => 'The Ticket was successfully created!',
 'NEW_ok_1' => 'You can',
@@ -21,11 +94,15 @@ function lang ($phrase) {
 'NEW_ok_3' => 'on request or',
 'NEW_ok_4' => 'print it',
 'NEW_from' => 'From',
-'NEW_from_desc' => 'Your name or username of the user who asked for help',
+'DEPS_info'=>'This section contains the departments that are users of the system. <br> When you create an application, you can choose one of these departments.',
+'POSADA_info'=>'This section contains the position of users (clients). <br> When creating the application, if you have the right to edit / add users (customers), you can specify the position.',
+'UNITS_info'=>'This section contains the units of users (clients). <br> When creating the application, if you have the right to edit / add users (customers), you can specify the units.',
+'SUBJ_info'=>'This section contains topics applications. <br> When you create an application, you can choose the theme of the application.',
+'NEW_from_desc' => 'Your name<br>or username<br>of the user<br>who<br>asked for<br>help',
 'NEW_fio' => 'name or user login',
 'NEW_fio_desc' => 'Please fill this field',
 'NEW_to' => 'To',
-'NEW_to_desc' => 'Artist Tickets - or an entire department, or optionally a specific employee.',
+'NEW_to_desc' => 'Artist<br>Tickets -<br>or an<br>entire<br>department,<br>or<br>optionally a<br>specific<br>employee.',
 'NEW_to_unit' => 'Department',
 'NEW_to_unit_desc' => 'Specify the destination or department employee',
 'NEW_to_user' => 'Artist',
@@ -47,7 +124,7 @@ function lang ($phrase) {
 'LIST_lock_t_i' => 'Ticket with which you are working',
 'LIST_lock_t' => 'Ticket with which the work',
 'LIST_lock_n' => 'Ticket number',
-'LIST_find_ph' => 'Enter # or ticket subject',
+'LIST_find_ph' => 'Enter # or ticket subject or text of the application, or text comment',
 'LIST_find_button' => 'Search',
 'LIST_in' => 'Inbox',
 'LIST_out' => 'Outgoing',
@@ -104,7 +181,9 @@ function lang ($phrase) {
 ,'HELP_all' => 'All' 
 ,'HELP_create' => 'Create' 
 ,'MSG_no_records' => 'No entries' 
-,'TICKET_name' => 'Ticket' 
+,'TICKET_name' => 'Ticket'
+,'TICKET_print'=>'print application' 
+,'TICKET_edit' => 'edit'
 
 
 ,'TICKET_p_add_client'=>'Add clients',
@@ -114,11 +193,11 @@ function lang ($phrase) {
 ,'WORKER_TITLE' => 'About' 
 ,'WORKER_fio' => 'Name' 
 ,'WORKER_login' => 'Login' 
-,'WORKER_posada' => 'Post' 
+,'WORKER_posada' => 'Position' 
 ,'WORKER_unit' => 'Category' 
 ,'WORKER_tel' => 'Phone' 
 ,'WORKER_tel_full' => 'Telephone' 
-,'WORKER_room' => 'account' 
+,'WORKER_room' => 'Office' 
 ,'WORKER_mail' => 'E-mail' 
 ,'WORKER_total' => 'Tickets' 
 ,'WORKER_last' => 'Last' 
@@ -227,9 +306,10 @@ function lang ($phrase) {
 ,'NAVBAR_profile' => 'Profile' 
 ,'NAVBAR_help' => 'Help' 
 ,'NAVBAR_logout' => 'Exit' 
+
+
 ,'TICKET_file_startupload'=>'start upload'
 ,'upload_not_u' => 'You are not upload some files'
-
 ,'TICKET_ACTION_refer' => 'redirect the user' 
 ,'TICKET_ACTION_refer_to' => 'on' 
 ,'TICKET_ACTION_ok' => 'performed by the user' 
@@ -244,7 +324,7 @@ function lang ($phrase) {
 
 ,'HELPER_title' => 'Knowledge Centre' 
 ,'HELPER_back' => 'back'
-,'HELPER_print'=>'print'
+,'HELPER_print'=>'print' 
 ,'HELPER_pub' => 'Published' 
 ,'HELPER_date' => 'Date' 
 ,'HELPER_find' => 'Find' 
@@ -263,7 +343,7 @@ function lang ($phrase) {
 ,'P_login' => 'Login' 
 ,'P_mail' => 'E-mail' 
 ,'P_mail_desc' => 'is used exclusively for the notice.' 
-,'P_edit' => 'Edit' 
+,'P_edit' => 'Save' 
 ,'P_passedit' => 'Change Password' 
 ,'P_pass_old' => 'Old password' 
 ,'P_pass_old2' => 'Password old' 
@@ -290,8 +370,9 @@ function lang ($phrase) {
 ,'JS_unlock' => 'Restore' 
 ,'JS_lock' => 'Block' 
 
+,'PROFILE_msg_add'=>'User (client) added success'
 
-,'USERS_title' => 'People' 
+,'USERS_title' => 'People People of system' 
 ,'USERS_create' => 'Create User' 
 ,'USERS_list' => 'People' 
 
@@ -332,7 +413,7 @@ function lang ($phrase) {
 ,'APPROVE_info' => 'Information' 
 ,'APPROVE_fio' => 'Name' 
 ,'APPROVE_login' => 'Login' 
-,'APPROVE_posada' => 'Post' 
+,'APPROVE_posada' => 'Position' 
 ,'APPROVE_unit' => 'Category' 
 ,'APPROVE_tel' => 'Phone' 
 ,'APPROVE_adr' => 'Address' 
@@ -344,8 +425,8 @@ function lang ($phrase) {
 ,'APPROVE_want' => 'want to change' 
 
 
-,'POSADA_title' => 'Posts' 
-,'POSADA_name' => 'Post Title' 
+,'POSADA_title' => 'Positions' 
+,'POSADA_name' => 'Position Title' 
 ,'POSADA_add' => 'Add' 
 ,'POSADA_n' => 'Name' 
 ,'POSADA_action' => 'Action' 

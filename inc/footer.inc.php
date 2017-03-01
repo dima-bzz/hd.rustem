@@ -27,6 +27,7 @@
 <script src="<?=$CONF['hostname']?>js/jquery.ui.autocomplete.js"></script>
 <script src="<?=$CONF['hostname']?>js/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
 <script src="<?=$CONF['hostname']?>js/chosen.jquery.min.js"></script>
+<script src="<?=$CONF['hostname']?>js/s2/select2.min.js"></script>
 <script src="<?=$CONF['hostname']?>js/bootstrap-paginator.js"></script>
 <script src="<?=$CONF['hostname']?>js/jquery.autosize.min.js"></script>
 <script src="<?=$CONF['hostname']?>js/jquery.noty.packaged.min.js"></script>
@@ -39,11 +40,14 @@
 <script src="<?=$CONF['hostname']?>js/jquery.titlealert.js"></script>
 <script src="<?=$CONF['hostname']?>js/highcharts.js"></script>
 <script src="<?=$CONF['hostname']?>js/bootbox.min.js"></script>
-<script src="<?=$CONF['hostname']?>js/moment-with-langs.js"></script>
+<script src="<?=$CONF['hostname']?>js/moment-with-locales.js"></script>
+<script src="<?=$CONF['hostname']?>js/moment-countdown.js"></script>
+<script src="<?=$CONF['hostname']?>js/moment-duration-format.js"></script>
+<script src="<?=$CONF['hostname']?>js/bootstrap-datetimepicker.min.js"></script>
 
 
 <!-- FOR UPLOADER -->
-<?php if ($CONF['file_uploads'] == true) { ?>
+<?php if ($CONF['file_uploads'] == "true") { ?>
 <script src="<?=$CONF['hostname']?>js/tmpl.min.js"></script>
 <script src="<?=$CONF['hostname']?>js/load-image.min.js"></script>
 <script src="<?=$CONF['hostname']?>js/canvas-to-blob.min.js"></script>
@@ -55,7 +59,7 @@
 <?php } ?>
 <!-- FOR UPLOADER -->
 
-<script src="<?=$CONF['hostname']?>/js/core.js"></script>
+<script src="<?=$CONF['hostname']?>js/core.js"></script>
 
 
 

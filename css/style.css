@@ -12,14 +12,14 @@
             position: relative;
             float: right;
         }
-        
-        
+
+
 html,
 body {
   height: 100%;
+  background-color: #FAFCFF;
   /* The html and body elements cannot have any padding or margin. */
 }
-
 /* Wrapper for page content to push down footer */
 #wrap {
   min-height: 100%;
@@ -47,11 +47,81 @@ body {
 .pointer-cursor {
 cursor: pointer;
 }
-
+.box-header_files{
+  color: #444;
+  display: block;
+  padding: 10px;
+  position: relative;
+}
+.box-header_files::before,.box-header_files:after{
+  content: " ";
+  display: table;
+}
+.box-header_files:after{
+clear: both;
+}
+.badge-info{
+  background-color: #5bc0de;
+}
+.badge-danger{
+  background-color: #d9534f;
+}
+.helptable{
+  background-color: #fff;
+  box-shadow: 0 1px 2px #ddd;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+.help_box{
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  padding-left: 0px;
+  padding-right: 0px;
+  background-color: #fff;
+  margin-bottom: 20px;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  box-shadow: 0 1px 2px #ddd;
+}
+.img-thumbnail-my{
+  display: inline-block;
+  width: 100% \9;
+  max-width: 100%;
+  height: auto;
+  padding: 8px;
+  line-height: 1.42857143;
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
+  -webkit-transition: all .2s ease-in-out;
+       -o-transition: all .2s ease-in-out;
+          transition: all .2s ease-in-out;
+}
+.help_text{
+  padding-top: 4px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+.box-body_files{
+  background-color: #fff;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+  box-shadow: 0 1px 2px #ddd;
+  max-height: 500px;
+  overflow-y: auto;
+}
+.tabbable_files{
+  background-color: #fff;
+  box-shadow: 0 1px 2px #ddd;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
 .pagination {
 	margin: 0px 0;
 }
-
 .ui-autocomplete {
 position: absolute;
   top: 100%;
@@ -124,8 +194,8 @@ display: block;
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.33);
   -webkit-font-smoothing: antialiased;
   }
-  
-  
+
+
   .btn-gp {
   background-color: hsl(312, 80%, 25%) !important;
   background-repeat: repeat-x;

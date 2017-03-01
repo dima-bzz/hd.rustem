@@ -1,20 +1,29 @@
+-- phpMyAdmin SQL Dump
+-- version 3.4.10.1deb1
+-- http://www.phpmyadmin.net
+--
+-- Хост: localhost
+-- Время создания: Мар 01 2017 г., 14:38
+-- Версия сервера: 5.5.35
+-- Версия PHP: 5.3.10-1ubuntu3.26
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
+--
+-- База данных: `hd`
+--
 
-# Дамп таблицы approved_info
-# ------------------------------------------------------------
+-- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `approved_info`;
+--
+-- Структура таблицы `approved_info`
+--
 
-CREATE TABLE `approved_info` (
+CREATE TABLE IF NOT EXISTS `approved_info` (
   `id` int(8) NOT NULL AUTO_INCREMENT,
   `fio` varchar(256) DEFAULT NULL,
   `tel` varchar(256) DEFAULT NULL,
@@ -28,16 +37,15 @@ CREATE TABLE `approved_info` (
   `client_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
+-- --------------------------------------------------------
 
+--
+-- Структура таблицы `clients`
+--
 
-# Дамп таблицы clients
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `clients`;
-
-CREATE TABLE `clients` (
+CREATE TABLE IF NOT EXISTS `clients` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `fio` varchar(512) DEFAULT NULL,
   `tel` varchar(128) DEFAULT NULL,
@@ -47,37 +55,38 @@ CREATE TABLE `clients` (
   `tel_ext` varchar(128) DEFAULT NULL,
   `email` varchar(128) DEFAULT NULL,
   `posada` varchar(256) DEFAULT NULL,
+  `status` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=45 ;
 
+-- --------------------------------------------------------
 
+--
+-- Структура таблицы `comments`
+--
 
-# Дамп таблицы comments
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `comments`;
-
-CREATE TABLE `comments` (
+CREATE TABLE IF NOT EXISTS `comments` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `t_id` int(11) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
-  `comment_text` varchar(2048) DEFAULT NULL,
+  `comment_text` longtext,
   `dt` datetime DEFAULT NULL,
+  `hashname_comment` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=375 ;
 
+-- --------------------------------------------------------
 
+--
+-- Структура таблицы `deps`
+--
 
-# Дамп таблицы deps
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `deps`;
-
-CREATE TABLE `deps` (
+CREATE TABLE IF NOT EXISTS `deps` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(1024) DEFAULT NULL,
+  `status` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=14 ;
 
 LOCK TABLES `deps` WRITE;
 /*!40000 ALTER TABLE `deps` DISABLE KEYS */;
@@ -93,14 +102,13 @@ VALUES
 
 /*!40000 ALTER TABLE `deps` ENABLE KEYS */;
 UNLOCK TABLES;
+-- --------------------------------------------------------
 
+--
+-- Структура таблицы `files`
+--
 
-# Дамп таблицы files
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `files`;
-
-CREATE TABLE `files` (
+CREATE TABLE IF NOT EXISTS `files` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `ticket_hash` varchar(512) DEFAULT NULL,
   `original_name` varchar(512) DEFAULT NULL,
@@ -109,15 +117,32 @@ CREATE TABLE `files` (
   `file_size` int(11) DEFAULT NULL,
   `file_ext` varchar(12) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=331 ;
 
+-- --------------------------------------------------------
 
-# Дамп таблицы helper
-# ------------------------------------------------------------
+--
+-- Структура таблицы `files_comment`
+--
 
-DROP TABLE IF EXISTS `helper`;
+CREATE TABLE IF NOT EXISTS `files_comment` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `comment_hash` varchar(512) DEFAULT NULL,
+  `original_name` varchar(512) DEFAULT NULL,
+  `file_hash` varchar(512) DEFAULT NULL,
+  `file_type` varchar(512) DEFAULT NULL,
+  `file_size` int(11) DEFAULT NULL,
+  `file_ext` varchar(12) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=111 ;
 
-CREATE TABLE `helper` (
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `helper`
+--
+
+CREATE TABLE IF NOT EXISTS `helper` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `user_init_id` int(11) DEFAULT NULL,
   `unit_to_id` varchar(11) DEFAULT NULL,
@@ -126,16 +151,15 @@ CREATE TABLE `helper` (
   `message` longtext,
   `hashname` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+-- --------------------------------------------------------
 
+--
+-- Структура таблицы `messages`
+--
 
-# Дамп таблицы messages
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `messages`;
-
-CREATE TABLE `messages` (
+CREATE TABLE IF NOT EXISTS `messages` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `from_id` int(11) DEFAULT NULL,
   `to_id` int(11) DEFAULT NULL,
@@ -144,36 +168,78 @@ CREATE TABLE `messages` (
   `dt` datetime DEFAULT NULL,
   `is_read` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+-- --------------------------------------------------------
 
+--
+-- Структура таблицы `notes`
+--
 
-# Дамп таблицы notes
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `notes`;
-
-CREATE TABLE `notes` (
+CREATE TABLE IF NOT EXISTS `notes` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `hashname` varchar(512) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
   `message` longtext,
   `dt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+-- --------------------------------------------------------
 
+--
+-- Структура таблицы `perf`
+--
 
-# Дамп таблицы posada
-# ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `perf` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `param` varchar(512) NOT NULL DEFAULT '',
+  `value` varchar(512) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=29 ;
 
-DROP TABLE IF EXISTS `posada`;
+LOCK TABLES `perf` WRITE;
+INSERT INTO `perf` (`id`, `param`, `value`)
+VALUES
+	(1, 'title_header', ' IT корпорация'),
+	(2, 'hostname', 'http://localhost/web/HD.rustem/'),
+	(3, 'mail', 'hd@hd.local'),
+	(4, 'days2arch', '3'),
+	(5, 'name_of_firm', ' IT корпорация'),
+	(6, 'fix_subj', 'true'),
+	(7, 'first_login', 'false'),
+	(8, 'file_uploads', 'true'),
+	(9, 'debug_mode', 'false'),
+	(10, 'mail_active', 'false'),
+	(11, 'mail_host', 'smtp.gmail.com'),
+	(12, 'mail_port', '587'),
+	(13, 'mail_auth', 'true'),
+	(14, 'mail_auth_type', 'ssl'),
+	(15, 'mail_username', 'your_login@gmail.com'),
+	(16, 'mail_password', 'your_pass'),
+	(17, 'mail_from', 'helpdesk'),
+	(18, 'mail_debug', 'false'),
+	(19, 'mail_type', 'sendmail'),
+	(20, 'file_types', 'gif|jpe?g|png|doc|xls|rtf|pdf|zip|rar|bmp|docx|xlsx'),
+	(21, 'file_size', '5000000'),
+  (22, 'jabber_active', 'false'),
+  (23, 'jabber_server', 'your_server_jabber'),
+  (24, 'jabber_port', '5222'),
+  (25, 'jabber_login', 'your_login_jabber'),
+  (26, 'jabber_pass', 'your_jabber_password');
 
-CREATE TABLE `posada` (
+UNLOCK TABLES;
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `posada`
+--
+
+CREATE TABLE IF NOT EXISTS `posada` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=15 ;
 
 LOCK TABLES `posada` WRITE;
 /*!40000 ALTER TABLE `posada` DISABLE KEYS */;
@@ -184,18 +250,17 @@ VALUES
 
 /*!40000 ALTER TABLE `posada` ENABLE KEYS */;
 UNLOCK TABLES;
+-- --------------------------------------------------------
 
+--
+-- Структура таблицы `subj`
+--
 
-# Дамп таблицы subj
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `subj`;
-
-CREATE TABLE `subj` (
+CREATE TABLE IF NOT EXISTS `subj` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=37 ;
 
 LOCK TABLES `subj` WRITE;
 /*!40000 ALTER TABLE `subj` DISABLE KEYS */;
@@ -213,38 +278,19 @@ VALUES
 
 /*!40000 ALTER TABLE `subj` ENABLE KEYS */;
 UNLOCK TABLES;
+-- --------------------------------------------------------
 
+--
+-- Структура таблицы `tickets`
+--
 
-# Дамп таблицы ticket_log
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `ticket_log`;
-
-CREATE TABLE `ticket_log` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `date_op` datetime DEFAULT NULL,
-  `msg` varchar(512) CHARACTER SET latin1 DEFAULT NULL,
-  `init_user_id` int(11) DEFAULT NULL,
-  `to_user_id` int(11) DEFAULT NULL,
-  `ticket_id` int(11) DEFAULT NULL,
-  `to_unit_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-
-
-# Дамп таблицы tickets
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `tickets`;
-
-CREATE TABLE `tickets` (
+CREATE TABLE IF NOT EXISTS `tickets` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `user_init_id` int(11) DEFAULT NULL,
-  `user_to_id` int(11) DEFAULT NULL,
+  `user_to_id` varchar(128) DEFAULT NULL,
   `date_create` datetime DEFAULT NULL,
   `subj` varchar(512) DEFAULT NULL,
-  `msg` varchar(1024) DEFAULT NULL,
+  `msg` longtext,
   `client_id` int(11) DEFAULT NULL,
   `unit_id` int(11) DEFAULT NULL,
   `status` int(11) DEFAULT '0',
@@ -256,23 +302,44 @@ CREATE TABLE `tickets` (
   `last_edit` datetime DEFAULT NULL,
   `ok_by` int(11) DEFAULT '0',
   `prio` int(4) NOT NULL DEFAULT '0',
+  `familiar` varchar(128) DEFAULT '0',
   `ok_date` datetime NOT NULL,
   `last_update` datetime DEFAULT NULL,
+  `lock_t` datetime DEFAULT NULL,
+  `work_t` longtext,
+  `deadline_t` datetime NOT NULL,
+  `permit_ok` int(11) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=470 ;
 
+-- --------------------------------------------------------
 
+--
+-- Структура таблицы `ticket_log`
+--
 
-# Дамп таблицы units
-# ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ticket_log` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `date_op` datetime DEFAULT NULL,
+  `msg` varchar(1024) CHARACTER SET latin1 DEFAULT NULL,
+  `init_user_id` int(11) DEFAULT NULL,
+  `to_user_id` varchar(128) DEFAULT NULL,
+  `ticket_id` int(11) DEFAULT NULL,
+  `to_unit_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2390 ;
 
-DROP TABLE IF EXISTS `units`;
+-- --------------------------------------------------------
 
-CREATE TABLE `units` (
+--
+-- Структура таблицы `units`
+--
+
+CREATE TABLE IF NOT EXISTS `units` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
 
 LOCK TABLES `units` WRITE;
 /*!40000 ALTER TABLE `units` DISABLE KEYS */;
@@ -284,45 +351,45 @@ VALUES
 
 /*!40000 ALTER TABLE `units` ENABLE KEYS */;
 UNLOCK TABLES;
+-- --------------------------------------------------------
 
+--
+-- Структура таблицы `users`
+--
 
-# Дамп таблицы users
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `users`;
-CREATE TABLE `users` (
+CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `fio` varchar(512) DEFAULT NULL,
-  `login` varchar(64) NOT NULL DEFAULT '',
-  `pass` varchar(64) NOT NULL DEFAULT '',
-  `status` int(11) NOT NULL DEFAULT '1',
+  `login` varchar(64) DEFAULT NULL,
+  `pass` varchar(64) DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
   `priv` int(11) DEFAULT '0',
-  `unit` varchar(11) NOT NULL DEFAULT '0',
+  `unit` varchar(255) DEFAULT NULL,
   `is_admin` int(4) NOT NULL DEFAULT '0',
   `email` varchar(128) DEFAULT NULL,
-  `messages` varchar(2048) NOT NULL DEFAULT '',
-  `lang` varchar(11) NOT NULL DEFAULT 'ru',
-  `priv_add_client` int(11) NOT NULL DEFAULT '1',
+  `jabber` varchar(128) DEFAULT NULL,
+  `messages` varchar(2048) DEFAULT NULL,
+  `lang` varchar(11) DEFAULT NULL,
+  `priv_add_client` int(11) NOT NULL DEFAULT '0',
   `priv_edit_client` int(11) NOT NULL DEFAULT '1',
+  `last_time` datetime NOT NULL,
+  `jabber_noty` int(11) NOT NULL DEFAULT '0',
+  `jabber_noty_show` varchar(128) DEFAULT '1',
+  `show_noty` varchar(128) DEFAULT 'bottomRight',
+  `noty` varchar(128) DEFAULT '1,2,3,4,5,6,7,8,9,10',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
-
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=44 ;
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 
-INSERT INTO `users` (`id`, `fio`, `login`, `pass`, `status`, `priv`, `unit`, `is_admin`, `email`,`lang`,`messages`)
+INSERT INTO `users` (`id`, `fio`, `login`, `pass`, `status`, `priv`, `unit`, `is_admin`, `email`)
 VALUES
-	(1,'Main system account','system','81dc9bdb52d04dc20036dbd8313ed055',1,2,'1,2,3',8,'','ru','');
+	(1,'Main system account','system','81dc9bdb52d04dc20036dbd8313ed055',1,2,'1,2,3',8,'');
 
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
-
-
-
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+

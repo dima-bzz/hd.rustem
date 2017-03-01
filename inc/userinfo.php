@@ -6,7 +6,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 
    include("head.inc.php");
    include("navbar.inc.php");
-   
+
 $user_id=($_GET["user"]);
 $user_ids=id_of_user($_SESSION['helpdesk_user_login']);
 $priv_val=priv_status($user_ids);
@@ -20,39 +20,39 @@ if (($priv_val=="2") || ($priv_val=="0")) {
 <div class="page-header" style="margin-top: -15px;">
           <h3 ><?=lang('userinfo_ticket');?> <?=name_of_client($user_id);?></h3>
  </div>
- 
- 
- 
- 
+
+
+
+
 <div class="row" style="padding-bottom:20px;">
 <div class="col-md-4">
-	<div class="panel panel-info">
-	  
-	  
-	<?php
-	get_client_info_ticket($user_id);
-	?>
-	  </div>
+    <div class="panel panel-info">
+
+
+    <?php
+    get_client_info_ticket($user_id);
+    ?>
+      </div>
 </div>
   <div class="col-md-8">
-  
+
   <?php
 
-	    
-	    
-		$stmt = $dbConnection->prepare('SELECT 
-							id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, arch
-							from tickets
-							where client_id=:user_id
-							order by id DESC');
-		$stmt->execute(array(':user_id' => $user_id));
-		$res1 = $stmt->fetchAll();   
-		if (!empty($res1)) {
-		              
-        foreach($res1 as $row) {	    
-	    
-	    
-	    
+
+
+	$stmt = $dbConnection->prepare('SELECT
+			    id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, arch
+			    from tickets
+			    where client_id=:user_id
+			    order by id DESC');
+	$stmt->execute(array(':user_id' => $user_id));
+	$res1 = $stmt->fetchAll();
+	if (!empty($res1)) {
+
+        foreach($res1 as $row) {
+
+
+
             $lock_by=$row['lock_by'];
             $ok_by=$row['ok_by'];
             $ok_date=$row['ok_date'];
@@ -89,10 +89,31 @@ if (($priv_val=="2") || ($priv_val=="0")) {
 
 
             if ($row['user_to_id'] <> 0 ) {
-                $to_text="<div class=''>".name_of_user_ret($row['user_to_id'])."</div>";
+              $t = get_fio_name_return($row['user_to_id']);
+              $t2 = get_fio_name_return($row['user_to_id']);
+              $g = count($t);
+              if ($t[1] != ''){
+                if ($g == 2){
+                  $to_text="<div class=''>".view_array(get_fio_name_return($row['user_to_id']))."</div>";
+                }
+                if ($g > 2 ){
+                  if (in_array($user_id_1,explode(',',$row['user_to_id']))){
+                  }
+                  if (($l = array_search($t2[0],$t)) !==FALSE){
+                    unset($t[$l]);
+                  }
+                  if (($l2 = array_search($t2[1],$t)) !==FALSE){
+                    unset($t[$l2]);
+                  }
+                  $to_text="<div class='' data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"".view_array($t)."\">".$t2[0]."<br>".$t2[1]." и другие </div>";
+                }
+          }
+            else {
+              $to_text="<div class=''>".name_of_user_ret($row['user_to_id'])."</div>";
+            }
             }
             if ($row['user_to_id'] == 0 ) {
-                $to_text="<strong>".lang('t_list_a_all')."</strong> з ".view_array(get_unit_name_return($row['unit_id']));
+                $to_text="<strong>".lang('t_list_a_all')."</strong> (".view_array(get_unit_name_return($row['unit_id'])).")";
             }
 
 
@@ -159,13 +180,13 @@ if (($priv_val=="2") || ($priv_val=="0")) {
 
             if ($row['prio'] == "2") {$prio= "<span class=\"label label-danger\"><i class=\"fa fa-arrow-up\"></i> ".lang('t_list_a_p_high')."</span>"; }
 
-	    
-	    
-	    ?>
-	    <div class="panel panel-default">
+
+
+        ?>
+        <div class="panel panel-default">
   <div class="panel-heading"><i class="fa fa-ticket"></i> <a href="<?=$CONF['hostname']?>/ticket?<?=$row['hash_name']?>"> <?=lang('TICKET_name');?> <strong>#<?=$row['id']?></strong></a></div>
   <div class="panel-body">
-	    <table class="table table-bordered">
+        <table class="table table-bordered">
                 <tbody>
                 <tr>
                     <td style="width:50px;"><small><strong><?=lang('TICKET_t_from');?> </strong></small></td>
@@ -218,26 +239,26 @@ if (($priv_val=="2") || ($priv_val=="0")) {
                 </table>
 
   </div></div>
-	    <?php
-	    
-	    }							
-  
+        <?php
+
+        }
+
   }
    ?>
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
   </div>
-  
-  
-  
-  
-  
+
+
+
+
+
 </div>
- 
+
 </div>
 
 
@@ -262,7 +283,7 @@ if (($priv_val=="2") || ($priv_val=="0")) {
 ?>
 
 <?php
-	}
+    }
 else {
     include 'auth.php';
 }

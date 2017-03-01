@@ -22,12 +22,14 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 
                     <?php
 
-                    if ((priv_status($_SESSION['helpdesk_user_id']) == "0")||(priv_status($_SESSION['helpdesk_user_id']) == "2")) {
+                    // if ((priv_status($_SESSION['helpdesk_user_id']) == "0")||(priv_status($_SESSION['helpdesk_user_id']) == "2")) {
+                    if (validate_admin($_SESSION['helpdesk_user_id'])){
                         ?>
                         <input type="text" class="form-control input-sm" id="fio_find_admin" autofocus placeholder="<?=lang('NEW_fio');?>">
                     <?php
                     }
-                    if ((priv_status($_SESSION['helpdesk_user_id']) == "1")) {
+                    // if ((priv_status($_SESSION['helpdesk_user_id']) == "1")) {
+                    else{
 
                         ?>
                         <div class="input-group">
@@ -68,21 +70,29 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
             if ($o == true) {
                 ?>
 
+<div class="col-md-3">
+      <div class="alert alert-info" role="alert">
+         <small> <i class="fa fa-info-circle"></i>
+<?=lang('WORKERS_info');?>
+         </small>
+      </div>
+      </div>
 
 
-                <div class="col-md-12" id="content_worker">
+                <div class="col-md-9" id="content_worker">
 
                     <?php
                     $user_id=$_SESSION['helpdesk_user_id'];
 
-                    if ((priv_status($user_id) == "0")||(priv_status($user_id) == "2")) {
+                    // if ((priv_status($user_id) == "0")||(priv_status($user_id) == "2")) {
+                    if (validate_admin($user_id)){
                         $_POST['menu']='list';
                         $_POST['page']="1";
                         include "workers.inc.php";
 
                     }
-                    else if (priv_status($user_id) == "1") {
-
+                    // else if (priv_status($user_id) == "1") {
+                    else{
 
                         ?>
 
@@ -100,7 +110,10 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 
                 </div>
 
-                <?php  if ((priv_status($user_id) == "0") || (priv_status($user_id) == "2")) { ?>
+                <?php
+                // if ((priv_status($user_id) == "0") || (priv_status($user_id) == "2")) {
+                  if (validate_admin($_SESSION['helpdesk_user_id'])){
+                    ?>
                     <div class="text-center"><ul id="example_workers" class="pagination pagination-sm"></ul></div>
                     <input type="hidden" id="cur_page" value="1">
                     <input type="hidden" id="total_pages" value="<?=get_total_pages_workers(); ?>">

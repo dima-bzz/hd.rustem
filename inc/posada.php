@@ -29,21 +29,31 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) {
  </div>
         
 
-<div class="row" id="content_posada">
+<div class="row">
 
       
-      
+      <div class="col-md-3">
+      <div class="alert alert-info" role="alert">
+      <small>
+      <i class="fa fa-info-circle"></i> 
+          
+<?=lang('POSADA_info');?>
+      </small>
+      </div>
+      </div>
+
+      <div class="col-md-9" id="content_posada">
       
 <?php 
-	
-		//$results = mysql_query("select id, name from posada;");
-		$stmt = $dbConnection->prepare('select id, name from posada');
-		$stmt->execute();
-		$res1 = $stmt->fetchAll(); 
-	
-	
-	
-	
+    
+	//$results = mysql_query("select id, name from posada;");
+	$stmt = $dbConnection->prepare('select id, name from posada');
+	$stmt->execute();
+	$res1 = $stmt->fetchAll(); 
+    
+    
+    
+    
 ?>      
       
       
@@ -51,34 +61,34 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) {
 <table class="table table-bordered table-hover" style=" font-size: 14px; " id="">
         <thead>
           <tr>
-          	<th><center>ID</center></th>
+            <th><center>ID</center></th>
             <th><center><?=lang('POSADA_n');?></center></th>
             <th><center><?=lang('POSADA_action');?></center></th>
           </tr>
         </thead>
-		<tbody>		
-		<?php 
-		//while ($row = mysql_fetch_assoc($results)) {
-			 foreach($res1 as $row) {
-		?>
-		<tr id="tr_<?=$row['id'];?>">
-		
-		
-		<td><small><center><?=$row['id'];?></center></small></td>
-		<td><small><?=$row['name'];?></small></td>
+	<tbody>		
+	<?php 
+	//while ($row = mysql_fetch_assoc($results)) {
+	     foreach($res1 as $row) {
+	?>
+	<tr id="tr_<?=$row['id'];?>">
+	
+	
+	<td><small><center><?=$row['id'];?></center></small></td>
+	<td><small><?=$row['name'];?></small></td>
 <td><small><center><button id="posada_del" type="button" class="btn btn-danger btn-xs" value="<?=$row['id'];?>">del</button></center></small></td>
-		</tr>
-				<?php } ?>
-		
-		
-			
-		</tbody>
+	</tr>
+		<?php } ?>
+	
+	
+	    
+	</tbody>
 </table>
       <br>
       <?php
       
        ?>
-     
+      </div>
       
       
 </div>
@@ -93,8 +103,8 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) {
 ?>
 
 <?php
-	}
-	}
+    }
+    }
 else {
     include '../auth.php';
 }

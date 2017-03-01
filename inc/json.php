@@ -88,8 +88,8 @@ if (isset($_GET['fio'])) {
     $term = trim(strip_tags(($_GET['term'])));
 
         
-            $stmt = $dbConnection->prepare('SELECT fio as label, login as label2, tel as label3, unit_desc as label4, id as value FROM clients WHERE (fio LIKE :term) or (login LIKE :term2) or (tel LIKE :term3) limit 10');
-			$stmt->execute(array(':term' => '%'.$term.'%',':term2' => '%'.$term.'%',':term3' => '%'.$term.'%'));
+            $stmt = $dbConnection->prepare('SELECT fio as label, login as label2, tel as label3, unit_desc as label4, id as value, status FROM clients WHERE status=:status and ((fio LIKE :term) or (login LIKE :term2) or (tel LIKE :term3)) limit 10');
+			$stmt->execute(array(':term' => '%'.$term.'%',':term2' => '%'.$term.'%',':term3' => '%'.$term.'%',':status' => '1'));
 			$res1 = $stmt->fetchAll();
 			foreach($res1 as $row) {
     

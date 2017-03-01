@@ -17,19 +17,30 @@ function echoActiveClassIfRequestMatches($requestUri)
 $newt=get_total_tickets_free();
 
 if ($newt != 0) {
-	$newtickets="<span class=\"badge\">".$newt."</span>";
+	// $newtickets="<span class=\"badge\" id=\"ap_ticket\">".$newt."</span>";
+  $newtickets=$newt;
+
 }
 if ($newt == 0) {
 	$newtickets="";
 }
 
 $ap=get_approve();
-if ($ap != 0) {
-	$apr="<span class=\"badge\">".$ap."</span>";
-}
-if ($ap == 0) {
-	$apr="";
-}
+ if ($ap != 0) {
+ // 	$apr="<span class=\"badge badge-danger\">".$ap."</span>";
+ 	$apr=$ap;
+
+ }
+ if ($ap == 0) {
+ 	$apr="";
+ }
+ $onlines=get_online_users_total();
+  if ($onlines != 0) {
+  	$online="<span class=\"badge badge-info\" id=\"online\">".$onlines."</span>";
+  }
+  if ($onlines == 0) {
+  	$online="";
+  }
 ?>
 <style>
     .dropdown-submenu{position:relative;}
@@ -49,37 +60,70 @@ if ($ap == 0) {
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="<?=$CONF['hostname']?>index.php"><img src="<?=$CONF['hostname']?>/img/logo.png"> <?=$CONF['name_of_firm']?></a>
+        <a class="navbar-brand" href="<?=$CONF['hostname']?>index.php"><img src="<?=$CONF['hostname']?>img/logo.png"> <?=$CONF['name_of_firm']?></a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
-<li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-tags"></i> <?=lang('NAVBAR_tickets');?> <?=$newtickets?><b class="caret"></b></a>
+
+	<?php
+  // if (validate_admin($_SESSION['helpdesk_user_id'])) {
+    ?>
+		<li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-tags"></i> <?=lang('NAVBAR_tickets');?> <span class="badge" id="ap_ticket"><?=$newtickets?></span> <b class="caret"></b></a>
                 <ul class="dropdown-menu">
 
             <li <?=echoActiveClassIfRequestMatches("create")?>><a href="<?=$CONF['hostname']?>create"><i class="fa fa-tag"></i> <?=lang('NAVBAR_create_ticket');?></a></li>
-            <li <?=echoActiveClassIfRequestMatches("list")?>><a href="<?=$CONF['hostname']?>list"><i class="fa fa-list-alt"></i> <?=lang('NAVBAR_list_ticket');?> <?=$newtickets?></a></li>
+            <li <?=echoActiveClassIfRequestMatches("list")?>><a href="<?=$CONF['hostname']?>list"><i class="fa fa-list-alt"></i> <?=lang('NAVBAR_list_ticket');?> <span class="badge" id="ap_ticket2"><?=$newtickets?></span></a></li>
                 </ul></li>
-            
+		<?php
+  // }
+
+              //  if (! validate_admin($_SESSION['helpdesk_user_id'])) {
+                 ?>
+        <!-- <li <?=echoActiveClassIfRequestMatches("create")?>><a href="<?=$CONF['hostname']?>create"><i class="fa fa-tag"></i> <?=lang('NAVBAR_create_ticket');?></a></li>
+
+            <li <?=echoActiveClassIfRequestMatches("list")?>><a href="<?=$CONF['hostname']?>list"><i class="fa fa-list-alt"></i> <?=lang('NAVBAR_list_ticket');?> <?=$newtickets?></a></li> -->
+	    <?php
+    // }
+    ?>
+
             <li <?=echoActiveClassIfRequestMatches("clients")?>><a href="<?=$CONF['hostname']?>clients"><i class="fa fa-users"></i> <?=lang('NAVBAR_workers');?></a></li>
-            
+
             <li <?=echoActiveClassIfRequestMatches("helper")?>><a href="<?=$CONF['hostname']?>helper"><i class="fa fa-globe"></i> <?=lang('NAVBAR_helper');?></a></li>
-            
-                        <li <?=echoActiveClassIfRequestMatches("notes")?>><a href="<?=$CONF['hostname']?>notes"><i class="fa fa-book"></i> <?=lang('NAVBAR_notes');?></a></li>
 
+            <li <?=echoActiveClassIfRequestMatches("notes")?>><a href="<?=$CONF['hostname']?>notes"><i class="fa fa-book"></i> <?=lang('NAVBAR_notes');?></a></li>
 
-
-            <?php  if (validate_admin($_SESSION['helpdesk_user_id'])) { ?>
+	    <?php
+		$priv_val = priv_status($_SESSION['helpdesk_user_id']);
+		 if ( ($priv_val == "2") || ($priv_val == "0") ) { ?>
+	     <li <?=echoActiveClassIfRequestMatches("main_stats")?>><a href="<?=$CONF['hostname']?>main_stats"><i class="fa fa-bar-chart-o"></i> <?=lang('ALLSTATS_main');?></a></li>
+     </li>
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-shield"></i> <?=lang('NAVBAR_admin');?> <?=$apr;?> <b class="caret"></b></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-rss"></i> <?=lang('NAVBAR_users_online');?> <?=$online?> <b class="caret"></b></a>
+            <ul class="dropdown-menu" style="width:300px; max-height:200px;overflow-y:auto;">
+              <?php get_users_online(); ?>
+          </ul>
+     </li>
+	     <?php }
+       if (($priv_val == "2") && (!validate_admin($_SESSION['helpdesk_user_id']))){
+       ?>
+       <li <?=echoActiveClassIfRequestMatches("files")?>><a href="<?=$CONF['hostname']?>files"><i class="fa fa-files-o" aria-hidden="true"></i> <?=lang('NAVBAR_files');?></a></li>
+       <?php
+     }
+  if (validate_admin($_SESSION['helpdesk_user_id'])) { ?>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-shield"></i> <?=lang('NAVBAR_admin');?> <span class="badge badge-danger" id="ap"><?=$apr;?></span> <b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                    <!--li <?=echoActiveClassIfRequestMatches("clients.php")?> ><a href="clients.php"><i class="fa fa-users"></i> Клієнти</a></li-->
+                    <li <?=echoActiveClassIfRequestMatches("config")?>><a href="<?=$CONF['hostname']?>config"><i class="fa fa-cog"></i> <?=lang('NAVBAR_conf');?></a></li>
                     <li <?=echoActiveClassIfRequestMatches("users")?>><a href="<?=$CONF['hostname']?>users"><i class="fa fa-users"></i> <?=lang('NAVBAR_users');?></a></li>
                     <li <?=echoActiveClassIfRequestMatches("deps")?>><a href="<?=$CONF['hostname']?>deps"><i class="fa fa-sitemap"></i> <?=lang('NAVBAR_deps');?></a></li>
-                    <li <?=echoActiveClassIfRequestMatches("approve")?>><a href="<?=$CONF['hostname']?>approve"><i class="fa fa-check-square-o"></i> <?=lang('NAVBAR_approve');?> <?=$apr;?></a></li>
-                    
+
+                    <li <?=echoActiveClassIfRequestMatches("files")?>><a href="<?=$CONF['hostname']?>files"><i class="fa fa-files-o"></i> <?=lang('NAVBAR_files');?></a></li>
+
+                    <li <?=echoActiveClassIfRequestMatches("approve")?>><a href="<?=$CONF['hostname']?>approve"><i class="fa fa-check-square-o"></i> <?=lang('NAVBAR_approve');?> <span class="badge badge-danger" id="ap2"><?=$apr;?></span></a></li>
+
                     <li class="divider"></li>
                                         <li class="dropdown-submenu">
                         <a tabindex="-1" href="#"><i class="fa fa-book"></i> <?=lang('NAVBAR_db');?></a>
@@ -94,12 +138,6 @@ if ($ap == 0) {
 
 
         </ul>
-        </li>
-
-
-
-
-
 
 
         <?php } ?>
@@ -113,7 +151,6 @@ if ($ap == 0) {
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <?=nameshort(name_of_user_ret($_SESSION['helpdesk_user_id']));?> <b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                    <!--li <?=echoActiveClassIfRequestMatches("clients.php")?> ><a href="clients.php"><i class="fa fa-users"></i> Клієнти</a></li-->
                     <li <?=echoActiveClassIfRequestMatches("profile")?>><a href="<?=$CONF['hostname']?>profile"><i class="fa fa-cogs"></i> <?=lang('NAVBAR_profile');?></a></li>
                     <li <?=echoActiveClassIfRequestMatches("help")?>><a href="<?=$CONF['hostname']?>help"><i class="fa fa-question-circle"></i> <?=lang('NAVBAR_help');?></a></li>
                     <li><a href="<?=$CONF['hostname']?>index.php?logout"><i class="fa fa-sign-out"></i> <?=lang('NAVBAR_logout');?></a></li>
@@ -122,22 +159,7 @@ if ($ap == 0) {
 
 
 
-
-
-
-
-
-
-
-
         </ul>
-
-
-
-
-
-
-
 
 
 

@@ -254,41 +254,63 @@ $start_pos = ($page - 1) * $perpage;
     
 	    //$results = mysql_query("SELECT id, fio, login, tel, unit_desc, adr, email, posada from clients where ((fio like '%" . $t . "%') or (login like '%" . $t . "%')) limit $start_pos, $perpage;");
 	    
+	    		    		if (priv_status($_SESSION['helpdesk_user_id']) == "2") {	    
 	    
-	    
-	        $stmt = $dbConnection->prepare('SELECT id, fio, login, tel, unit_desc, adr, email, posada from clients where ((fio like :t) or (login like :t2)) limit :start_pos, :perpage');
+	        $stmt = $dbConnection->prepare('SELECT id, fio, login, tel, unit_desc, adr, email, posada, status from clients where ((fio like :t) or (login like :t2)) order by status desc limit :start_pos, :perpage');
 			$stmt->execute(array(':t' => '%'.$t.'%',':t2' => '%'.$t.'%',':start_pos' => $start_pos, ':perpage'=>$perpage));
 			$res1 = $stmt->fetchAll();
-			//foreach($res1 as $row) {
+					}
+					
+					if (priv_status($_SESSION['helpdesk_user_id']) == "0") {	    
 	    
+	        $stmt = $dbConnection->prepare('SELECT id, fio, login, tel, unit_desc, adr, email, posada, status from clients where ((fio like :t) or (login like :t2)) and status=:status order by status desc limit :start_pos, :perpage');
+			$stmt->execute(array(':t' => '%'.$t.'%',':t2' => '%'.$t.'%',':start_pos' => $start_pos, ':perpage'=>$perpage,':status'=>'1'));
+			$res1 = $stmt->fetchAll();
+					}
+					
+			//foreach($res1 as $row) {
+	    $statuss=$row['status'];
+	
+	if ($statuss == "1") {$r="";}
+        if ($statuss != "1") {$r="warning";}
 	    
 	    
 	    
     }
     if (!isset($_POST['t'])) {
 	//$results = mysql_query("SELECT id, fio, login, tel, unit_desc, adr, email, posada from clients limit $start_pos, $perpage;");
-		    
-		    
-		    $stmt = $dbConnection->prepare('SELECT id, fio, login, tel, unit_desc, adr, email, posada from clients limit :start_pos, :perpage');
+		    		if (priv_status($_SESSION['helpdesk_user_id']) == "2") {	    
+
+		    $stmt = $dbConnection->prepare('SELECT id, fio, login, tel, unit_desc, adr, email, posada, status from clients order by status desc limit :start_pos, :perpage');
 			$stmt->execute(array(':start_pos' => $start_pos, ':perpage'=>$perpage));
 			$res1 = $stmt->fetchAll();
 			
 			
+				}
+				
+				if (priv_status($_SESSION['helpdesk_user_id']) == "0") {	    
+
+		    $stmt = $dbConnection->prepare('SELECT id, fio, login, tel, unit_desc, adr, email, posada, status from clients where status=:status order by status desc limit :start_pos, :perpage');
+			$stmt->execute(array(':start_pos' => $start_pos, ':perpage'=>$perpage,':status'=>'1'));
+			$res1 = $stmt->fetchAll();
 			
+			
+				}	
+				
 	}
 	//while ($row = mysql_fetch_assoc($results)) {
 	foreach($res1 as $row) {
 	//$getunit=get_unit_name($row['priv']);
 	//$unit=get_unit_name_return($row['unit']);
-	//$statuss=$row['status'];
+	$statuss=$row['status'];
 	
-	
-	
+	if ($statuss == "1") {$r="";}
+        if ($statuss != "1") {$r="warning";}
 	?>
-          <tr class="">
+          <tr class="<?=$r;?>">
             <td><small><center><?=$row['id'];?></center></small></td>
             <td><small><a value="<?=$row['id']; ?>" href="<?=$CONF['hostname']?>clients?edit=<?=$row['id'];?>"><?=$row['fio'];?></a></small></td>
-            <td><small><?=$row['login'];?></small></td>
+	    <td><small><?=$row['login'];?></small></td>
             <td><small><?=$row['tel'];?></small></td>
             <td><small><?=$row['unit_desc'];?></small></td>
             <td><small><?=$row['adr'];?></small></td>
