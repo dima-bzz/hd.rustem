@@ -96,10 +96,6 @@ include_once("head.inc.php");
             </center>
         </small>
 	<?php } ?>
-	<small>
-            <center style=" margin-bottom: -20px; "><br><a href="/sa/index.php">Система учета техники</a>
-            </center>
-        </small>
     </form>
 
 <?php if(ini_get('short_open_tag') == false) { ?>
