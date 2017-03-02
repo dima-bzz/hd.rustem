@@ -21,9 +21,6 @@ if ( isset($_POST['mode']) ) {
         $mailadr=($_POST['mailadress']);
 
 
-        //$query="SELECT id, fio,login,status FROM users where email='$mailadr';";
-        //$res = mysql_query($query) or die(mysql_error());
-
 	$stmt = $dbConnection->prepare('SELECT id, fio,login,status FROM users where email=:mailadr');
         $stmt->execute(array(':mailadr' => $mailadr));
         $r = $stmt->fetchAll();
