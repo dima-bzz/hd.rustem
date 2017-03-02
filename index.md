@@ -43,8 +43,8 @@ HELPDESK веб-система, для организации учёта вып�
 
 <h4>Ссылки и обсуждения</h4>
 <ul>
-<li>http://habrahabr.ru/post/227277/</li>
-<li>http://hd.rustem.com.ua/</li>
+<li><a href="http://habrahabr.ru/post/227277/">http://habrahabr.ru/post/227277/</a></li>
+<li><a href="http://hd.rustem.com.ua/">http://hd.rustem.com.ua/</a></li>
 </ul>
 
 
