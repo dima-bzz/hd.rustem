@@ -7,9 +7,7 @@ include_once("conf.php");
 if (isset($CONF_DB)) {
 
 
-
 include("functions.inc.php");
-
 
 
 if (isset($_GET['logout'])) {
