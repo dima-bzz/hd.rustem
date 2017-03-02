@@ -201,11 +201,11 @@ CREATE TABLE IF NOT EXISTS `perf` (
 LOCK TABLES `perf` WRITE;
 INSERT INTO `perf` (`id`, `param`, `value`)
 VALUES
-	(1, 'title_header', ' IT корпорация'),
+	(1, 'title_header', 'IT корпорация'),
 	(2, 'hostname', 'http://localhost/web/HD.rustem/'),
 	(3, 'mail', 'hd@hd.local'),
 	(4, 'days2arch', '3'),
-	(5, 'name_of_firm', ' IT корпорация'),
+	(5, 'name_of_firm', 'IT корпорация'),
 	(6, 'fix_subj', 'true'),
 	(7, 'first_login', 'false'),
 	(8, 'file_uploads', 'true'),
@@ -225,8 +225,8 @@ VALUES
   (22, 'jabber_active', 'false'),
   (23, 'jabber_server', 'your_server_jabber'),
   (24, 'jabber_port', '5222'),
-  (25, 'jabber_login', 'your_login_jabber'),
-  (26, 'jabber_pass', 'your_jabber_password');
+  (25, 'jabber_login', 'server_login_jabber'),
+  (26, 'jabber_pass', 'server_jabber_password');
 
 UNLOCK TABLES;
 -- --------------------------------------------------------
