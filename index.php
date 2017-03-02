@@ -8,11 +8,6 @@ if (isset($CONF_DB)) {
 
 
 
-
-
-
-
-//include("dbconnect.inc.php");
 include("functions.inc.php");
 
 
