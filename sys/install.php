@@ -149,13 +149,13 @@ mysql_connect($mysql_host, $mysql_username, $mysql_password) or die('Error conne
 </center>');
 if (isset($_POST['mode_delete'])){
   if ($_POST['mode_delete'] == 'true'){
-    mysql_query("DROP Database $mysql_database") or die ('Error delete database to MySQL server: ' . mysql_error() . '<br><br><center>
+    mysql_query("DROP Database `$mysql_database`") or die ('Error delete database to MySQL server: ' . mysql_error() . '<br><br><center>
     <a class="btn btn-lg btn-success" href="'.$sys_url.'index.php?mode=db_install" role="button"><i class="fa fa-chevron-circle-left"></i>  Назад</a>
     </center>');
   }
 }
   // Create database
-mysql_query("Create Database $mysql_database Character Set utf8 Collate utf8_general_ci") or die('Error creating database to MySQL server: ' . mysql_error() . '<br><br><center>
+mysql_query("Create Database `$mysql_database` Character Set utf8 Collate utf8_general_ci") or die('Error creating database to MySQL server: ' . mysql_error() . '<br><br><center>
 <a class="btn btn-lg btn-success" href="'.$sys_url.'index.php?mode=db_install" role="button"><i class="fa fa-chevron-circle-left"></i>  Выбрать другую базу данных</a>
 <form class="form-horizontal" role="form" action="index.php" method="post" style="display:inline-block;">
 <input type="hidden" id="host" name="host" value='.$mysql_host.'>
