@@ -18,7 +18,6 @@ error_reporting(0);
 </head>
 
 
-
 <link rel="stylesheet" href="js/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="js/bootstrap/css/bootstrap-theme.min.css">
 <link rel="stylesheet" href="css/jquery-ui.min.css">
@@ -120,7 +119,7 @@ if (isset($_POST['mode'])) {
   <h1>HD.rustem <small>установка системы</small></h1>
 </div>
 	<div class="row">
-	
+
 	<div class="col-md-12">
 	<div class="panel panel-default">
   <div class="panel-heading">
@@ -140,10 +139,29 @@ $mysql_username = $_POST['username'];
 $mysql_password = $_POST['password'];
 // Database name
 $mysql_database = $_POST['db'];
+
+$pos = strrpos($_SERVER['REQUEST_URI'], '/');
+$sys_url= "http://".$_SERVER['HTTP_HOST'].substr($_SERVER['REQUEST_URI'], 0, $pos + 1);
+
 // Connect to MySQL server
-mysql_connect($mysql_host, $mysql_username, $mysql_password) or die('Error connecting to MySQL server: ' . mysql_error());
-// Select database
-mysql_select_db($mysql_database) or die('Error selecting MySQL database: ' . mysql_error());
+mysql_connect($mysql_host, $mysql_username, $mysql_password) or die('Error connecting to MySQL server: ' . mysql_error() . '<br><br><center>
+<a class="btn btn-lg btn-success" href="'.$sys_url.'index.php?mode=db_install" role="button"><i class="fa fa-chevron-circle-left"></i>  Назад</a>
+</center>');
+if (isset($_POST['mode_delete'])){
+  if ($_POST['mode_delete'] == 'true'){
+    mysql_query("DROP Database $mysql_database") or die ('Error delete database to MySQL server: ' . mysql_error() . '<br><br><center>
+    <a class="btn btn-lg btn-success" href="'.$sys_url.'index.php?mode=db_install" role="button"><i class="fa fa-chevron-circle-left"></i>  Назад</a>
+    </center>');
+  }
+}
+  // Create database
+mysql_query("Create Database $mysql_database Character Set utf8 Collate utf8_general_ci") or die('Error creating database to MySQL server: ' . mysql_error() . '<br><br><center>
+<a class="btn btn-lg btn-success" href="'.$sys_url.'index.php?mode=db_install" role="button"><i class="fa fa-chevron-circle-left"></i>  Назад</a>
+</center>');
+  // Select database
+  mysql_select_db($mysql_database) or die('Error selecting MySQL database: ' . mysql_error() . '<br><br><center>
+  <a class="btn btn-lg btn-success" href="'.$sys_url.'index.php?mode=db_install" role="button"><i class="fa fa-chevron-circle-left"></i>  Назад</a>
+  </center>');
 
 // Temporary variable, used to store current query
 $templine = '';
@@ -162,12 +180,13 @@ $templine .= $line;
 if (substr(trim($line), -1, 1) == ';')
 {
     // Perform the query
-    mysql_query($templine) or print('Error performing query \'<strong>' . $templine . '\': ' . mysql_error() . '<br /><br />');
+    mysql_query($templine) or die('Error performing query \'<strong>' . $templine . '\': ' . mysql_error() . '<br /><br />' . '<center>
+    <a class="btn btn-lg btn-danger" href="'.$sys_url.'index.php?mode=db_install&mode_delete=true" role="button"><i class="fa fa-trash"></i>  Удалить базу данных и начать сначала</a>
+    </center>');
     // Reset temp variable to empty
     $templine = '';
 }
 }
-
 
 $current .= "<?php\n";
 $current .= "########################################\n";
@@ -193,10 +212,12 @@ $current .= ");\n";
 $current .= "?>\n";
 file_put_contents($fileconf, $current);
 
-$pos = strrpos($_SERVER['REQUEST_URI'], '/');
-$sys_url= "http://".$_SERVER['HTTP_HOST'].substr($_SERVER['REQUEST_URI'], 0, $pos + 1);
-      
-mysql_query("update perf set value='$sys_url' where param='hostname'")or die("Invalid query: " . mysql_error());
+// $pos = strrpos($_SERVER['REQUEST_URI'], '/');
+// $sys_url= "http://".$_SERVER['HTTP_HOST'].substr($_SERVER['REQUEST_URI'], 0, $pos + 1);
+
+mysql_query("update perf set value='$sys_url' where param='hostname'")or die("Invalid query: " . mysql_error() . '<br><br><center>
+<a class="btn btn-lg btn-success" href="'.$sys_url.'index.php?mode=db_install" role="button"><i class="fa fa-chevron-circle-left"></i>  Назад</a>
+</center>');
 ?>
 <h2>Поздравляем Вас с успешной установкой!</h2>
 Вы можете войти в систему по адресу: <a href="<?=$sys_url;?>"><?=$sys_url;?></a>,<br> используя логин: <strong>system</strong> и пароль: <strong>1234</strong>.<br>
@@ -214,7 +235,6 @@ mysql_query("update perf set value='$sys_url' where param='hostname'")or die("In
 </p>
 <hr>
 
-
   </div>
 	</div>
 	</div>
@@ -225,14 +245,13 @@ mysql_query("update perf set value='$sys_url' where param='hostname'")or die("In
 }
 else if (!isset($_POST['mode'])) {
 if (isset($_GET['mode'])) {
-	if ($_GET['mode'] == 'db_install' ) { ?>
-	
+	if ($_GET['mode'] == 'db_install' ) {?>
 	<div class="container" id="content">
 	<div class="page-header">
   <h1>HD.rustem <small>подготовка к установке</small></h1>
 </div>
 	<div class="row">
-	
+
 	<div class="col-md-12">
 	<div class="panel panel-default">
   <div class="panel-heading">
@@ -241,11 +260,11 @@ if (isset($_GET['mode'])) {
   <div class="panel-body">
 
 <form class="form-horizontal" role="form" action="index.php" method="post">
-    
+
     <div class="form-group">
     <label for="host" class="col-sm-4 control-label"><small>Адрес MySQL-сервера</small></label>
     <div class="col-sm-8">
-<input type="text" class="form-control input-sm" id="host" name="host" placeholder="localhost" value="">
+<input type="text" class="form-control input-sm" id="host" name="host" placeholder="localhost" value="localhost">
 
    </div>
   </div>
@@ -257,9 +276,9 @@ if (isset($_GET['mode'])) {
 
    </div>
   </div>
-  
-  
-  
+
+
+
       <div class="form-group">
     <label for="password" class="col-sm-4 control-label"><small>Пароль</small></label>
     <div class="col-sm-8">
@@ -267,19 +286,20 @@ if (isset($_GET['mode'])) {
 
    </div>
   </div>
-  
-  
+
+
         <div class="form-group">
     <label for="db" class="col-sm-4 control-label"><small>Имя БД</small></label>
     <div class="col-sm-8">
-<input type="password" class="form-control input-sm" id="db" name="db" placeholder="hd.rustem" value="">
+<input type="text" class="form-control input-sm" id="db" name="db" placeholder="hd.rustem" value="">
 
    </div>
   </div>
-  
+
 
 <center>
 <input type="hidden" name="mode" value="1">
+<input type="hidden" id="mode_delete" name="mode_delete" value='<?php echo $_GET['mode_delete']?>'>
 <button class="btn btn-lg btn-success" href="" role="button"><i class="fa fa-chevron-circle-right"></i>  Установить</button>
 </center>
 </form>
@@ -292,19 +312,19 @@ if (isset($_GET['mode'])) {
 	</div>
 
 
-	
+
 	<?php
-	
+
 	}
-    if ($_GET['mode'] == 'check_install' ) { 
-	
+    if ($_GET['mode'] == 'check_install' ) {
+
 	?>
 	<div class="container" id="content">
 	<div class="page-header">
   <h1>HD.rustem <small>подготовка к установке</small></h1>
 </div>
 	<div class="row">
-	
+
 	<div class="col-md-12">
 	<div class="panel panel-default">
   <div class="panel-heading">
@@ -318,24 +338,30 @@ if (isset($_GET['mode'])) {
             <tr>
                 <td>PHP short_open_tag</td>
                 <td width="100px;">
-                    
-                    <?php if(ini_get('short_open_tag') == false) {?> 
+
+                    <?php
+                    $error = true;
+                    if(ini_get('short_open_tag') == false) {
+                      $error = false;
+                    ?>
                     <span class="label label-danger">Не активно</span>
                     <div class="alert alert-danger" role="alert">PHP-error: <em>short_open_tag</em> must be enable in your php configuration. <br> Details: <a href="http://php.net//manual/ru/language.basic-syntax.phptags.php">http://php.net//manual/ru/language.basic-syntax.phptags.php</a></div>
                      <?php  } ?>
                     <?php if(ini_get('short_open_tag') == true) {?><span class="label label-success">Success</span> <?php } ?>
                 </td>
             </tr>
-            
+
             <tr>
                 <td>File .htaccess</td>
                 <td width="100px;">
                     <?php
     $filename=realpath(dirname(dirname(__FILE__)))."/.htaccess";
-    if (!file_exists($filename)) { ?>
+    if (!file_exists($filename)) {
+      $error = false;
+    ?>
     <span class="label label-danger">Файл отсутствует</span>
     <div class="alert alert-danger" role="alert">
-    
+
     В каталоге <?=realpath(dirname(dirname(__FILE__)))?> нужно создать файл .htaccess с таким содержанием:
     <code>
 RewriteEngine on
@@ -343,27 +369,29 @@ RewriteRule ^([a-zA-Z0-9_-]+)$ index.php?page=$1  [QSA,L]
 RewriteRule ^([a-zA-Z0-9_-]+)/$ index.php?page=$1  [QSA,L]
 
     </code>
-    
+
     </div>
-    <?php } 
+    <?php }
         if (file_exists($filename)) {
-        
+
     ?>
     <span class="label label-success">Success</span>
     <?php } ?>
-    
+
                 </td>
             </tr>
-            
+
             <tr>
                 <td>PDO check</td>
                 <td width="100px;">
                     <?php if (defined('PDO::ATTR_DRIVER_NAME')) {?>
 <span class="label label-success">Success</span>
-<?php } if (!defined('PDO::ATTR_DRIVER_NAME')) {?>
+<?php } if (!defined('PDO::ATTR_DRIVER_NAME')) {
+          $error = false;
+  ?>
     <span class="label label-danger">Не автивно</span>
-            <?php } ?>            
-                    
+            <?php } ?>
+
                 </td>
             </tr>
              <tr>
@@ -371,7 +399,9 @@ RewriteRule ^([a-zA-Z0-9_-]+)/$ index.php?page=$1  [QSA,L]
                 <td width="100px;">
                     <?php
     $filename=realpath(dirname(dirname(__FILE__)))."/conf.php";
-    if (!is_writable($filename)) { ?>
+    if (!is_writable($filename)) {
+      $error = false;
+      ?>
     <span class="label label-danger">Не автивно</span>
     <div class="alert alert-danger" role="alert">Permission-error: <em><?=$filename?></em> is not writable. <br> Add access to write.</a></div>
     <?php } if (is_writable($filename)) {?>
@@ -379,14 +409,16 @@ RewriteRule ^([a-zA-Z0-9_-]+)/$ index.php?page=$1  [QSA,L]
     <?php } ?>
                 </td>
             </tr>
-            
-            
+
+
             <tr>
                 <td>File uploads directory</td>
                 <td width="100px;">
                     <?php
     $filename=realpath(dirname(dirname(__FILE__)))."/upload_files/";
-    if (!is_writable($filename)) { ?>
+    if (!is_writable($filename)) {
+      $error = false;
+      ?>
     <span class="label label-danger">Не автивно</span>
     <div class="alert alert-danger" role="alert">Permission-error: <em><?=$filename?></em> is not writable. <br> Add access to write.</a></div>
     <?php } if (is_writable($filename)) {?>
@@ -394,13 +426,15 @@ RewriteRule ^([a-zA-Z0-9_-]+)/$ index.php?page=$1  [QSA,L]
     <?php } ?>
                 </td>
             </tr>
-            
+
             <tr>
                 <td>File uploads user_content directory</td>
                 <td width="100px;">
                     <?php
     $filename=realpath(dirname(dirname(__FILE__)))."/upload_files/user_content";
-    if (!is_writable($filename)) { ?>
+    if (!is_writable($filename)) {
+      $error = false;
+      ?>
     <span class="label label-danger">Не автивно</span>
     <div class="alert alert-danger" role="alert">Permission-error: <em><?=$filename?></em> is not writable. <br> Add access to write.</a></div>
     <?php } if (is_writable($filename)) {?>
@@ -408,36 +442,42 @@ RewriteRule ^([a-zA-Z0-9_-]+)/$ index.php?page=$1  [QSA,L]
     <?php } ?>
                 </td>
             </tr>
-            
-            
-                       
-            
+
+
+
+
 </tbody>
-            
+
 
 </table>
+<?php
+if ($error != false){
+  ?>
 <center>
 <a class="btn btn-lg btn-success" href="index.php?mode=db_install" role="button"><i class="fa fa-chevron-circle-right"></i>  Далее</a>
 </center>
+<?php
+}
+?>
 
   </div>
 </div>
 	</div>
-	
+
 	</div>
 	</div>
 	<?php
     }
-    
-    
-    
-    
-    
+
+
+
+
+
 }
 else if (!isset($_GET['mode'])) {
 ?>
 <div class="container" id="content">
-      
+
 
       <div class="jumbotron">
         <h1>HD.rustem </h1>
@@ -456,7 +496,7 @@ else if (!isset($_GET['mode'])) {
         Если увидели ошибку - пишите <a href="https://github.com/rustem-art/hd.rustem/issues/new">Issues</a> на GitHub. Не забывайте указывать версию HD.rustem, тип и версию Вашего браузера, ОС, на которой установлен хелпдеск.
         </li>
         </ul>
-        
+
          </div>
 
 
