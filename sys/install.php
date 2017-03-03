@@ -156,7 +156,15 @@ if (isset($_POST['mode_delete'])){
 }
   // Create database
 mysql_query("Create Database $mysql_database Character Set utf8 Collate utf8_general_ci") or die('Error creating database to MySQL server: ' . mysql_error() . '<br><br><center>
-<a class="btn btn-lg btn-success" href="'.$sys_url.'index.php?mode=db_install" role="button"><i class="fa fa-chevron-circle-left"></i>  Назад</a>
+<a class="btn btn-lg btn-success" href="'.$sys_url.'index.php?mode=db_install" role="button"><i class="fa fa-chevron-circle-left"></i>  Выбрать другую базу данных</a>
+<form class="form-horizontal" role="form" action="index.php" method="post" style="display:inline-block;">
+<input type="hidden" id="host" name="host" value='.$mysql_host.'>
+<input type="hidden" id="username" name="username" value='.$mysql_username.'>
+<input type="hidden" id="password" name="password" value='.$mysql_password.'>
+<input type="hidden" id="db" name="db" value='.$mysql_database.'>
+<input type="hidden" name="mode" value="1">
+<input type="hidden" id="mode_delete" name="mode_delete" value="true">
+<button class="btn btn-lg btn-danger" href="" role="button"><i class="fa fa-trash"></i>  Перезаписать базу данных</button></form>
 </center>');
   // Select database
   mysql_select_db($mysql_database) or die('Error selecting MySQL database: ' . mysql_error() . '<br><br><center>
@@ -181,8 +189,16 @@ if (substr(trim($line), -1, 1) == ';')
 {
     // Perform the query
     mysql_query($templine) or die('Error performing query \'<strong>' . $templine . '\': ' . mysql_error() . '<br /><br />' . '<center>
-    <a class="btn btn-lg btn-danger" href="'.$sys_url.'index.php?mode=db_install&mode_delete=true" role="button"><i class="fa fa-trash"></i>  Удалить базу данных и начать сначала</a>
+    <form class="form-horizontal" role="form" action="index.php" method="post" style="display:inline-block;">
+    <input type="hidden" id="host" name="host" value='.$mysql_host.'>
+    <input type="hidden" id="username" name="username" value='.$mysql_username.'>
+    <input type="hidden" id="password" name="password" value='.$mysql_password.'>
+    <input type="hidden" id="db" name="db" value='.$mysql_database.'>
+    <input type="hidden" name="mode" value="1">
+    <input type="hidden" id="mode_delete" name="mode_delete" value="true">
+    <button class="btn btn-lg btn-danger" href="" role="button"><i class="fa fa-trash"></i>  Удалить базу данных и начать сначала</button></form>
     </center>');
+        // <a class="btn btn-lg btn-danger" href="'.$sys_url.'index.php?mode=db_install&mode_delete=true" role="button"><i class="fa fa-trash"></i>  Удалить базу данных и начать сначала</a>
     // Reset temp variable to empty
     $templine = '';
 }
@@ -299,7 +315,6 @@ if (isset($_GET['mode'])) {
 
 <center>
 <input type="hidden" name="mode" value="1">
-<input type="hidden" id="mode_delete" name="mode_delete" value='<?php echo $_GET['mode_delete']?>'>
 <button class="btn btn-lg btn-success" href="" role="button"><i class="fa fa-chevron-circle-right"></i>  Установить</button>
 </center>
 </form>
