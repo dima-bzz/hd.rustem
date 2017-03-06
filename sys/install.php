@@ -17,7 +17,6 @@ error_reporting(0);
 
 </head>
 
-
 <link rel="stylesheet" href="js/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="js/bootstrap/css/bootstrap-theme.min.css">
 <link rel="stylesheet" href="css/jquery-ui.min.css">
@@ -155,17 +154,19 @@ if (isset($_POST['mode_delete'])){
   }
 }
   // Create database
+  if($mysql_database != ""){
 mysql_query("Create Database `$mysql_database` Character Set utf8 Collate utf8_general_ci") or die('Error creating database to MySQL server: ' . mysql_error() . '<br><br><center>
-<a class="btn btn-lg btn-success" href="'.$sys_url.'index.php?mode=db_install" role="button"><i class="fa fa-chevron-circle-left"></i>  Выбрать другую базу данных</a>
-<form class="form-horizontal" role="form" action="index.php" method="post" style="display:inline-block;">
+<a class="btn btn-lg btn-success" href="'.$sys_url.'index.php?mode=db_install" role="button" style="width:49%;"><i class="fa fa-chevron-circle-left"></i>  Выбрать другую базу данных</a>
+<form class="form-horizontal" role="form" action="index.php" method="post" style="display:inline;">
 <input type="hidden" id="host" name="host" value='.$mysql_host.'>
 <input type="hidden" id="username" name="username" value='.$mysql_username.'>
 <input type="hidden" id="password" name="password" value='.$mysql_password.'>
 <input type="hidden" id="db" name="db" value='.$mysql_database.'>
 <input type="hidden" name="mode" value="1">
 <input type="hidden" id="mode_delete" name="mode_delete" value="true">
-<button class="btn btn-lg btn-danger" href="" role="button"><i class="fa fa-trash"></i>  Перезаписать базу данных</button></form>
+<button class="btn btn-lg btn-danger" href="" role="button" style="width:49%;"><i class="fa fa-trash"></i>  Перезаписать базу данных</button></form>
 </center>');
+}
   // Select database
   mysql_select_db($mysql_database) or die('Error selecting MySQL database: ' . mysql_error() . '<br><br><center>
   <a class="btn btn-lg btn-success" href="'.$sys_url.'index.php?mode=db_install" role="button"><i class="fa fa-chevron-circle-left"></i>  Назад</a>
@@ -189,7 +190,7 @@ if (substr(trim($line), -1, 1) == ';')
 {
     // Perform the query
     mysql_query($templine) or die('Error performing query \'<strong>' . $templine . '\': ' . mysql_error() . '<br /><br />' . '<center>
-    <form class="form-horizontal" role="form" action="index.php" method="post" style="display:inline-block;">
+    <form class="form-horizontal" role="form" action="index.php" method="post" style="display:inline;">
     <input type="hidden" id="host" name="host" value='.$mysql_host.'>
     <input type="hidden" id="username" name="username" value='.$mysql_username.'>
     <input type="hidden" id="password" name="password" value='.$mysql_password.'>
@@ -315,7 +316,7 @@ if (isset($_GET['mode'])) {
 
 <center>
 <input type="hidden" name="mode" value="1">
-<button class="btn btn-lg btn-success" href="" role="button"><i class="fa fa-chevron-circle-right"></i>  Установить</button>
+<button class="btn btn-lg btn-success" href="" onclick="load();" role="button" style="width:30%"><i class="fa fa-chevron-circle-right"></i>  Установить</button>
 </center>
 </form>
 
@@ -325,7 +326,6 @@ if (isset($_GET['mode'])) {
 	</div>
 	</div>
 	</div>
-
 
 
 	<?php
@@ -469,8 +469,14 @@ RewriteRule ^([a-zA-Z0-9_-]+)/$ index.php?page=$1  [QSA,L]
 if ($error != false){
   ?>
 <center>
-<a class="btn btn-lg btn-success" href="index.php?mode=db_install" role="button"><i class="fa fa-chevron-circle-right"></i>  Далее</a>
+<a class="btn btn-lg btn-success" href="index.php?mode=db_install" role="button" style="width:30%"><i class="fa fa-chevron-circle-right"></i>  Далее</a>
 </center>
+<?php
+}else{
+  ?>
+  <center>
+  <a class="btn btn-lg btn-success" href="index.php?mode=check_install" role="button" style="width:30%"><i class="fa fa-refresh"></i>  Обновить</a>
+  </center>
 <?php
 }
 ?>
