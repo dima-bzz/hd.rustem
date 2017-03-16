@@ -956,12 +956,12 @@ foreach ($ee as $key=>$value) { $vv[":val_" . $key]=$value;}
                 $stmt = $dbConnection->prepare('SELECT
 			    id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update, deadline_t, ok_date
 			    from tickets
-			    where ((user_to_id like :user_id and arch=:n) or
+			    where ((user_to_id rlike :user_id and arch=:n) or
 			    (user_to_id=:n1 and unit_id IN ('.$in_query.') and arch=:n2))
 			    order by ok_by asc, prio desc, id desc
 			    limit :start_pos, :perpage');
 
-                $paramss=array(':n' => '0',':start_pos'=>$start_pos, ':perpage'=>$perpage, ':user_id'=>'%'.$user_id.'%',':n1' => '0',':n2' => '0');
+                $paramss=array(':n' => '0',':start_pos'=>$start_pos, ':perpage'=>$perpage, ':user_id'=>'[[:<:]]'.$user_id.'[[:>:]]',':n1' => '0',':n2' => '0');
 
                 $stmt->execute(array_merge($vv,$paramss));
                 $results = $stmt->fetchAll();
@@ -1362,9 +1362,9 @@ foreach ($ee2 as $key2=>$value2) { $vv2[":vall_" . $key2]=$value2;}
             else if ($priv_val == "1") {
 
                 $stmt = $dbConnection->prepare('SELECT id, hash_name, last_update from tickets where (
-    ((user_to_id like :uid) or (user_to_id=:n and unit_id IN ('.$in_query.')))
+    ((user_to_id rlike :uid) or (user_to_id=:n and unit_id IN ('.$in_query.')))
     or user_init_id=:uid2) order by last_update DESC limit :c');
-                $paramss=array(':uid'=>'%'.$uid.'%', ':n'=>'0', ':uid2'=>$uid, ':c'=>$c);
+                $paramss=array(':uid'=>'[[:<:]]'.$uid.'[[:>:]]', ':n'=>'0', ':uid2'=>$uid, ':c'=>$c);
                 $stmt->execute(array_merge($vv,$paramss));
                 $res1 = $stmt->fetchAll();
 
@@ -1546,9 +1546,9 @@ foreach ($ee2 as $key2=>$value2) { $vv2[":vall_" . $key2]=$value2;}
             else if ($priv_val == "1") {
 
                 $stmt = $dbConnection->prepare('SELECT id, hash_name, last_update from tickets where (
-    ((user_to_id like :uid) or (user_to_id=:n and unit_id IN ('.$in_query.')))
+    ((user_to_id rlike :uid) or (user_to_id=:n and unit_id IN ('.$in_query.')))
     or user_init_id=:uid2) and last_update > :lu');
-                $paramss=array(':uid'=>'%'.$uid.'%', ':lu'=>$lu, ':uid2'=>$uid, ':n'=>'0');
+                $paramss=array(':uid'=>'[[:<:]]'.$uid.'[[:>:]]', ':lu'=>$lu, ':uid2'=>$uid, ':n'=>'0');
                 $stmt->execute(array_merge($vv,$paramss));
                 $res1 = $stmt->fetchAll();
                 foreach($res1 as $rews) {
@@ -1693,9 +1693,9 @@ foreach ($ee2 as $key2=>$value2) { $vv2[":vall_" . $key2]=$value2;}
   }
   if ($priv_val == "1") {
     $stmt = $dbConnection->prepare('SELECT id, hash_name, last_update from tickets where (
-((user_to_id like :uid) or (user_to_id=:n and unit_id IN ('.$unit.')))
+((user_to_id rlike :uid) or (user_to_id=:n and unit_id IN ('.$unit.')))
 or user_init_id=:uid2) and UNIX_TIMESTAMP(last_update) > UNIX_TIMESTAMP(NOW())-5');
-    $stmt->execute(array(':uid'=>'%'.$uid.'%', ':uid2'=>$uid, ':n'=>'0'));
+    $stmt->execute(array(':uid'=>'[[:<:]]'.$uid.'[[:>:]]', ':uid2'=>$uid, ':n'=>'0'));
       $res1 = $stmt->fetchAll();
       foreach($res1 as $rews) {
 
@@ -1780,9 +1780,9 @@ foreach ($ee2 as $key2=>$value2) { $vv2[":vall_" . $key2]=$value2;}
             else if ($priv_val == "1") {
 
                 $stmt = $dbConnection->prepare('SELECT id, hash_name, last_update from tickets where (
-    ((user_to_id like :uid) or (user_to_id=:n and unit_id IN ('.$in_query.')))
+    ((user_to_id rlike :uid) or (user_to_id=:n and unit_id IN ('.$in_query.')))
     or user_init_id=:uid2) and last_update > :lu');
-                $paramss=array(':uid'=>'%'.$uid.'%', ':lu'=>$lu, ':uid2'=>$uid, ':n'=>'0');
+                $paramss=array(':uid'=>'[[:<:]]'.$uid.'[[:>:]]', ':lu'=>$lu, ':uid2'=>$uid, ':n'=>'0');
                 $stmt->execute(array_merge($vv,$paramss));
                 $res1 = $stmt->fetchAll();
                 foreach($res1 as $rews) {
@@ -2444,12 +2444,12 @@ foreach ($ee as $key=>$value) { $vv[":val_" . $key]=$value;}
 
    else if ($priv_val == "1") {
 
-       $res = $dbConnection->prepare("SELECT count(*) from tickets where ((user_to_id like :uid and arch='0') or (user_to_id='0' and unit_id IN (".$in_query.") and arch='0')) and status='0' and lock_by='0'");
+       $res = $dbConnection->prepare("SELECT count(*) from tickets where ((user_to_id rlike :uid and arch='0') or (user_to_id='0' and unit_id IN (".$in_query.") and arch='0')) and status='0' and lock_by='0'");
 
 
        //$res->execute(array(':uid' => $uid));
 
-       $paramss=array(':uid' => '%'.$uid.'%');
+       $paramss=array(':uid' => '[[:<:]]'.$uid.'[[:>:]]');
        $res->execute(array_merge($vv,$paramss));
        $count = $res->fetch(PDO::FETCH_NUM);
        $count=$count[0];
@@ -3205,8 +3205,8 @@ values (:familiar, now(), :unow, :tid)');
           $user_init_id = $per['user_init_id'];
 
           if ($user_to_id == '0'){
-          $stmt = $dbConnection->prepare('SELECT id from users where unit like :n and status=:n2 and id !=:n3');
-          $stmt->execute(array(':n'=>"%".$unit_id."%",':n2'=>'1',':n3'=>$user_init_id));
+          $stmt = $dbConnection->prepare('SELECT id from users where unit rlike :n and status=:n2 and id !=:n3');
+          $stmt->execute(array(':n'=>"[[:<:]]".$unit_id."[[:>:]]",':n2'=>'1',':n3'=>$user_init_id));
           $res1 = $stmt->fetchAll();
           if (!empty($res1)) {
             foreach($res1 as $r) {

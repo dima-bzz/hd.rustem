@@ -587,8 +587,8 @@ function permit_ok_ticket($in){
   $user_init_id = $per['user_init_id'];
 
   if ($user_to_id == '0'){
-  $stmt = $dbConnection->prepare('SELECT id from users where unit like :n and status=:n2 and id !=:n3');
-  $stmt->execute(array(':n'=>"%".$unit_id."%",':n2'=>'1',':n3'=>$user_init_id));
+  $stmt = $dbConnection->prepare('SELECT id from users where unit rlike :n and status=:n2 and id !=:n3');
+  $stmt->execute(array(':n'=>"[[:<:]]".$unit_id."[[:>:]]",':n2'=>'1',':n3'=>$user_init_id));
   $res1 = $stmt->fetchAll();
   if (!empty($res1)) {
     foreach($res1 as $r) {
@@ -1585,7 +1585,7 @@ foreach ($ee2 as $key2=>$value2) { $vv2[":vall_" . $key2]=$value2;}
         $stmt = $dbConnection->prepare("SELECT max(last_update) from tickets where ((user_to_id like :id) or (user_to_id=:tid and unit_id IN (".$in_query."))) or user_init_id=:id2");
 
 
-        $paramss=array(':id' => '%'.$id.'%', ':tid' => '0', ':id2' => $id);
+        $paramss=array(':id' => '[[:<:]]'.$id.'[[:>:]]', ':tid' => '0', ':id2' => $id);
         $stmt->execute(array_merge($vv,$paramss));
 
 
@@ -1938,7 +1938,7 @@ function get_last_ticket($menu, $id) {
 	    $stmt = $dbConnection->prepare("SELECT max(last_update) from tickets where (
 	    (user_to_id like :id) or (user_to_id=:tid and unit_id IN (".$in_query."))
 	    ) or user_init_id=:id2");
-            $paramss=array(':id' => '%'.$id.'%', ':tid' => '0', ':id2' => $id);
+            $paramss=array(':id' => '[[:<:]]'.$id.'[[:>:]]', ':tid' => '0', ':id2' => $id);
             $stmt->execute(array_merge($vv,$paramss));
 
             $max = $stmt->fetch(PDO::FETCH_NUM);
@@ -2009,29 +2009,29 @@ $max_id=$max[0];
 
             if (isset($_SESSION['hd.rustem_sort_in'])) {
 if ($_SESSION['hd.rustem_sort_in'] == "ok"){$stmt = $dbConnection->prepare("SELECT max(last_update) from tickets where ((user_to_id like :id and arch='0') or (user_to_id='0' and unit_id IN (".$in_query.") and arch='0')) and status=:s");
-$paramss=array(':id' => '%'.$id.'%', ':s'=>'1');
+$paramss=array(':id' => '[[:<:]]'.$id.'[[:>:]]', ':s'=>'1');
 $stmt->execute(array_merge($vv,$paramss));
 $max = $stmt->fetch(PDO::FETCH_NUM);
 $max_id=$max[0];
 }
 else if ($_SESSION['hd.rustem_sort_in'] == "free"){$stmt = $dbConnection->prepare("SELECT max(last_update) from tickets where ((user_to_id like :id and arch='0') or (user_to_id='0' and unit_id IN (".$in_query.") and arch='0')) and lock_by=:lb and status=:s");
-$paramss=array(':id' => '%'.$id.'%', ':lb'=>'0', ':s'=>'0');
+$paramss=array(':id' => '[[:<:]]'.$id.'[[:>:]]', ':lb'=>'0', ':s'=>'0');
 $stmt->execute(array_merge($vv,$paramss));
 $max = $stmt->fetch(PDO::FETCH_NUM);
 $max_id=$max[0];}
 else if ($_SESSION['hd.rustem_sort_in'] == "ilock"){$stmt = $dbConnection->prepare("SELECT max(last_update) from tickets where ((user_to_id like :id and arch='0') or (user_to_id='0' and unit_id IN (".$in_query.") and arch='0')) and lock_by=:lb and status=0");
-$paramss=array(':id' => '%'.$id.'%', ':lb'=>$id);
+$paramss=array(':id' => '[[:<:]]'.$id.'[[:>:]]', ':lb'=>$id);
 $stmt->execute(array_merge($vv,$paramss));
 $max = $stmt->fetch(PDO::FETCH_NUM);
 $max_id=$max[0];}
 else if ($_SESSION['hd.rustem_sort_in'] == "lock"){$stmt = $dbConnection->prepare("SELECT max(last_update) from tickets where ((user_to_id like :id and arch='0') or (user_to_id='0' and unit_id IN (".$in_query.") and arch='0')) and (lock_by<>:lb and lock_by<>0) and (status=0)");
-$paramss=array(':id' => '%'.$id.'%', ':lb'=>$id);
+$paramss=array(':id' => '[[:<:]]'.$id.'[[:>:]]', ':lb'=>$id);
 $stmt->execute(array_merge($vv,$paramss));
 $max = $stmt->fetch(PDO::FETCH_NUM);
 $max_id=$max[0];}
 }
 if (!isset($_SESSION['hd.rustem_sort_in'])) { $stmt = $dbConnection->prepare("SELECT max(last_update) from tickets where ((user_to_id like :id and arch='0') or (user_to_id='0' and unit_id IN (".$in_query.") and arch='0'))");
-$paramss=array(':id' => '%'.$id.'%');
+$paramss=array(':id' => '[[:<:]]'.$id.'[[:>:]]');
 $stmt->execute(array_merge($vv,$paramss));
 $max = $stmt->fetch(PDO::FETCH_NUM);
 $max_id=$max[0];
@@ -2240,7 +2240,7 @@ foreach ($ee as $key=>$value) { $vv[":val_" . $key]=$value;}
 
 
 
-            $paramss=array(':id' => '%'.$id.'%');
+            $paramss=array(':id' => '[[:<:]]'.$id.'[[:>:]]');
 	    $stmt->execute(array_merge($vv,$vv2,$paramss));
 
 
@@ -2479,7 +2479,7 @@ foreach ($ee as $key=>$value) { $vv[":val_" . $key]=$value;}
 
         //$res->execute(array(':uid' => $uid));
 
-        $paramss=array(':uid' => '%'.$uid.'%');
+        $paramss=array(':uid' => '[[:<:]]'.$uid.'[[:>:]]');
         $res->execute(array_merge($vv,$paramss));
         $count = $res->fetch(PDO::FETCH_NUM);
         $count=$count[0];
@@ -2593,7 +2593,7 @@ $count=$count[0];
 }
 else if ($priv_val == "1") {
 $res = $dbConnection->prepare("SELECT count(*) from tickets where ((user_to_id like :id and arch='0') or (user_to_id='0' and unit_id IN (".$in_query.") and arch='0'))");
-$paramss=array(':id' => '%'.$id.'%');
+$paramss=array(':id' => '[[:<:]]'.$id.'[[:>:]]');
 $res->execute(array_merge($vv,$paramss));
 $count = $res->fetch(PDO::FETCH_NUM);
 $count=$count[0];
@@ -2671,28 +2671,28 @@ $count=$count[0];
             if (isset($_SESSION['hd.rustem_sort_in'])) {
 if ($_SESSION['hd.rustem_sort_in'] == "ok"){
 $res = $dbConnection->prepare("SELECT count(*) from tickets where ((user_to_id like :id and arch='0') or (user_to_id='0' and unit_id IN (".$in_query.") and arch='0')) and status=:s");
-$paramss=array(':id' => '%'.$id.'%', ':s'=>'1');
+$paramss=array(':id' => '[[:<:]]'.$id.'[[:>:]]', ':s'=>'1');
 $res->execute(array_merge($vv,$paramss));
 $count = $res->fetch(PDO::FETCH_NUM);
 $count=$count[0];
 }
 else if ($_SESSION['hd.rustem_sort_in'] == "free"){
 $res = $dbConnection->prepare("SELECT count(*) from tickets where ((user_to_id like :id and arch='0') or (user_to_id='0' and unit_id IN (".$in_query.") and arch='0')) and lock_by=:lb and status=:s");
-$paramss=array(':id' => '%'.$id.'%', ':lb'=>'0',':s'=>'0');
+$paramss=array(':id' => '[[:<:]]'.$id.'[[:>:]]', ':lb'=>'0',':s'=>'0');
 $res->execute(array_merge($vv,$paramss));
 $count = $res->fetch(PDO::FETCH_NUM);
 $count=$count[0];
 }
 else if ($_SESSION['hd.rustem_sort_in'] == "ilock"){
 $res = $dbConnection->prepare("SELECT count(*) from tickets where ((user_to_id like :id and arch='0') or (user_to_id='0' and unit_id IN (".$in_query.") and arch='0')) and lock_by=:lb and (status=0)");
-$paramss=array(':id' => '%'.$id.'%', ':lb'=>$id);
+$paramss=array(':id' => '[[:<:]]'.$id.'[[:>:]]', ':lb'=>$id);
 $res->execute(array_merge($vv,$paramss));
 $count = $res->fetch(PDO::FETCH_NUM);
 $count=$count[0];
 }
 else if ($_SESSION['hd.rustem_sort_in'] == "lock"){
 $res = $dbConnection->prepare("SELECT count(*) from tickets where ((user_to_id like :id and arch='0') or (user_to_id='0' and unit_id IN (".$in_query.") and arch='0')) and (lock_by<>:lb and lock_by<>0) and (status=0)");
-$paramss=array(':id' => '%'.$id.'%', ':lb'=>$id);
+$paramss=array(':id' => '[[:<:]]'.$id.'[[:>:]]', ':lb'=>$id);
 $res->execute(array_merge($vv,$paramss));
 $count = $res->fetch(PDO::FETCH_NUM);
 $count=$count[0];
@@ -2700,7 +2700,7 @@ $count=$count[0];
 }
 if (!isset($_SESSION['hd.rustem_sort_in'])) {
 $res = $dbConnection->prepare("SELECT count(*) from tickets where ((user_to_id like :id and arch='0') or (user_to_id='0' and unit_id IN (".$in_query.") and arch='0'))");
-$paramss=array(':id' => '%'.$id.'%');
+$paramss=array(':id' => '[[:<:]]'.$id.'[[:>:]]');
 $res->execute(array_merge($vv,$paramss));
 $count = $res->fetch(PDO::FETCH_NUM);
 $count=$count[0];
@@ -2911,7 +2911,7 @@ foreach ($ee as $key=>$value) { $vv[":val_" . $key]=$value;}
 			    (user_to_id='0' and unit_id IN (".$in_query2.") and arch='1') or
 			    (user_init_id=:id2 and arch='1')");
 
-            $paramss=array(':id' => '%'.$id.'%',':id2' => $id);
+            $paramss=array(':id' => '[[:<:]]'.$id.'[[:>:]]',':id2' => $id);
             $res->execute(array_merge($vv,$vv2,$paramss));
             $count = $res->fetch(PDO::FETCH_NUM);
             $count=$count[0];

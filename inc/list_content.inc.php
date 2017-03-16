@@ -409,12 +409,12 @@ foreach ($ee as $key=>$value) { $vv[":val_" . $key]=$value;}
             $stmt = $dbConnection->prepare('SELECT
 			    a.id, a.user_init_id, a.user_to_id, a.date_create, a.subj, a.msg, a.client_id, a.unit_id, a.status, a.hash_name, a.is_read, a.lock_by, a.ok_by, a.prio, a.last_update,a.deadline_t,a.ok_date, a.arch, b.comment_text, b.t_id
                             from tickets as a LEFT JOIN  comments as b ON a.id = b.t_id LEFT JOIN users as c ON a.user_to_id = c.id
-			    where (((a.user_to_id like :user_id) or
-			    (a.user_to_id=:n and a.unit_id IN ('.$in_query.') )) or a.user_init_id like :user_id2) and (a.id=:z or a.subj like :z1 or a.msg like :z2 or b.comment_text like :z3 or c.fio like :z4)
+			    where (((a.user_to_id rlike :user_id) or
+			    (a.user_to_id=:n and a.unit_id IN ('.$in_query.') )) or a.user_init_id rlike :user_id2) and (a.id=:z or a.subj like :z1 or a.msg like :z2 or b.comment_text like :z3 or c.fio like :z4)
 			    group by a.id limit 10');
 
 
-            $paramss=array(':n'=>'0',':user_id'=>'%'.$user_id.'%',':z'=>$z,':z1'=>'%'.$z.'%',':z2'=>'%'.$z.'%',':z3'=>'%'.$z.'%',':z4'=>'%'.$z.'%',':user_id2'=>'%'.$user_id.'%');
+            $paramss=array(':n'=>'0',':user_id'=>'[[:<:]]'.$user_id.'[[:>:]]',':z'=>$z,':z1'=>'%'.$z.'%',':z2'=>'%'.$z.'%',':z3'=>'%'.$z.'%',':z4'=>'%'.$z.'%',':user_id2'=>'[[:<:]]'.$user_id.'[[:>:]]');
             $stmt->execute(array_merge($vv,$paramss));
             $res1 = $stmt->fetchAll();
 
@@ -817,10 +817,10 @@ if (isset($_SESSION['hd.rustem_sort_in'])) {
 	$stmt = $dbConnection->prepare('SELECT
 			    id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update, deadline_t, ok_date
 			    from tickets
-			    where ((user_to_id like :user_id and arch=:n) or
+			    where ((user_to_id rlike :user_id and arch=:n) or
 			    (user_to_id=:n1 and unit_id IN (' . $in_query . ') and arch=:n2)) and status=:s
 			    limit :start_pos, :perpage');
-$paramss=array(':user_id'=>'%'.$user_id.'%',':s'=>'1', ':n'=>'0',':n1'=>'0',':n2'=>'0',':start_pos'=>$start_pos,':perpage'=>$perpage);
+$paramss=array(':user_id'=>'[[:<:]]'.$user_id.'[[:>:]]',':s'=>'1', ':n'=>'0',':n1'=>'0',':n2'=>'0',':start_pos'=>$start_pos,':perpage'=>$perpage);
 $stmt->execute(array_merge($vv,$paramss));
     }
 
@@ -828,10 +828,10 @@ $stmt->execute(array_merge($vv,$paramss));
 	$stmt = $dbConnection->prepare('SELECT
 			    id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update, deadline_t, ok_date
 			    from tickets
-			    where ((user_to_id like :user_id and arch=:n) or
+			    where ((user_to_id rlike :user_id and arch=:n) or
 			    (user_to_id=:n1 and unit_id IN (' . $in_query . ') and arch=:n2)) and lock_by=:lb and status=:s
 			    limit :start_pos, :perpage');
-$paramss=array(':user_id'=>'%'.$user_id.'%',':lb'=>'0', ':s'=>'0', ':n'=>'0',':n1'=>'0',':n2'=>'0',':start_pos'=>$start_pos,':perpage'=>$perpage);
+$paramss=array(':user_id'=>'[[:<:]]'.$user_id.'[[:>:]]',':lb'=>'0', ':s'=>'0', ':n'=>'0',':n1'=>'0',':n2'=>'0',':start_pos'=>$start_pos,':perpage'=>$perpage);
 $stmt->execute(array_merge($vv,$paramss));
     }
 
@@ -839,20 +839,20 @@ $stmt->execute(array_merge($vv,$paramss));
 	$stmt = $dbConnection->prepare('SELECT
 			    id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update, deadline_t, ok_date
 			    from tickets
-			    where ((user_to_id like :user_id and arch=:n) or
+			    where ((user_to_id rlike :user_id and arch=:n) or
 			    (user_to_id=:n1 and unit_id IN (' . $in_query . ') and arch=:n2)) and lock_by=:lb and status=0
 			    limit :start_pos, :perpage');
-$paramss=array(':user_id'=>'%'.$user_id.'%',':lb'=>$user_id, ':n'=>'0',':n1'=>'0',':n2'=>'0',':start_pos'=>$start_pos,':perpage'=>$perpage);
+$paramss=array(':user_id'=>'[[:<:]]'.$user_id.'[[:>:]]',':lb'=>$user_id, ':n'=>'0',':n1'=>'0',':n2'=>'0',':start_pos'=>$start_pos,':perpage'=>$perpage);
 $stmt->execute(array_merge($vv,$paramss));
     }
     else if ($_SESSION['hd.rustem_sort_in'] == "lock"){
 		$stmt = $dbConnection->prepare('SELECT
 			    id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update, deadline_t, ok_date
 			    from tickets
-			    where ((user_to_id like :user_id and arch=:n) or
+			    where ((user_to_id rlike :user_id and arch=:n) or
 			    (user_to_id=:n1 and unit_id IN (' . $in_query . ') and arch=:n2)) and (lock_by<>:lb and lock_by<>0) and (status=0)
 			    limit :start_pos, :perpage');
-$paramss=array(':user_id'=>'%'.$user_id.'%',':lb'=>$user_id, ':n'=>'0',':n1'=>'0',':n2'=>'0',':start_pos'=>$start_pos,':perpage'=>$perpage);
+$paramss=array(':user_id'=>'[[:<:]]'.$user_id.'[[:>:]]',':lb'=>$user_id, ':n'=>'0',':n1'=>'0',':n2'=>'0',':start_pos'=>$start_pos,':perpage'=>$perpage);
 $stmt->execute(array_merge($vv,$paramss));
     }
 }
@@ -863,11 +863,11 @@ if (!isset($_SESSION['hd.rustem_sort_in'])) {
 $stmt = $dbConnection->prepare('SELECT
 			    id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update, deadline_t, ok_date
 			    from tickets
-			    where ((user_to_id like :user_id and arch=:n) or
+			    where ((user_to_id rlike :user_id and arch=:n) or
 			    (user_to_id=:n1 and unit_id IN (' . $in_query . ') and arch=:n2))
 			    order by ok_by asc, prio desc, id desc
 			    limit :start_pos, :perpage');
-$paramss=array(':user_id'=>'%'.$user_id.'%', ':n'=>'0',':n1'=>'0',':n2'=>'0',':start_pos'=>$start_pos,':perpage'=>$perpage);
+$paramss=array(':user_id'=>'[[:<:]]'.$user_id.'[[:>:]]', ':n'=>'0',':n1'=>'0',':n2'=>'0',':start_pos'=>$start_pos,':perpage'=>$perpage);
 $stmt->execute(array_merge($vv,$paramss));
             }
 
@@ -1326,7 +1326,7 @@ $res1 = $stmt->fetchAll();
 			    id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, ok_date
 			    from tickets
 			    where (
-			    (user_to_id like :user_id and unit_id IN ('.$in_query.') and arch=:n) or
+			    (user_to_id rlike :user_id and unit_id IN ('.$in_query.') and arch=:n) or
 			    (user_to_id=:n1 and unit_id IN ('.$in_query2.') and arch=:n2)
 			    ) or (user_init_id=:user_id2 and arch=:n3)
 			    order by id DESC
@@ -1335,7 +1335,7 @@ $res1 = $stmt->fetchAll();
 
 
 
-$paramss=array(':n'=>'1',':n1'=>'0',':n2'=>'1',':n3'=>'1', ':user_id'=>'%'.$user_id.'%', ':user_id2'=>$user_id,':start_pos'=>$start_pos,':perpage'=>$perpage);
+$paramss=array(':n'=>'1',':n1'=>'0',':n2'=>'1',':n3'=>'1', ':user_id'=>'[[:<:]]'.$user_id.'[[:>:]]', ':user_id2'=>$user_id,':start_pos'=>$start_pos,':perpage'=>$perpage);
 
 $stmt->execute(array_merge($vv,$vv2,$paramss));
 $res1 = $stmt->fetchAll();
