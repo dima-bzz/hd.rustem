@@ -23,7 +23,7 @@ if ( isset($_POST['mode']) ) {
 
 	$stmt = $dbConnection->prepare('SELECT id, fio,login,status FROM users where email=:mailadr');
         $stmt->execute(array(':mailadr' => $mailadr));
-        $r = $stmt->fetchAll();
+        $r = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!empty($r)) {
 
@@ -44,8 +44,8 @@ if ( isset($_POST['mode']) ) {
                 mailtoactivate_admin($l, $mailadr, $pass);
 
                 $npass=md5($pass);
-                $query_update_client= "update users set pass='$npass', status='1' where id='$id'";
-                mysql_query ( $query_update_client )or die(mysql_error());
+                $stmt = $dbConnection->prepare("UPDATE users SET pass=:pass, status=1 where id=:id");
+                $stmt->execute(array(':pass' => $npass, ':id' => $id));
 
                 ?>
                 <div class="alert alert-success">
