@@ -21,7 +21,7 @@ if (isset($_GET['logout'])) {
     setcookie('authhash_code', "");
     unset($_COOKIE['authhash_uid']);
     unset($_COOKIE['authhash_code']);
-    session_regenerate_id();
+    // session_regenerate_id();
     header("Location: ".$CONF['hostname']);
     //setcookie('id', '', 0, "/");
     //setcookie('ps', '', 0, "/");
@@ -51,7 +51,7 @@ if (isset($_POST['login']) && isset($_POST['password']))
     	$row = $stmt->fetch(PDO::FETCH_ASSOC);
 
 
-		session_regenerate_id(true);
+		// session_regenerate_id(true);
         $_SESSION['helpdesk_user_id'] = $row['id'];
         $_SESSION['helpdesk_user_login'] = $row['login'];
         $_SESSION['helpdesk_user_fio'] = $row['fio'];
