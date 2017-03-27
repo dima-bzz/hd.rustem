@@ -69,7 +69,7 @@ include_once("head.inc.php");
 
 <div class="container" id='main_login'>
     <?php //echo $_SERVER['REQUEST_URI']; ?>
-    <form class="form-signin" action="<?=$CONF['hostname']?>index.php" method="POST" autocomplete="off">
+    <form class="form-signin" name="auth" action="<?=$CONF['hostname']?>index.php" method="POST" autocomplete="off">
         <center><img src="<?=$CONF['hostname']?>img/help-desk-icon.png" width="128"><h2 class="text-muted"><?=lang('MAIN_TITLE');?></h2><small class="text-muted"><?=lang('AUTH_USER');?></small></center><br>
         <input type="text" name="login" autocomplete="off" class="form-control" placeholder="<?=lang('login');?>">
         <input type="password" name="password" class="form-control" placeholder="<?=lang('pass');?>">
@@ -122,8 +122,12 @@ include_once("head.inc.php");
 </div>
 <script src="<?=$CONF['hostname']?>js/jquery-1.11.0.min.js"></script>
 <script src="<?=$CONF['hostname']?>js/bootstrap/js/bootstrap.min.js"></script>
+<script src='<?=$CONF['hostname']?>js/jquery.md5.js'></script>
 <script>
     $(document).ready(function() {
+        $('form[name=auth]').submit(function(){
+          $("input[name=password]").val($.md5($("input[name=password]").val()));
+          })
         $("#main_login").hide().fadeIn(500);
         $('body').on('click', 'a#show_activate_form', function(event) {
             event.preventDefault();

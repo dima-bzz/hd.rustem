@@ -42,7 +42,7 @@ if (isset($_POST['login']) && isset($_POST['password']))
     $rm=$_POST['remember_me'];
 //echo $rm;
     $login = ($_POST['login']);
-    $password = md5($_POST['password']);
+    $password = ($_POST['password']);
 
     $stmt = $dbConnection->prepare('SELECT id,login,fio from users where login=:login AND pass=:pass AND status=1');
     $stmt->execute(array(':login' => $login, ':pass' => $password));
