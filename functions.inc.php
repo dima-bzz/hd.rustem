@@ -831,7 +831,7 @@ function get_user_status($in) {
         $d = time()-strtotime($lt);
 	if ($d > 20) {
 	$lt_tooltip="";
-  if ($lt != '0000-00-00 00:00:00') {$lt_tooltip=lang('stats_last_time')."<br>".$lt;}
+  if ($lt != '0000-00-00 00:00:00') {$lt_tooltip=lang('stats_last_time')."<br>".MySQLDateTimeToDateTime($lt);}
   else{$lt_tooltip=lang('stats_last_time')."<br>".lang('stats_last_time_never');}
 	$res="<span  val=\"status_offline\" data-toggle=\"tooltip\" data-placement=\"bottom\" class=\"label label-default\" data-original-title=\"".$lt_tooltip."\" data-html=\"true\"><i class=\"fa fa-thumbs-down\"></i> offline</span>";}
 	else {$res="<span class=\"label label-success\"><i class=\"fa fa-thumbs-up\"></i> online</span>";}
@@ -856,7 +856,15 @@ function get_user_status_text($in) {
 	return $res;
 }
 
+function MySQLDateTimeToDateTime($dt)
+{
 
+   $str1 = explode("-", $dt);
+   $str2 = explode(" ", $str1[2]);
+   $str3 = explode(":", $str2[1]);
+   $dtt=$str2[0].".".$str1[1].".".$str1[0]." ".$str3[0].":".$str3[1];
+   return $dtt;
+};
 
 function get_ticket_id_by_hash($in) {
     global $dbConnection;
