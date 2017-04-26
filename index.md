@@ -34,7 +34,7 @@ HELPDESK веб-система, для организации учёта вып�
 <h4>Какие требования?</h4>
 <ul>
 <li>UNIX-like OS</li>
-<li>Apache (mod_rewrite), PHP (PDO, short_open_tag), MySQL</li>
+<li>Apache (mod_rewrite), PHP5 (PDO, short_open_tag), MySQL</li>
 <li>Access to cron (для переноса заявок в архив)</li>
 <li>Access to mail (для отправки писем)</li>
 </ul>
