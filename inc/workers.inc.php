@@ -105,17 +105,6 @@ if (isset($_GET['ok'])) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
                                 <!--div class="form-group">
                                     <label for="pidrozdil" class="col-sm-2 control-label"><small><?=lang('WORKER_unit');?></small></label>
                                     <div class="col-sm-10">
@@ -161,15 +150,6 @@ if (isset($_GET['ok'])) {
 
     </div>
 </div>
-
-
-
-
-
-
-
-
-
 
 
 
@@ -414,10 +394,6 @@ if (isset($_GET['ok'])) {
 
 
 
-
-
-
-
                                 <!--div class="form-group">
                                     <label for="posada" class="col-sm-2 control-label"><small><?=lang('WORKER_posada');?></small></label>
                                     <div class="col-sm-10">
@@ -466,19 +442,6 @@ if (isset($_GET['ok'])) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
                                 <!--div class="form-group">
                                     <label for="pidrozdil" class="col-sm-2 control-label"><small><?=lang('WORKER_unit');?></small></label>
                                     <div class="col-sm-10">
@@ -524,14 +487,6 @@ if (isset($_GET['ok'])) {
 
     </div>
 </div>
-
-
-
-
-
-
-
-
 
 
 
