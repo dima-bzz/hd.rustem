@@ -466,7 +466,6 @@ function lang ($phrase) {
 ,'STATS_t_lock' => 'with which to work',
 
 
-
 'DASHBOARD_def_msg' => ', welcome to the Ticket system </ strong> </ center> <br> recommend you see <a href=\'help\' class=\'alert-link\'> </ i > Directions </ a> at work system. <br> <a href=\'create\'class=\'alert-link\'> Or create a new Ticket </ a> right now! ',
 
 'msg_created_new_user' => 'new user will be wound up.'
