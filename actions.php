@@ -3352,7 +3352,6 @@ if ($CONF_MAIL['active'] == "true") {
 
 
 
-
             ?>
             <div class="alert alert-success"><?=lang('TICKET_msg_refer');?></div>
         <?php
