@@ -3381,6 +3381,11 @@ if ($mode == "edit_user") {
             if ($priv_edit_client == "true") {$priv_edit_client=1;} else {$priv_edit_client=0;}
             if ($admin == "true") {$admin=8;} else {$admin=0;}
 
+            $stmt = $dbConnection->prepare('SELECT login FROM users WHERE id=:usid LIMIT 1');
+            $stmt->execute(array(':usid'=>$usid));
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            $login_cl = $row['login'];
+
             if (strlen($_POST['pass'])>1) {
                 $p=md5($_POST['pass']);
 
@@ -3390,15 +3395,15 @@ if ($mode == "edit_user") {
 		 ':pass'=>$p, ':priv_add_client'=>$priv_add_client, ':priv_edit_client'=>$priv_edit_client,':is_admin'=>$admin, ':jabber_noty'=>$jabber_noty,':noty'=>$noty, ':show_noty'=>$show_noty, ':jnoty'=>$jnoty));
 
 
-		 $stmt = $dbConnection->prepare('update clients set status=:status where login=:login');
-		 $stmt->execute(array( ':login'=>$login, ':status'=>$status));
+     $stmt = $dbConnection->prepare('update clients set status=:status, fio=:fio, login=:login, email=:email WHERE login=:login_cl');
+		 $stmt->execute(array( ':login_cl'=>$login_cl, ':login'=>$login, ':status'=>$status, ':fio' => $fio, ':email' => $mail));
             }
             else { $p="";
                 $stmt = $dbConnection->prepare('update users set fio=:fio, login=:login, status=:status, priv=:priv, unit=:unit, email=:mail, jabber=:jabber, messages=:mess, lang=:lang, priv_add_client=:priv_add_client,priv_edit_client=:priv_edit_client, is_admin=:is_admin, jabber_noty=:jabber_noty, noty=:noty, show_noty=:show_noty, jabber_noty_show=:jnoty where id=:usid');
                 $stmt->execute(array(':fio'=>$fio, ':login'=>$login, ':status'=>$status, ':priv'=>$priv, ':unit'=>$unit, ':mail'=>$mail, ':jabber'=>$jabber, ':mess'=>$mess, ':lang'=>$lang, ':usid'=>$usid,':priv_add_client'=>$priv_add_client,':priv_edit_client'=>$priv_edit_client,':is_admin'=>$admin, ':jabber_noty'=>$jabber_noty,':noty'=>$noty, ':show_noty'=>$show_noty, ':jnoty'=>$jnoty));
 
-		$stmt = $dbConnection->prepare('update clients set status=:status where login=:login');
-		$stmt->execute(array( ':login'=>$login, ':status'=>$status));
+                $stmt = $dbConnection->prepare('update clients set status=:status, fio=:fio, login=:login, email=:email WHERE login=:login_cl');
+           		 $stmt->execute(array( ':login_cl'=>$login_cl, ':login'=>$login, ':status'=>$status, ':fio' => $fio, ':email' => $mail));
 
             }
 
