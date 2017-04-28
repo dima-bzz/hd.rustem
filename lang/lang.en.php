@@ -464,12 +464,19 @@ function lang ($phrase) {
 ,'STATS_t_free' => 'Free'
 ,'STATS_out_all' => 'Outgoing Tickets for the entire period'
 ,'STATS_t_lock' => 'with which to work',
+<<<<<<< HEAD
 
+=======
+>>>>>>> 69a7dc5d16bc485aac5c0e1c1968e38f5c6e9b87
 
 
 'DASHBOARD_def_msg' => ', welcome to the Ticket system </ strong> </ center> <br> recommend you see <a href=\'help\' class=\'alert-link\'> </ i > Directions </ a> at work system. <br> <a href=\'create\'class=\'alert-link\'> Or create a new Ticket </ a> right now! ',
 
+<<<<<<< HEAD
 'msg_creted_new_user' => 'new user will be wound up.'
+=======
+'msg_created_new_user' => 'new user will be wound up.'
+>>>>>>> 69a7dc5d16bc485aac5c0e1c1968e38f5c6e9b87
 
 
 ,'MAIL_active' => 'Account activated'
