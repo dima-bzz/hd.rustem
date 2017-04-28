@@ -13,10 +13,10 @@ include("functions.inc.php");
 if (isset($_GET['logout'])) {
     //$stmt = $dbConnection->prepare('UPDATE users SET live=:live WHERE id=:user_id');
     //$stmt->execute(array(':user_id'=> $_SESSION['helpdesk_user_id'],':live'=> 0));
-    // session_destroy();
-    // unset($_SESSION);
-    // session_unset();
-    $_SESSION['helpdesk_user_id'] = null;
+    session_destroy();
+    unset($_SESSION);
+    session_unset();
+    // $_SESSION['helpdesk_user_id'] = null;
     setcookie('authhash_uid', "");
     setcookie('authhash_code', "");
     unset($_COOKIE['authhash_uid']);
