@@ -41,8 +41,7 @@
 <script src="<?=$CONF['hostname']?>js/highcharts.js"></script>
 <script src="<?=$CONF['hostname']?>js/bootbox.min.js"></script>
 <script src="<?=$CONF['hostname']?>js/moment-with-locales.js"></script>
-<script src="<?=$CONF['hostname']?>js/moment-countdown.js"></script>
-<script src="<?=$CONF['hostname']?>js/moment-duration-format.js"></script>
+<script src="<?=$CONF['hostname']?>js/humanize-duration.js"></script>
 <script src="<?=$CONF['hostname']?>js/bootstrap-datetimepicker.min.js"></script>
 
 

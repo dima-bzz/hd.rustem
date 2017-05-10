@@ -54,8 +54,8 @@ $(document).ready(function() {
         $('time#f').each(function(i, e) {
             var time = $(e).attr('datetime');
 
-            var duration = moment.duration(time * 1000, 'milliseconds');
-            $(e).html('<span>' + duration.format("d дн, h час, m мин, s сек") + '</span>');
+            var ms = time * 1000;
+            $(e).html('<span>' + humanizeDuration(ms,{language: MyLANG, units:['d','h','m','s'], round: true, delimiter: ' '}) + '</span>');
         });
     };
 
@@ -68,8 +68,8 @@ $(document).ready(function() {
             t++;
             $('#work_timer > #f').attr('datetime', t);
             var el = $('#work_timer > time#f').attr('datetime');
-            var duration = moment.duration(el * 1000, 'milliseconds');
-            $('#work_timer > time#f').html('<span>' + duration.format("d дн, h час, m мин, s сек") + '</span>');
+            var ms = el * 1000;
+            $('#work_timer > time#f').html('<span>' + humanizeDuration(ms,{language: MyLANG, units:['d','h','m','s'], round: true, delimiter: ' '}) + '</span>');
         }
         //  }, 1000);
         //$('#work_timer').attr('value', 'false');
@@ -82,8 +82,8 @@ $(document).ready(function() {
             t--;
             $('#deadline_timer > #f').attr('datetime', t);
             var el = $('#deadline_timer > time#f').attr('datetime');
-            var duration = moment.duration(el * 1000, 'milliseconds');
-            $('#deadline_timer > time#f').html('<span>' + duration.format("d дн, h час, m мин, s сек") + '</span>');
+            var ms = el * 1000;
+            $('#deadline_timer > time#f').html('<span>' + humanizeDuration(ms,{language: MyLANG, units:['d','h','m','s'], round: true, delimiter: ' '}) + '</span>');
         }
         //  }, 1000);
         //$('#work_timer').attr('value', 'false');
