@@ -3900,11 +3900,17 @@ if ($CONF_JABBER['active'] == "true") {
             if ($type == "edit") {
 
                 $hashname=($_POST['hashname']);
-
+                if (get_user_val('priv_edit_client') == 1){
+                  $can_edit = true;
+                }
+                else if (get_user_val('priv_edit_client') == 0){
+                  $can_edit = false;
+                }
+                if ($can_edit == true){
                 $stmt = $dbConnection->prepare('update clients set tel=:client_tel, login=:client_login, unit_desc=:unit_desc, adr=:client_adr, email=:client_mail, posada=:client_posada where id=:client_id_param');
 
                 $stmt->execute(array(':client_tel'=>$client_tel, ':client_login'=>$client_login, ':unit_desc'=>$unit_desc, ':client_adr'=>$client_adr, ':client_mail'=>$client_mail, ':client_posada'=>$client_posada, ':client_id_param'=>$client_id_param));
-
+                }
 
 
 

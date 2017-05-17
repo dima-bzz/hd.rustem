@@ -2786,13 +2786,37 @@ $("body").on("click", "a#select_init_user", function(event) {
                 type: "POST",
                 url: ACTIONPATH,
                 data: "mode=get_client_from_new_t&get_client_info=" + r,
-                success: function(e) {
-                    $("#client_id_param").val(r);
-                    $("#fio").val(n);
-                    $("#user_info").hide().html(e).fadeIn(500);
-                    $("#for_fio").addClass("has-success");
-                    $("#status_action").val("edit");
-                    makemytime(true)
+                success: function(html) {
+                      $("#client_id_param").val(r);
+                      $("#fio").val(n);
+                      $("#user_info").hide().html(html).fadeIn(500);
+                      $('#edit_login').editable({
+                          inputclass: 'input-sm',
+                          emptytext: 'пусто'
+                      });
+                      $('#edit_posada').editable({
+                          inputclass: 'input-sm',
+                          emptytext: 'пусто',
+                          mode: 'popup',
+                          showbuttons: false
+                      });				$('#edit_unit').editable({
+                          inputclass: 'input-sm',
+                          emptytext: 'пусто',
+                          mode: 'popup',
+                          showbuttons: false
+                      });				$('#edit_tel').editable({
+                          inputclass: 'input-sm',
+                          emptytext: 'пусто'
+                      });				$('#edit_adr').editable({
+                          inputclass: 'input-sm',
+                          emptytext: 'пусто'
+                      });				$('#edit_mail').editable({
+                          inputclass: 'input-sm',
+                          emptytext: 'пусто'
+                      });
+                      $('#for_fio').addClass('has-success');
+                      $("#status_action").val('edit');
+                      makemytime(true);
                 }
             })
         });
