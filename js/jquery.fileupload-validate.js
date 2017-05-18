@@ -6,39 +6,12 @@
  * https://blueimp.net
  *
  * Licensed under the MIT license:
- * http://www.opensource.org/licenses/MIT
+ * https://opensource.org/licenses/MIT
  */
 
 /* global define, require, window */
-var ACTIONPATH=MyHOSTNAME+"actions.php";
 
-
-    function get_lang_param(par) {
-        var result="";
-        var zcode="";
-        var url = window.location.href;
-
-if (url.search("inc") >= 0) {
-    zcode="../";
-}
-
-
-        $.ajax({
-            type: "POST",
-            url: ACTIONPATH,
-            data: "mode=get_lang_param"+
-                "&param="+par,
-            async: false,
-            success: function(html){
-
-                result=html;
-            }
-        });
-        return (result);
-
-    };
-
-(function (factory) {
+;(function (factory) {
     'use strict';
     if (typeof define === 'function' && define.amd) {
         // Register as an anonymous AMD module:
@@ -48,7 +21,10 @@ if (url.search("inc") >= 0) {
         ], factory);
     } else if (typeof exports === 'object') {
         // Node/CommonJS:
-        factory(require('jquery'));
+        factory(
+            require('jquery'),
+            require('./jquery.fileupload-process')
+        );
     } else {
         // Browser globals:
         factory(
@@ -98,11 +74,9 @@ if (url.search("inc") >= 0) {
             // Error and info messages:
             messages: {
                 maxNumberOfFiles: 'Maximum number of files exceeded',
-                // acceptFileTypes: 'File type not allowed',
-                // maxFileSize: 'File is too large',
-                minFileSize: 'File is too small',
-                acceptFileTypes: get_lang_param('upload_errortypes'),
-                maxFileSize: get_lang_param('upload_errorsize'),
+                acceptFileTypes: 'File type not allowed',
+                maxFileSize: 'File is too large',
+                minFileSize: 'File is too small'
             }
         },
 
