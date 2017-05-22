@@ -2519,8 +2519,8 @@ function get_dashboard_msg(){
     $stmt = $dbConnection->prepare('SELECT messages from users where id=:mid');
     $stmt->execute(array(':mid' => $mid));
 
-    //$max = $stmt->fetch(PDO::FETCH_ASSOC);
-    $res1 = $stmt->fetchAll();
+    $max = $stmt->fetch(PDO::FETCH_ASSOC);
+    // $res1 = $stmt->fetchAll();
 
 
 
@@ -2529,7 +2529,7 @@ function get_dashboard_msg(){
 
 
     $length = strlen(utf8_decode($max_id));
-    if ($length < 1) {$ress=lang('DASHBOARD_def_msg');} else {$ress=$max_id;}
+    if ($length < 1) {$ress=lang('DASHBOARD_def_msg');} else {$ress=' '.$max_id;}
     return $ress;
 }
 function get_myname(){
