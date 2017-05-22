@@ -97,7 +97,7 @@ $ap=get_approve();
 
 	    <?php
 		$priv_val = priv_status($_SESSION['helpdesk_user_id']);
-		 if ( ($priv_val == "2") || ($priv_val == "0") ) { ?>
+		 if ( ($priv_val == "2") || ($priv_val == "0")  || (validate_admin($_SESSION['helpdesk_user_id']))) { ?>
 	     <li <?=echoActiveClassIfRequestMatches("main_stats")?>><a href="<?=$CONF['hostname']?>main_stats"><i class="fa fa-bar-chart-o"></i> <?=lang('ALLSTATS_main');?></a></li>
      </li>
             <li class="dropdown">

@@ -7,7 +7,7 @@ if ($_SESSION['helpdesk_user_id']) {
    include("head.inc.php");
    include("navbar.inc.php");
    $priv_val = priv_status($_SESSION['helpdesk_user_id']);
- if ( ($priv_val == "2") || ($priv_val == "0") ) {
+ if ( ($priv_val == "2") || ($priv_val == "0") || (validate_admin($_SESSION['helpdesk_user_id']))) {
 
 
 ?>
@@ -48,9 +48,19 @@ if ($_SESSION['helpdesk_user_id']) {
 
                 </tr>
 <?php
-
+if (($priv_val == "2") || (validate_admin($_SESSION['helpdesk_user_id']))){
+  $ee = array();
+  $stmt = $dbConnection->prepare('SELECT id FROM deps WHERE id<>100');
+  $stmt->execute();
+  $res1 = $stmt->fetchAll();
+  foreach($res1 as $row) {
+    $ee[] = $row['id'];
+  }
+}
+else{
 $unit_user=unit_of_user($_SESSION['helpdesk_user_id']);
 $ee=explode(",", $unit_user);
+}
 foreach ($ee as $key=>$value) {
 ?>
 
