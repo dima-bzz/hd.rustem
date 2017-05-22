@@ -50,7 +50,7 @@ if ($_SESSION['helpdesk_user_id']) {
 <?php
 if (($priv_val == "2") || (validate_admin($_SESSION['helpdesk_user_id']))){
   $ee = array();
-  $stmt = $dbConnection->prepare('SELECT id FROM deps WHERE id<>100');
+  $stmt = $dbConnection->prepare('SELECT id FROM deps WHERE id<>0');
   $stmt->execute();
   $res1 = $stmt->fetchAll();
   foreach($res1 as $row) {
