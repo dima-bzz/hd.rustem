@@ -65,7 +65,7 @@ if ($forhostname == "/") {$CONF['hostname']=$CONF['hostname'];}
 else if ($forhostname <> "/") {$CONF['hostname']=$CONF['hostname']."/";}
 
 function get_version(){
-  $v = '1.09';
+  $v = '2.20.0';
   return $v;
 }
 
