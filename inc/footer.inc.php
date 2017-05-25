@@ -18,7 +18,7 @@
 <?php if ($lang == "ua") {$lang = "uk"; }?>
 <script type="text/javascript">
     var MyHOSTNAME = "<?php echo $CONF['hostname']; ?>";
-    var MyLANG = "<?php echo $lang; ?>";
+    var MyLANG = "<?php echo get_user_lang(); ?>";
 </script>
 <script src="<?=$CONF['hostname']?>js/jquery-1.11.0.min.js"></script>
 <script src="<?=$CONF['hostname']?>js/bootstrap/js/bootstrap.min.js"></script>
@@ -43,6 +43,8 @@
 <script src="<?=$CONF['hostname']?>js/moment-with-locales.js"></script>
 <script src="<?=$CONF['hostname']?>js/humanize-duration.js"></script>
 <script src="<?=$CONF['hostname']?>js/bootstrap-datetimepicker.min.js"></script>
+<script type='text/javascript' src="<?=$CONF['hostname']?>js/jquery.i18n.js"></script>
+<script type='text/javascript' src="<?=$CONF['hostname']?>js/jquery.i18n.messagestore.js"></script>
 
 
 <!-- FOR UPLOADER -->

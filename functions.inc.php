@@ -2,6 +2,8 @@
 
 
 include_once('conf.php');
+define("DIR_ROOT", __DIR__);
+define("DS", DIRECTORY_SEPARATOR);
 include_once('sys/class.phpmailer.php');
 include_once('sys/Parsedown.php');
 require 'library/HTMLPurifier.auto.php';
@@ -79,26 +81,35 @@ function get_user_lang(){
 }
 
 
-$lang=get_user_lang();
-switch ($lang) {
-    case 'ua':
-        $lang_file = 'lang.ua.php';
-        break;
+function lang($in){
 
-    case 'ru':
-        $lang_file = 'lang.ru.php';
-        break;
+  $lang2 = get_user_lang();
+  switch ($lang2) {
+      case 'ru':
+          $lang_file2 = (DIR_ROOT . DS . "lang" . DS ."lang.ru.json");
+          break;
 
-    case 'en':
-        $lang_file = 'lang.en.php';
-        break;
+      case 'en':
+          $lang_file2 = (DIR_ROOT . DS . "lang" . DS ."lang.en.json");
+          break;
 
-    default:
-        $lang_file = 'lang.ru.php';
+      case 'ua':
+          $lang_file2 = (DIR_ROOT . DS . "lang" . DS ."lang.ua.json");
+          break;
 
+      default:
+          $lang_file2 = (DIR_ROOT . DS . "lang" . DS ."lang.ru.json");
+
+  }
+
+  $file = file_get_contents($lang_file2);
+  $json = json_decode($file);
+  if (isset($json->$in)){
+  return $json->$in;
+  }else {
+  return 'undefined';
 }
-
-include_once 'lang/'.$lang_file;
+}
 
 function get_conf_param($in) {
  global $dbConnection;

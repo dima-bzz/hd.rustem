@@ -93,7 +93,7 @@ $(document).ready(function() {
       $('#deadline_timer').attr('value', 'false');
       //intr= setInterval(gotimer_worker,1000);
       clearInterval(intr);
-      $('#deadline_timer').empty().append( get_lang_param('TICKET_overdue') );
+      $('#deadline_timer').empty().append( $.i18n('TICKET_overdue') );
     }
     }
     if ($('#deadline_timer').attr('value') == 'true') {
@@ -141,30 +141,14 @@ function sendFile(file, editor, welEditable) {
  $(".chosen-select_no_search").chosen({
    disable_search: true
  });
-    function get_lang_param(par) {
-        var result="";
-        var zcode="";
-        var url = window.location.href;
 
-if (url.search("inc") >= 0) {
-    zcode="../";
-}
-
-
-        $.ajax({
-            type: "POST",
-            url: ACTIONPATH,
-            data: "mode=get_lang_param"+
-                "&param="+encodeURIComponent(par),
-            async: false,
-            success: function(html){
-
-                result=html;
-            }
-        });
-        return (result);
-
-    };
+ $.i18n.debug = false;
+ $.i18n().locale = MyLANG;
+ $.i18n().load( {
+   'en' : MyHOSTNAME + "lang/lang.en.json",
+   'ru' : MyHOSTNAME + "lang/lang.ru.json",
+   'ua' : MyHOSTNAME + "lang/lang.ua.json"
+ }).done (function(){
 
 
     $('textarea').autosize({append: "\n"});
@@ -174,31 +158,31 @@ $("#users_do").select2({
     formatSelection: format,
     allowClear: true,
     width:'element',
-    formatNoMatches:get_lang_param('JS_not_found'),
+    formatNoMatches:$.i18n('JS_not_found'),
     escapeMarkup: function(m) { return m; }
 });
 $("#show_noty_edit").select2({
     allowClear: true,
     width:'element',
-    formatNoMatches:get_lang_param('JS_not_found'),
+    formatNoMatches:$.i18n('JS_not_found'),
     escapeMarkup: function(m) { return m; }
 });
 $("#jabber_show_edit").select2({
     allowClear: true,
     width:'element',
-    formatNoMatches:get_lang_param('JS_not_found'),
+    formatNoMatches:$.i18n('JS_not_found'),
     escapeMarkup: function(m) { return m; }
 });
 $("#show_noty_profile").select2({
     allowClear: true,
     width:'element',
-    formatNoMatches:get_lang_param('JS_not_found'),
+    formatNoMatches:$.i18n('JS_not_found'),
     escapeMarkup: function(m) { return m; }
 });
 $("#jabber_show_profile").select2({
     allowClear: true,
     width:'element',
-    formatNoMatches:get_lang_param('JS_not_found'),
+    formatNoMatches:$.i18n('JS_not_found'),
     escapeMarkup: function(m) { return m; }
 });
 $("#t_users_do").select2({
@@ -206,7 +190,7 @@ $("#t_users_do").select2({
     formatSelection: format,
     allowClear: true,
     width:'element',
-    formatNoMatches:get_lang_param('JS_not_found'),
+    formatNoMatches:$.i18n('JS_not_found'),
     escapeMarkup: function(m) { return m; }
 });
 
@@ -221,7 +205,7 @@ $("#t_users_do").select2({
 
     }
     $(".chosen-select").chosen({
-        no_results_text: get_lang_param('JS_not_found'),
+        no_results_text: $.i18n('JS_not_found'),
         allow_single_deselect: true
     });
     $(".chosen-select").chosen().change(settingsShow);
@@ -1649,17 +1633,17 @@ else{
  event.preventDefault();
  var td=$("#ticket_delete").attr('value');
  bootbox.dialog({
-   message: get_lang_param('JS_ticket_delete'),
-   title: get_lang_param('JS_ticket_delete_title'),
+   message: $.i18n('JS_ticket_delete'),
+   title: $.i18n('JS_ticket_delete_title'),
    buttons:{
      cancel:{
-       label:get_lang_param('JS_ticket_delete_cancel'),
+       label:$.i18n('JS_ticket_delete_cancel'),
        className:'btn-default cancel',
        callback: function(){
        }
      },
      danger:{
-       label:get_lang_param('TICKET_delete'),
+       label:$.i18n('TICKET_delete'),
        className:'btn-danger danger',
        callback: function(){
          $.ajax({
@@ -1766,14 +1750,14 @@ $('body').on('click', 'button#deps_show', function(event) {
                     var showPanel = $(".chosen-select").find('option:selected').attr('id');
                 }
                 $(".chosen-select").chosen({
-                    no_results_text: get_lang_param('JS_not_found'),
+                    no_results_text: $.i18n('JS_not_found'),
                     allow_single_deselect: true,
                 });
                 $(".chosen-select").chosen().change(settingsShow);
                 $('#summernote_help').summernote({
                     height: 300,
                     focus: true,
-            	    lang: get_lang_param('summernote_lang'),
+            	    lang: $.i18n('summernote_lang'),
                     onImageUpload: function(files, editor, welEditable) {
                     sendFile(files[0], editor, welEditable);
  }
@@ -1856,7 +1840,7 @@ $('body').on('click', 'button#deps_show', function(event) {
 
 
                         noty({
-                            text: get_lang_param('note_save'),
+                            text: $.i18n('note_save'),
                             layout: 'center',
                             type: 'information',
                             timeout: 2000
@@ -1911,8 +1895,8 @@ $('body').on('click', 'button#b_find', function(event) {
         event.preventDefault();
         var u=$(this).attr('value');
         var hostadr=get_host_conf();
-        var langp=get_lang_param('JS_save');
-        var langup=get_lang_param('JS_pub');
+        var langp=$.i18n('JS_save');
+        var langup=$.i18n('JS_pub');
 
         $('#exampleInputEmail1').attr('value', MyHOSTNAME+"inc/note.php?h="+u);
 
@@ -1930,7 +1914,7 @@ $('body').on('click', 'button#b_find', function(event) {
                 $('#summernote').summernote({
                     height: 300,
                     focus: true,
-                    lang: get_lang_param('summernote_lang'),
+                    lang: $.i18n('summernote_lang'),
                     onImageUpload: function(files, editor, welEditable) {
                     sendFile(files[0], editor, welEditable);
                      },
@@ -1979,8 +1963,8 @@ $('body').on('click', 'button#b_find', function(event) {
     $('body').on('click', 'button#del_notes', function(event) {
         event.preventDefault();
         var n_id=$(this).attr('value');
-        var langp=get_lang_param('JS_create');
-        var lang_del=get_lang_param('JS_del');
+        var langp=$.i18n('JS_create');
+        var lang_del=$.i18n('JS_del');
         bootbox.confirm(lang_del, function(result) {
             if (result == true) {
                 $.ajax({
@@ -2012,9 +1996,9 @@ $('body').on('click', 'button#b_find', function(event) {
     });
     $('body').on('click', 'button#create_new_note', function(event) {
         event.preventDefault();
-        var langp=get_lang_param('JS_save');
+        var langp=$.i18n('JS_save');
 
-        var langup=get_lang_param('JS_pub');
+        var langup=$.i18n('JS_pub');
         $.ajax({
             type: "POST",
             url: ACTIONPATH,
@@ -2038,7 +2022,7 @@ $('body').on('click', 'button#b_find', function(event) {
                         $('#summernote').summernote({
                             height: 300,
                             focus: true,
-                            lang: get_lang_param('summernote_lang'),
+                            lang: $.i18n('summernote_lang'),
                             onImageUpload: function(files, editor, welEditable) {
                             sendFile(files[0], editor, welEditable);
                              },
@@ -2093,7 +2077,7 @@ $('body').on('click', 'button#b_find', function(event) {
     $('body').on('click', 'button#units_del', function(event) {
         event.preventDefault();
 	var ids=$(this).attr('value');
-	bootbox.confirm(get_lang_param('JS_del'), function(result) {
+	bootbox.confirm($.i18n('JS_del'), function(result) {
 	 if (result == true) {
 
 
@@ -2153,7 +2137,7 @@ $('body').on('click', 'button#b_find', function(event) {
     $('body').on('click', 'button#subj_del', function(event) {
         event.preventDefault();
 	var ids=$(this).attr('value');
-	bootbox.confirm(get_lang_param('JS_del'), function(result) {
+	bootbox.confirm($.i18n('JS_del'), function(result) {
 	 if (result == true) {
         $.ajax({
             type: "POST",
@@ -2189,7 +2173,7 @@ $('body').on('click', 'button#b_find', function(event) {
 $('body').on('click', 'button#files_del', function(event) {
  event.preventDefault();
  var ids=$(this).attr('value');
-bootbox.confirm(get_lang_param('JS_del'), function(result) {
+bootbox.confirm($.i18n('JS_del'), function(result) {
 if (result == true) {
  $.ajax({
  type: "POST",
@@ -2211,7 +2195,7 @@ if (result == true) {
 $('body').on('click', 'button#files_del_comment', function(event) {
     event.preventDefault();
     var ids=$(this).attr('value');
-bootbox.confirm(get_lang_param('JS_del'), function(result) {
+bootbox.confirm($.i18n('JS_del'), function(result) {
 if (result == true) {
          $.ajax({
         type: "POST",
@@ -2272,7 +2256,7 @@ $('body').on('click', 'button#files_del_upload', function(event) {
     $('body').on('click', 'button#deps_del', function(event) {
         event.preventDefault();
 	var ids=$(this).attr('value');
-	bootbox.confirm(get_lang_param('JS_del'), function(result) {
+	bootbox.confirm($.i18n('JS_del'), function(result) {
 	 if (result == true) {
 	     $.ajax({
 		 type: "POST",
@@ -2354,7 +2338,7 @@ $('body').on('click', 'button#files_del_upload', function(event) {
     $('body').on('click', 'button#posada_del', function(event) {
         event.preventDefault();
 	var ids=$(this).attr('value');
-	bootbox.confirm(get_lang_param('JS_del'), function(result) {
+	bootbox.confirm($.i18n('JS_del'), function(result) {
 	 if (result == true) {
         $.ajax({
             type: "POST",
@@ -2986,14 +2970,14 @@ $("body").on("click", "a#select_init_user", function(event) {
                     var showPanel = $(".chosen-select").find('option:selected').attr('id');
                 }
                 $(".chosen-select").chosen({
-                    no_results_text: get_lang_param('JS_not_found'),
+                    no_results_text: $.i18n('JS_not_found'),
                     allow_single_deselect: true,
                 });
                 $(".chosen-select").chosen().change(settingsShow);
                 $('#summernote_help').summernote({
                     height: 300,
                     focus: true,
-                    lang: get_lang_param('summernote_lang'),
+                    lang: $.i18n('summernote_lang'),
                     onImageUpload: function(files, editor, welEditable) {
                     sendFile(files[0], editor, welEditable);
             }
@@ -3005,7 +2989,7 @@ $("body").on("click", "a#select_init_user", function(event) {
         event.preventDefault();
         var hn=$(this).val();
 
-        var langdel= get_lang_param('JS_del');
+        var langdel= $.i18n('JS_del');
 
         bootbox.confirm(langdel, function(result) {
             if (result == true) {        $.ajax({
@@ -3042,8 +3026,8 @@ $("body").on("click", "a#select_init_user", function(event) {
         var hn = $(this).val();
         var u=$("#u").chosen().val();
 
-        var lang_unit= get_lang_param('JS_unit');
-        var lang_probl= get_lang_param('JS_probl');
+        var lang_unit= $.i18n('JS_unit');
+        var lang_probl= $.i18n('JS_probl');
         var t=$("#t").val();
         var data = { 'mode' : 'do_save_help', 'u' : u, 't' : t, 'msg' : sHTML, 'hn': hn };
 
@@ -3090,8 +3074,8 @@ $("body").on("click", "a#select_init_user", function(event) {
         var sHTML = $('#summernote_help').code();
 
         var u=$("#u").chosen().val();
-        var lang_unit= get_lang_param('JS_unit');
-        var lang_probl= get_lang_param('JS_probl');
+        var lang_unit= $.i18n('JS_unit');
+        var lang_probl= $.i18n('JS_probl');
 
         var t=$("#t").val();
         var data = { 'mode' : 'do_create_help', 'u' : u, 't' : t, 'msg' : sHTML };
@@ -3460,7 +3444,7 @@ $("body").on("click", "a#select_init_user", function(event) {
         var status_lock=$("button#action_ok").attr('status');
         var ok_val=$("button#action_ok").attr("value");
         var ok_val_tid=$("button#action_ok").attr("tid");
-        var lang_ok= get_lang_param('JS_ok');
+        var lang_ok= $.i18n('JS_ok');
         if (status_lock == 'ok') {
             $("button#action_ok").attr('status', "no_ok").html("<i class=\"fa fa-check\"></i> "+lang_ok);
             // $("button#action_lock").removeAttr('disabled');
@@ -3484,7 +3468,7 @@ $("body").on("click", "a#select_init_user", function(event) {
             });
         }
         if (status_lock == 'no_ok') {
-            var lang_nook= get_lang_param('JS_no_ok');
+            var lang_nook= $.i18n('JS_no_ok');
             // var t = $('#work_timer > #f').attr('datetime');
             $("button#action_lock").attr('disabled', "disabled");
             $("button#action_refer_to").attr('disabled', "disabled");
@@ -3523,7 +3507,7 @@ $("body").on("click", "a#select_init_user", function(event) {
         var status_lock=$("button#action_lock").attr('status');
         var permitok=$("button#action_lock").attr("permitok");
         var ok_lock=$("button#action_familiar").attr("unlok");
-        var lang_unlock= get_lang_param('JS_unlock');
+        var lang_unlock= $.i18n('JS_unlock');
         if (status_lock == 'lock') {
             $("button#action_refer_to").attr('disabled', "disabled");
             // if (permitok != '1'){
@@ -3555,7 +3539,7 @@ $("body").on("click", "a#select_init_user", function(event) {
         }
         if (status_lock == 'unlock') {
             $("#msg_e").hide();
-            var lang_lock= get_lang_param('JS_lock');
+            var lang_lock= $.i18n('JS_lock');
             var permitok=$("button#action_lock").attr("permitok");
             var ok_lock=$("button#action_familiar").attr("unlok");
             // var t = $('#work_timer > #f').attr('datetime');
@@ -3995,7 +3979,7 @@ if( $("#users_do").val() != null ) {
 }
 
     /*
-    var lang_dd= get_lang_param('TICKET_file_upload_msg');
+    var lang_dd= $.i18n('TICKET_file_upload_msg');
 
     var uploadObj = $("#fileuploader").uploadFile({
 	allowedTypes: "jpeg,jpg,png,gif,doc,docx,xls,xlsx,rtf,pdf,zip,bmp",
@@ -4008,9 +3992,9 @@ if( $("#users_do").val() != null ) {
         showStatusAfterSuccess:false,
         dragDropStr: "<span><b>"+lang_dd+"</b></span>",
         abortStr:"abort",
-        cancelStr:get_lang_param('upload_cancel'),
+        cancelStr:$.i18n('upload_cancel'),
         doneStr:"done",
-        sizeErrorStr:get_lang_param('upload_errorsize')
+        sizeErrorStr:$.i18n('upload_errorsize')
 
     }
     );
@@ -4034,8 +4018,8 @@ if( $("#users_do").val() != null ) {
 	 maxFileSize: $('input#file_size').val(),
 	messages: {
                 maxNumberOfFiles: 'Maximum number of files exceeded',
-                acceptFileTypes: get_lang_param('upload_errortypes'),
-                maxFileSize: get_lang_param('upload_errorsize'),
+                acceptFileTypes: $.i18n('upload_errortypes'),
+                maxFileSize: $.i18n('upload_errorsize'),
                 minFileSize: 'File is too small'
             },
 
@@ -4117,7 +4101,7 @@ if (check_form_ticket() == 0 ) {
 });
 
 
-
+});
 
 
 
