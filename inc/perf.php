@@ -31,6 +31,10 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) {
       <i class="fa fa-info-circle"></i>
 
 <?=lang('CONF_info');?>
+<hr>
+<?=lang('CONF_version')." ".get_version()?>
+<br>
+<?=lang('CONF_version_1');?>
       </small>
       </div>
 

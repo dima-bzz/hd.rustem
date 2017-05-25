@@ -75,8 +75,8 @@
 "CONF_jabber_port":"Порт",
 "CONF_jabber_login":"Логин",
 "CONF_jabber_pass":"Пароль",
-"CONF_shudown_permit":"Разрешение на выключение сервера",
-"CONF_pass_server":"Пароль www-data",
+"CONF_version":"Версия вашей программы:",
+"CONF_version_1":"Актуальная версия ПО: <a href=\"https://github.com/dima-bzz/Accounting-technology\" target=\"blank\"><i class=\"fa fa-github\" aria-hidden=\"true\"></i>&nbsp;GitHub</a>",
 
  "HELPER_info":"В данном разделе могут содержаться инструкции и документация для решения типичных проблем.",
  "NAVBAR_conf":"Настройки системы",

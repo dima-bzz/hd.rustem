@@ -64,6 +64,10 @@ $forhostname=substr($CONF['hostname'], -1);
 if ($forhostname == "/") {$CONF['hostname']=$CONF['hostname'];}
 else if ($forhostname <> "/") {$CONF['hostname']=$CONF['hostname']."/";}
 
+function get_version(){
+  $v = '1.09';
+  return $v;
+}
 
 function get_user_lang(){
     global $dbConnection;
