@@ -642,7 +642,7 @@ function view_comment($tid) {
 
 
 
-	<div class="row" id="comment_body" style="min-height:20px; max-height: 400px; scroll-behavior: initial; overflow-y: scroll; overflow-x: hidden; padding-right:5px;">
+	<div class="row" id="comment_body" style="max-height: 400px; scroll-behavior: initial; overflow-y: scroll; overflow-x: hidden; padding-right:5px;">
     <input type="hidden" id="hashname" value="<?=md5(time());?>">
         <div class="timeline-centered">
         <?php
