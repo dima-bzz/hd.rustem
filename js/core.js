@@ -235,46 +235,133 @@ if (url.search("inc") >= 0) {
 return zzz;
 };
 
-function check_approve_users(){
-   $.post( ACTIONPATH,{ mode: "approve_online_users" },function( data ) {
-if (data !== '0'){
-$( "#online" ).empty().append( data );
-$( "#online2" ).empty().append( data );
+function check_approve(up){
+$.ajax({
+type: "POST",
+url: ACTIONPATH,
+data: "mode=approve",
+dataType: "json",
+success: function(html){
+
+  $.each(html, function(i, item) {
+    if (up != 'update'){
+if (item.approve !== '0'){
+  if ((item.approve == $( "#ap" ).html()) && ($( "#ap" ).html() != '')){
+$( "#ap" ).html( item.approve ).fadeIn(500);
+$( "#ap" ).html( item.approve )
+
 }
-else {
-$( "#online" ).fadeOut(500);
+else{
+$( "#ap" ).hide().empty().html( item.approve ).fadeIn(500);
+$( "#ap2" ).empty().html( item.approve );
 }
-});
-$.post( ACTIONPATH,{ mode: "approve_online_users_table" },function( data ) {
-$('[val="status_offline"]').tooltip('hide');
-$( "#online3" ).empty().append( data );
-$('[data-toggle="tooltip"]').tooltip({container: 'body', html:true});
-});
-};
-function check_approve_ticket(){
-   $.post( ACTIONPATH,{ mode: "approve_ticket" },function( data ) {
-if (data !== '0'){
-$( "#ap_ticket" ).empty().append( data );
-$( "#ap_ticket2" ).empty().append( data );
-}
-else {
-$( "#ap_ticket" ).fadeOut(500);
-$( "#ap_ticket2" ).empty().removeAttr( 'style' );
-}
-});
-};
-function check_approve(){
-   $.post( ACTIONPATH,{ mode: "approve" },function( data ) {
-if (data !== '0'){
-$( "#ap" ).empty().append( data );
-$( "#ap2" ).empty().append( data );
 }
 else {
 $( "#ap" ).fadeOut(500);
 $( "#ap2" ).empty().removeAttr( 'style' );
 }
+
+if (item.approve_ticket !== '0'){
+  if ((item.approve_ticket == $( "#ap_ticket" ).html()) && ($( "#ap_ticket" ).html() != '')){
+$( "#ap_ticket" ).html( item.approve_ticket ).fadeIn(500);
+$( "#ap_ticket" ).html( item.approve_ticket )
+
+}
+else{
+$( "#ap_ticket" ).hide().empty().html( item.approve_ticket ).fadeIn(500);
+$( "#ap_ticket2" ).empty().html( item.approve_ticket );
+}
+}
+else {
+$( "#ap_ticket" ).fadeOut(500);
+$( "#ap_ticket2" ).empty().removeAttr( 'style' );
+}
+
+if (item.online_users !== '0'){
+  if ((item.online_users == $( "#online" ).html()) && ($( "#online" ).html() != '')){
+$( "#online" ).html( item.online_users ).fadeIn(500);
+$( "#online" ).html( item.online_users )
+
+}
+else{
+$( "#online" ).hide().empty().html( item.online_users ).fadeIn(500);
+// $( "#online2" ).empty().html( item.online_users );
+}
+}
+else {
+$( "#online" ).fadeOut(500);
+// $( "#online2" ).empty().removeAttr( 'style' );
+}
+
+if (item.make_logout_user == "true"){
+      window.location.href = MyHOSTNAME + 'index.php?logout';
+      $.ajax({
+        url:  ACTIONPATH,
+        type: "POST",
+        data:"mode=update_logout" +
+        "&userid=" + userid
+      })
+}
+}
+else{
+  if (item.approve !== '0'){
+    if ((item.approve == $( "#ap" ).html()) && ($( "#ap" ).html() != '')){
+  $( "#ap" ).html( item.approve ).fadeIn(500);
+  $( "#ap" ).html( item.approve )
+
+  }
+  else{
+  $( "#ap" ).hide().empty().html( item.approve ).fadeIn(500);
+  $( "#ap2" ).empty().html( item.approve );
+  }
+  }
+  else {
+  $( "#ap" ).fadeOut(500);
+  $( "#ap2" ).empty().removeAttr( 'style' );
+  }
+}
+})
+}
+})
+}
+// ***** Отключение пользователя*****
+$('body').on('click', 'button#users_logout', function(event) {
+          event.preventDefault();
+          var id_users_logout = $(this).attr('value');
+          $.ajax({
+            url:  ACTIONPATH,
+            type: "POST",
+            data:"mode=make_logout_user" +
+            "&userid=" + id_users_logout,
+            success: function(){
+              window.location = MyHOSTNAME + "users";
+            }
+          })
 });
-};
+// ***** Таблица с пользователями в сети*****
+$('body').on('click', 'a#show_online_users', function(event) {
+          event.preventDefault();
+          $.ajax({
+            url:  ACTIONPATH,
+            type: "POST",
+            data:"mode=approve_online_users_table",
+            success: function(html){
+              $('#online3').html(html);
+            }
+          })
+          $.ajax({
+          type: "POST",
+          url: ACTIONPATH,
+          data: "mode=approve",
+          dataType: "json",
+          success: function(html){
+
+            $.each(html, function(i, item) {
+              $( "#online2" ).empty().html( item.online_users );
+            })
+          }
+        })
+});
 function send_jabber(){
   // var ee = $("#main_last_new_ticket_jabber").val();
   // if (ee){
@@ -997,8 +1084,6 @@ if (url.search("inc") >= 0) {
                         });
                     }
                 }});
-                check_approve_users();
-                check_approve_ticket();
                 check_approve();
         }
     };
@@ -1118,8 +1203,6 @@ makemytime(false);
                 }});
         }
 	}});
-  check_approve_users();
-  check_approve_ticket();
   check_approve();
 	}
     };
@@ -2373,7 +2456,7 @@ $('body').on('click', 'button#files_del_upload', function(event) {
                 "&id="+encodeURIComponent(table_id),
             success: function() {
                 $(elem).fadeOut(500);
-                check_approve();
+                check_approve('update');
             }
         });
 
@@ -2391,7 +2474,7 @@ $('body').on('click', 'button#files_del_upload', function(event) {
                 "&id="+encodeURIComponent(table_id),
             success: function() {
                 $(elem).fadeOut(500);
-                check_approve();
+                check_approve('update');
             }
         });
 

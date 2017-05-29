@@ -839,7 +839,7 @@ function validate_user($user_id, $input) {
 function get_user_status($in) {
 	    global $dbConnection;
 
-    $stmt = $dbConnection->prepare('select last_time from users where id=:in');
+    $stmt = $dbConnection->prepare('select last_time from users where id=:in and us_kill=1');
     $stmt->execute(array(':in' => $in));
     $total_ticket = $stmt->fetch(PDO::FETCH_ASSOC);
 	$lt=$total_ticket['last_time'];
@@ -857,7 +857,7 @@ function get_user_status($in) {
 function get_user_status_text($in) {
 	    global $dbConnection;
 
-    $stmt = $dbConnection->prepare('select last_time from users where id=:in');
+    $stmt = $dbConnection->prepare('select last_time from users where id=:in and us_kill=1');
     $stmt->execute(array(':in' => $in));
     $total_ticket = $stmt->fetch(PDO::FETCH_ASSOC);
 	$lt=$total_ticket['last_time'];
@@ -1057,7 +1057,7 @@ function get_notes() {
 function get_online_users_total(){
   global $dbConnection;
 
-  $stmt = $dbConnection->prepare('select count(*) as count from users where UNIX_TIMESTAMP(last_time) > UNIX_TIMESTAMP(NOW())-20');
+  $stmt = $dbConnection->prepare('select count(*) as count from users where UNIX_TIMESTAMP(last_time) > UNIX_TIMESTAMP(NOW())-20 and us_kill=1');
   $stmt->execute();
   $cn = $stmt->fetch(PDO::FETCH_ASSOC);
   $count=$cn['count'];
@@ -1081,7 +1081,7 @@ function return_users_array_unit($in){
 function get_users_online(){
   global $dbConnection;
 
-  $stmt = $dbConnection->prepare('select count(*) as count from users where UNIX_TIMESTAMP(last_time) > UNIX_TIMESTAMP(NOW())-20');
+  $stmt = $dbConnection->prepare('select count(*) as count from users where UNIX_TIMESTAMP(last_time) > UNIX_TIMESTAMP(NOW())-20 and us_kill=1');
   $stmt->execute();
   $cn = $stmt->fetch(PDO::FETCH_ASSOC);
   $count=$cn['count'];

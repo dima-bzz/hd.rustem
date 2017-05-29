@@ -379,6 +379,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `jabber_noty_show` varchar(128) DEFAULT '1',
   `show_noty` varchar(128) DEFAULT 'bottomRight',
   `noty` varchar(128) DEFAULT '1,2,3,4,5,6,7,8,9,10',
+  `us_kill` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
 

@@ -4,21 +4,15 @@
             <p class="text-muted credit"><small>Designed by <a href="mailto:info@rustem.com.ua">Y.Snisar</a> (с) 2014.</p>
             </small>
         </div>
-        <?php
-
-
-        if (priv_status($_SESSION['helpdesk_user_id']) == "0") {$pri="куратор";}
-        if (priv_status($_SESSION['helpdesk_user_id']) == "1") {$pri="користувач";}
-        ?>
         <div class="col-md-4">
 
         </div>
     </div>
 </div>
-<?php if ($lang == "ua") {$lang = "uk"; }?>
 <script type="text/javascript">
     var MyHOSTNAME = "<?php echo $CONF['hostname']; ?>";
     var MyLANG = "<?php echo get_user_lang(); ?>";
+    var userid = "<?php echo $_SESSION['helpdesk_user_id']; ?>";
 </script>
 <script src="<?=$CONF['hostname']?>js/jquery-1.11.0.min.js"></script>
 <script src="<?=$CONF['hostname']?>js/bootstrap/js/bootstrap.min.js"></script>

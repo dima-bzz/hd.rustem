@@ -101,7 +101,7 @@ $ap=get_approve();
 	     <li <?=echoActiveClassIfRequestMatches("main_stats")?>><a href="<?=$CONF['hostname']?>main_stats"><i class="fa fa-bar-chart-o"></i> <?=lang('ALLSTATS_main');?></a></li>
      </li>
             <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-rss"></i> <?=lang('NAVBAR_users_online');?> <?=$online?> <b class="caret"></b></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="show_online_users"><i class="fa fa-rss"></i> <?=lang('NAVBAR_users_online');?> <?=$online?> <b class="caret"></b></a>
             <ul class="dropdown-menu" style="width:300px; max-height:200px;overflow-y:auto;">
               <?php get_users_online(); ?>
           </ul>

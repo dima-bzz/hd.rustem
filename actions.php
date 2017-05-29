@@ -2372,13 +2372,6 @@ $cl="";
 
 
         }
- if ($mode == "approve_online_users"){
-          $stmt = $dbConnection->prepare('select count(*) as count from users where UNIX_TIMESTAMP(last_time) > UNIX_TIMESTAMP(NOW())-20');
-          $stmt->execute();
-          $cn = $stmt->fetch(PDO::FETCH_ASSOC);
-          $count=$cn['count'];
-          echo $count;
- }
  if ($mode == "approve_online_users_table"){
 
      $stmt = $dbConnection->prepare('select id from users where status=:n order by last_time DESC, fio ASC');
@@ -2402,76 +2395,95 @@ $cl="";
        <?php
  }
  if ($mode == "approve"){
-   $stmt = $dbConnection->prepare('select count(id) as t1 from approved_info ');
-   $stmt->execute();
-   $total_ticket = $stmt->fetch(PDO::FETCH_ASSOC);
+    $stmt = $dbConnection->prepare('select count(id) as t1 from approved_info ');
+    $stmt->execute();
+    $total_ticket = $stmt->fetch(PDO::FETCH_ASSOC);
 
-   echo $total_ticket['t1'];
- }
- if ($mode == "approve_ticket"){
-   $uid=$_SESSION['helpdesk_user_id'];
-   $unit_user=unit_of_user($uid);
-   $priv_val=priv_status($uid);
+    $stmt = $dbConnection->prepare('select count(*) as count from users where UNIX_TIMESTAMP(last_time) > UNIX_TIMESTAMP(NOW())-20 and us_kill=1');
+    $stmt->execute();
+    $cn = $stmt->fetch(PDO::FETCH_ASSOC);
+    $count_online=$cn['count'];
 
-   $units = $unit_user;
+    $uid=$_SESSION['helpdesk_user_id'];
+    $unit_user=unit_of_user($uid);
+    $priv_val=priv_status($uid);
 
-
-
-$in_query="";
-$unit_user=unit_of_user($uid);
-$ee=explode(",", $unit_user);
-foreach($ee as $key=>$value) {$in_query = $in_query . ' :val_' . $key . ', '; }
-$in_query = substr($in_query, 0, -2);
-foreach ($ee as $key=>$value) { $vv[":val_" . $key]=$value;}
+    $units = $unit_user;
 
 
 
-
-   if ($priv_val == "0") {
-
-
-       $res = $dbConnection->prepare("SELECT count(*) from tickets where unit_id IN (".$in_query.") and status='0' and lock_by='0'");
-
-
-       //$res->execute(array(':units' => $units));
-       $res->execute($vv);
-       $count = $res->fetch(PDO::FETCH_NUM);
-       $count=$count[0];
-
-
-   }
-
-
-   else if ($priv_val == "1") {
-
-       $res = $dbConnection->prepare("SELECT count(*) from tickets where ((user_to_id rlike :uid and arch='0') or (user_to_id='0' and unit_id IN (".$in_query.") and arch='0')) and status='0' and lock_by='0'");
-
-
-       //$res->execute(array(':uid' => $uid));
-
-       $paramss=array(':uid' => '[[:<:]]'.$uid.'[[:>:]]');
-       $res->execute(array_merge($vv,$paramss));
-       $count = $res->fetch(PDO::FETCH_NUM);
-       $count=$count[0];
+ $in_query="";
+ $unit_user=unit_of_user($uid);
+ $ee=explode(",", $unit_user);
+ foreach($ee as $key=>$value) {$in_query = $in_query . ' :val_' . $key . ', '; }
+ $in_query = substr($in_query, 0, -2);
+ foreach ($ee as $key=>$value) { $vv[":val_" . $key]=$value;}
 
 
 
 
-
-   }
-   else if ($priv_val == "2") {
+    if ($priv_val == "0") {
 
 
+        $res = $dbConnection->prepare("SELECT count(*) from tickets where unit_id IN (".$in_query.") and status='0' and lock_by='0'");
 
-       $res = $dbConnection->prepare("SELECT count(*) from tickets where status='0' and lock_by='0'");
-       $res->execute();
-       $count = $res->fetch(PDO::FETCH_NUM);
-       $count=$count[0];
 
-   }
+        //$res->execute(array(':units' => $units));
+        $res->execute($vv);
+        $count = $res->fetch(PDO::FETCH_NUM);
+        $count=$count[0];
 
-   echo $count;
- }
+
+    }
+
+
+    else if ($priv_val == "1") {
+
+        $res = $dbConnection->prepare("SELECT count(*) from tickets where ((user_to_id rlike :uid and arch='0') or (user_to_id='0' and unit_id IN (".$in_query.") and arch='0')) and status='0' and lock_by='0'");
+
+
+        //$res->execute(array(':uid' => $uid));
+
+        $paramss=array(':uid' => '[[:<:]]'.$uid.'[[:>:]]');
+        $res->execute(array_merge($vv,$paramss));
+        $count = $res->fetch(PDO::FETCH_NUM);
+        $count=$count[0];
+
+
+
+
+
+    }
+    else if ($priv_val == "2") {
+
+
+
+        $res = $dbConnection->prepare("SELECT count(*) from tickets where status='0' and lock_by='0'");
+        $res->execute();
+        $count = $res->fetch(PDO::FETCH_NUM);
+        $count=$count[0];
+
+    }
+
+    $stmt = $dbConnection->prepare ('SELECT us_kill FROM users WHERE id=:id');
+    $stmt->execute(array(':id' => $uid));
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    if($row['us_kill'] == '1'){
+      $mlu = 'false';
+    }
+    else{
+      $mlu = 'true';
+    }
+   //  echo $total_ticket['t1'];
+    $results[] = array(
+      'approve'=> $total_ticket['t1'],
+      'online_users'=> $count_online,
+      'approve_ticket'=> $count,
+      'make_logout_user'=> $mlu
+      );
+
+    print json_encode($results);
+  }
  if ($mode == "files_del") {
  $id=($_POST['id']);
 
@@ -3707,7 +3719,17 @@ values (:comment, now(), :user_comment, :tid_comment)');
           <?php
         }
       }
+      if ($mode == "make_logout_user"){
+        $user_id = $_POST['userid'];
+        $stmt = $dbConnection->prepare("UPDATE users SET us_kill = :kill WHERE id=:user_id");
+        $stmt->execute(array(':user_id' => $user_id, ':kill' => 0));
+      }
+      if ($mode == "update_logout"){
+        $user_id = $_POST['userid'];
 
+        $stmt = $dbConnection->prepare("UPDATE users SET us_kill = :kill WHERE id=:user_id");
+        $stmt->execute(array(':user_id' => $user_id, ':kill' => 1));
+      }
 if ($mode == "conf_test_mail") {
 /*
 if (get_conf_param('mail_auth_type') != "none")
