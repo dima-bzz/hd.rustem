@@ -1017,7 +1017,7 @@ window.addEventListener('load', function() {
     // Если права есть, отправим уведомление
     var notification = new Notification(title, options);
     notification.onclick = function(){
-      window.open(MyHOSTNAME + 'ticket?' + ticket);
+      window.open(MyHOSTNAME + 'ticket?' + ticket, '_top').focus();
       notification.close();
     }
     }
@@ -1029,7 +1029,7 @@ window.addEventListener('load', function() {
     if (permission === "granted") {
     var notification = new Notification(title, options);
     notification.onclick = function(){
-      window.open(MyHOSTNAME + 'ticket?' + ticket);
+      window.open(MyHOSTNAME + 'ticket?' + ticket, '_top').focus();
       notification.close();
     }
     } else {
@@ -1110,7 +1110,7 @@ if (url.search("inc") >= 0) {
                                     icon: MyHOSTNAME+"img/help-desk-icon.png",
                                     dir: 'auto',
                                     tag: item.hash
-                                  }, item.hash);
+                                    }, item.hash);
                                   }
                                     });
                                 }
@@ -1232,7 +1232,7 @@ makemytime(false);
                                     icon: MyHOSTNAME+"img/help-desk-icon.png",
                                     dir: 'auto',
                                     tag: item.hash
-                                  }, item.hash);
+                                    }, item.hash);
                                     }
                                   });
             	                   }
