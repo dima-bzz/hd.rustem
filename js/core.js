@@ -1006,7 +1006,41 @@ window.addEventListener('load', function() {
     };
 
 
+    function sendNotification(title, options, ticket) {
+    // Проверим, поддерживает ли браузер HTML5 Notifications
+    if (!("Notification" in window)) {
+    alert($.i18n('Update_browser'));
+    }
 
+    // Проверим, есть ли права на отправку уведомлений
+    else if (Notification.permission === "granted") {
+    // Если права есть, отправим уведомление
+    var notification = new Notification(title, options);
+    notification.onclick = function(){
+      window.open(MyHOSTNAME + 'ticket?' + ticket);
+      notification.close();
+    }
+    }
+
+    // Если прав нет, пытаемся их получить
+    else if (Notification.permission !== 'denied') {
+    Notification.requestPermission(function (permission) {
+    // Если права успешно получены, отправляем уведомление
+    if (permission === "granted") {
+    var notification = new Notification(title, options);
+    notification.onclick = function(){
+      window.open(MyHOSTNAME + 'ticket?' + ticket);
+      notification.close();
+    }
+    } else {
+    alert($.i18n('Disable_browser_noty')); // Юзер отклонил наш запрос на показ уведомлений
+    }
+    });
+    } else {
+    // Пользователь ранее отклонил наш запрос на показ уведомлений
+    // В этом месте мы можем, но не будем его беспокоить. Уважайте решения своих пользователей.
+    }
+    };
 
 
 
@@ -1071,10 +1105,12 @@ if (url.search("inc") >= 0) {
                                     $.each(html, function(i, item) {
                                     if (item.show == "true"){
                                     var h = ''+item.ticket+' #'+item.name+' - '+item.at+'';
-                                    new Notification("Helpdesk",{
+                                    sendNotification('Helpdesk', {
+                                    body: h,
                                     icon: MyHOSTNAME+"img/help-desk-icon.png",
-                                    tag : "note",
-                                    body: h});
+                                    dir: 'auto',
+                                    tag: item.hash
+                                  }, item.hash);
                                   }
                                     });
                                 }
@@ -1191,10 +1227,12 @@ makemytime(false);
                                     $.each(html, function(i,item) {
                                     if (item.show == "true"){
 					                          var h = ''+item.ticket+' #'+item.name+' - '+item.at+'';
-					                          new Notification("Helpdesk",{
-					                          icon: MyHOSTNAME+"img/help-desk-icon.png",
-					                          tag : "note",
-					                          body: h});
+                                    sendNotification('Helpdesk', {
+                                    body: h,
+                                    icon: MyHOSTNAME+"img/help-desk-icon.png",
+                                    dir: 'auto',
+                                    tag: item.hash
+                                  }, item.hash);
                                     }
                                   });
             	                   }

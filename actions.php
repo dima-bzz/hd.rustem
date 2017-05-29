@@ -1765,6 +1765,7 @@ foreach ($ee2 as $key2=>$value2) { $vv2[":vall_" . $key2]=$value2;}
                             'show'=> 'true',
                             'ticket' => lang('JS_ticket'),
                             'name' => $rews['id'],
+                            'hash' => $rews['hash_name'],
                             'at' => $at,
 
                         );
@@ -1803,6 +1804,7 @@ foreach ($ee2 as $key2=>$value2) { $vv2[":vall_" . $key2]=$value2;}
                             'show'=> 'true',
                             'ticket' => lang('JS_ticket'),
                             'name' => $rews['id'],
+                            'hash' => $rews['hash_name'],
                             'at' => $at,
 
                         );
@@ -1839,6 +1841,7 @@ foreach ($ee2 as $key2=>$value2) { $vv2[":vall_" . $key2]=$value2;}
                             'show'=> 'true',
                             'ticket' => lang('JS_ticket'),
                             'name' => $rews['id'],
+                            'hash' => $rews['hash_name'],
                             'at' => $at,
 
                         );
