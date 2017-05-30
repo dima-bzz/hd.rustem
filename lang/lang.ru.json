@@ -629,6 +629,8 @@
 "ticket_sort_ilock":"В обработке мной",
 "ticket_sort_lock":"В обработке не мной",
 "last_more":"еще",
-"Select_users":"Выберите пользователей"
+"Select_users":"Выберите пользователей",
+"Update_browser" : "Ваш браузер не поддерживает HTML Notifications, его необходимо обновить.",
+"Disable_browser_noty" : "Вы запретили показывать уведомления",
 
 }
