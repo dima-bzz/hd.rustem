@@ -77,6 +77,8 @@
 "CONF_jabber_pass":"Пароль",
 "CONF_version":"Версия вашей программы:",
 "CONF_version_1":"Актуальная версия ПО: <a href=\"https://github.com/dima-bzz/hd.rustem\" target=\"blank\"><i class=\"fa fa-github\" aria-hidden=\"true\"></i>&nbsp;GitHub</a>",
+"CONF_time_zone" : "Временная зона",
+"CONF_ticket_update" : "Для отображения времени работы над заявкой, добавьте в cron-планировщик строку:",
 
  "HELPER_info":"В данном разделе могут содержаться инструкции и документация для решения типичных проблем.",
  "NAVBAR_conf":"Настройки системы",
@@ -632,5 +634,6 @@
 "Select_users":"Выберите пользователей",
 "Update_browser" : "Ваш браузер не поддерживает HTML Notifications, его необходимо обновить.",
 "Disable_browser_noty" : "Вы запретили показывать уведомления",
+"Select_time_zone" : "Выберите временную зону"
 
 }

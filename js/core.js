@@ -2672,6 +2672,7 @@ data: "mode=conf_edit_main"+
 "&fix_subj="+encodeURIComponent($("#fix_subj").val())+
 "&file_uploads="+encodeURIComponent($("#file_uploads").val())+
 "&file_types="+encodeURIComponent($("#file_types").val())+
+"&time_zone="+encodeURIComponent($("#time_zone").val())+
 "&file_size="+encodeURIComponent($("#file_size").val()*1024*1024),
 success: function(html) {
 $("#conf_edit_main_res").hide().html(html).fadeIn(500);

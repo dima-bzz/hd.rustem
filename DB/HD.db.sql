@@ -229,6 +229,7 @@ VALUES
   (24, 'jabber_port', '5222'),
   (25, 'jabber_login', 'server_login_jabber'),
   (26, 'jabber_pass', 'server_jabber_password');
+  (27, 'time_zone', 'Europe/Moscow');
 
 UNLOCK TABLES;
 -- --------------------------------------------------------

@@ -86,9 +86,12 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) {
   <div class="form-group">
     <label for="hostname" class="col-sm-4 control-label"><small><?=lang('CONF_url');?></small></label>
     <div class="col-sm-8">
+      <div class="input-group">
+        <span class="input-group-addon">http://</span>
       <input type="text" class="form-control input-sm" id="hostname" placeholder="<?php
       $pos = strrpos($_SERVER['REQUEST_URI'], '/');
-      echo "http://".$_SERVER['HTTP_HOST'].substr($_SERVER['REQUEST_URI'], 0, $pos + 1);?>" value="<?=get_conf_param('hostname'); ?>">
+      echo $_SERVER['HTTP_HOST'].substr($_SERVER['REQUEST_URI'], 0, $pos + 1);?>" value="<?=preg_replace("/http:\/\//","",get_conf_param('hostname')); ?>">
+    </div>
     </div>
   </div>
 
@@ -105,6 +108,12 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) {
       5 0 * * * /usr/bin/php5 -f <?=realpath(dirname(dirname(__FILE__)))."/sys/4cron_live_ticket.php"?> > <?=realpath(dirname(dirname(__FILE__)))."/4cron.log"?> 2>&1</small></p>
     </div>
   </div>
+  <div class="form-group">
+<label for="time_zone" class="col-sm-4 control-label"><small><?=lang('CONF_time_zone');?></small></label>
+<div class="col-sm-8">
+  <?=Helper_TimeZone::getTimeZoneSelect(get_conf_param('time_zone'));?>
+</div>
+</div>
       <div class="form-group">
     <label for="first_login" class="col-sm-4 control-label"><small><?=lang('CONF_f_login');?></small></label>
     <div class="col-sm-8">
