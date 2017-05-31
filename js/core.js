@@ -2758,7 +2758,7 @@ $('body').on('click', 'button#files_del_upload', function(event) {
             success: function(html){
               $("#conf_system_update").blur();
               $("#up_success").hide().html(html).fadeIn(500);
-              setTimeout(function() {$('#up_success').children('.alert').fadeOut(500);}, 3000);
+              setTimeout(function() {$('#up_success').children('.alert_conf').fadeOut(500);}, 3000);
             }
             });
           });

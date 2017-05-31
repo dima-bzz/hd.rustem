@@ -3748,7 +3748,7 @@ values (:comment, now(), :user_comment, :tid_comment)');
   $stmt->execute(array(':id' => $idd, ':noty_w' => 'system_update', ':userid' => $us));
   ?>
   <br>
-  <div class="alert">
+  <div class="alert_conf">
     <center>
   <?=lang('CONF_system_update_success');?>
 </center>
@@ -3770,7 +3770,7 @@ $v_g = $api['tag_name'];
 $url = $api['zipball_url'];
 if ($v == $v_g){
   ?>
-  <div class="alert" style="margin-bottom: -20px;">
+  <div class="alert_conf" style="margin-bottom: -20px;">
         <center>
   <?=lang('CONF_check_update_latest');?>
 </center>
@@ -3779,7 +3779,7 @@ if ($v == $v_g){
 }
 else{
   ?>
-  <div class="alert" style="margin-bottom: -20px;">
+  <div class="alert_conf" style="margin-bottom: -20px;">
         <center>
           <?=lang('CONF_check_update_actual').''.$v_g;?>
           <p></p>
