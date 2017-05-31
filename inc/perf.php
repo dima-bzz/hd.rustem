@@ -147,13 +147,12 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) {
                     <label for="days2arch" class="col-sm-4 control-label"><small><?=lang('CONF_2arch');?></small></label>
                     <div class="col-sm-8">
                       <input type="text" class="form-control input-sm" id="days2arch" placeholder="<?=lang('CONF_2arch');?>" value="<?=get_conf_param('days2arch');?>">
-                      <p class="help-block"><small><?=lang('CONF_2arch_info');?> <br>
-
-                      5 0 * * * /usr/bin/php5 -f <?=realpath(dirname(dirname(__FILE__)))."/sys/4cron.php"?> > <?=realpath(dirname(dirname(__FILE__)))."/4cron.log"?> 2>&1</small></p>
-
-                      <p class="help-block"><small><?=lang('CONF_ticket_update');?> <br>
-
-                      5 0 * * * /usr/bin/php5 -f <?=realpath(dirname(dirname(__FILE__)))."/sys/4cron_live_ticket.php"?> > <?=realpath(dirname(dirname(__FILE__)))."/4cron.log"?> 2>&1</small></p>
+                      <p class="help-block"><small><?=lang('CONF_2arch_info');?></small><br>
+                      <pre><small class="pull-left">5 0 * * * /usr/bin/php5 -f <?=realpath(dirname(dirname(__FILE__)))."/sys/4cron.php"?> > <?=realpath(dirname(dirname(__FILE__)))."/4cron.log"?> 2>&1</small></pre>
+                    </p>
+                      <p class="help-block"><small><?=lang('CONF_ticket_update');?></small><br>
+                      <pre><small>5 0 * * * /usr/bin/php5 -f <?=realpath(dirname(dirname(__FILE__)))."/sys/4cron_live_ticket.php"?> > <?=realpath(dirname(dirname(__FILE__)))."/4cron.log"?> 2>&1</small></pre>
+                    </p>
                     </div>
                   </div>
                     <div class="form-group">
