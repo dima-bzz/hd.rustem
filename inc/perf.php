@@ -10,7 +10,11 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) {
 
 
 ?>
-
+<style>
+.alert-info hr{
+  border-top-color: #fff !important;
+}
+</style>
 
 <div class="container">
 <input type="hidden" id="main_last_new_ticket" value="<?=get_last_ticket_new($_SESSION['helpdesk_user_id']);?>">
@@ -62,6 +66,7 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) {
         <div  class="tab_conf">
             <ul class="nav nav-tabs">
                 <li class="active"><a href="#conf_main" data-toggle="tab"><i class="fa fa-cog"></i> <?=lang('CONF_mains');?></a></li>
+                <li><a href="#conf_ticket" data-toggle="tab"><i class="fa fa-tag"></i> <?=lang('CONF_ticket_name');?></a></li>
                 <li><a href="#conf_jabber" data-toggle="tab"><i class="fa fa-bell"></i> <?=lang('CONF_jabber_name');?></a></li>
                 <li><a href="#conf_mail" data-toggle="tab"><i class="fa fa-send"></i> <?=lang('CONF_mail_name');?></a></li>
             </ul>
@@ -102,20 +107,6 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) {
                 </div>
               </div>
                 </div>
-
-                  <div class="form-group">
-                  <label for="days2arch" class="col-sm-4 control-label"><small><?=lang('CONF_2arch');?></small></label>
-                  <div class="col-sm-8">
-                    <input type="text" class="form-control input-sm" id="days2arch" placeholder="<?=lang('CONF_2arch');?>" value="<?=get_conf_param('days2arch');?>">
-                    <p class="help-block"><small><?=lang('CONF_2arch_info');?> <br>
-
-                    5 0 * * * /usr/bin/php5 -f <?=realpath(dirname(dirname(__FILE__)))."/sys/4cron.php"?> > <?=realpath(dirname(dirname(__FILE__)))."/4cron.log"?> 2>&1</small></p>
-
-                    <p class="help-block"><small><?=lang('CONF_ticket_update');?> <br>
-
-                    5 0 * * * /usr/bin/php5 -f <?=realpath(dirname(dirname(__FILE__)))."/sys/4cron_live_ticket.php"?> > <?=realpath(dirname(dirname(__FILE__)))."/4cron.log"?> 2>&1</small></p>
-                  </div>
-                </div>
                 <div class="form-group">
                 <label for="time_zone" class="col-sm-4 control-label"><small><?=lang('CONF_time_zone');?></small></label>
                 <div class="col-sm-8">
@@ -136,57 +127,6 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) {
                 </div>
 
 
-                      <div class="form-group">
-                  <label for="fix_subj" class="col-sm-4 control-label"><small><?=lang('CONF_subj');?></small></label>
-                  <div class="col-sm-8">
-                <select class="chosen-select_no_search form-control input-sm" id="fix_subj">
-                <option value="true" <?php if (get_conf_param('fix_subj') == "true") {echo "selected";} ?>><?=lang('CONF_fix_list');?></option>
-                <option value="false" <?php if (get_conf_param('fix_subj') == "false") {echo "selected";} ?>><?=lang('CONF_subj_text');?></option>
-              </select>
-              <p class="help-block"><small>
-              <?=lang('CONF_subj_info');?>
-              </small></p>
-              </div>
-                </div>
-
-                        <div class="form-group">
-                  <label for="file_uploads" class="col-sm-4 control-label"><small><?=lang('CONF_fup');?></small></label>
-                  <div class="col-sm-8">
-                <select class="chosen-select_no_search form-control input-sm" id="file_uploads">
-                <option value="true" <?php if (get_conf_param('file_uploads') == "true") {echo "selected";} ?>><?=lang('CONF_true');?></option>
-                <option value="false" <?php if (get_conf_param('file_uploads') == "false") {echo "selected";} ?>><?=lang('CONF_false');?></option>
-              </select>
-              <p class="help-block"><small>
-              <?=lang('CONF_fup_info');?>
-              </small></p>
-              </div>
-                </div>
-
-
-
-                <div class="form-group">
-                  <label for="file_types" class="col-sm-4 control-label"><small><?=lang('CONF_file_types');?></small></label>
-                  <div class="col-sm-8">
-                    <input type="text" class="form-control input-sm" id="file_types" placeholder="gif,jpe?g,png,doc,xls,rtf,pdf,zip,rar,bmp,docx,xlsx" value="<?php
-                    $bodytag = str_replace("|", ",", get_conf_param('file_types'));
-                    echo $bodytag;
-
-                    ?>">
-
-                  </div>
-                </div>
-
-                  <div class="form-group">
-                  <label for="file_size" class="col-sm-4 control-label"><small><?=lang('CONF_file_size');?></small></label>
-                  <div class="col-sm-8">
-                  <div class="input-group">
-                    <input type="text" class="form-control input-sm" id="file_size" placeholder="5" value="<?=round(get_conf_param('file_size')/1024/1024);?>">
-              <span class="input-group-addon">Mb</span>
-                  </div>
-                  </div>
-                </div>
-
-
                 <div class="col-md-offset-3 col-md-6">
               <center>
                   <button type="submit" id="conf_edit_main" class="btn btn-success"><i class="fa fa-pencil"></i> <?=lang('CONF_act_edit');?></button>
@@ -200,7 +140,82 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) {
                 <div class="col-md-12" style="margin-top:10px;" id="conf_edit_main_res"></div>
               </div>
                 </div>
+                <div class="tab-pane fade" id="conf_ticket">
+                  <div class="col-md-12 box-body_conf">
+                  <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                    <label for="days2arch" class="col-sm-4 control-label"><small><?=lang('CONF_2arch');?></small></label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control input-sm" id="days2arch" placeholder="<?=lang('CONF_2arch');?>" value="<?=get_conf_param('days2arch');?>">
+                      <p class="help-block"><small><?=lang('CONF_2arch_info');?> <br>
 
+                      5 0 * * * /usr/bin/php5 -f <?=realpath(dirname(dirname(__FILE__)))."/sys/4cron.php"?> > <?=realpath(dirname(dirname(__FILE__)))."/4cron.log"?> 2>&1</small></p>
+
+                      <p class="help-block"><small><?=lang('CONF_ticket_update');?> <br>
+
+                      5 0 * * * /usr/bin/php5 -f <?=realpath(dirname(dirname(__FILE__)))."/sys/4cron_live_ticket.php"?> > <?=realpath(dirname(dirname(__FILE__)))."/4cron.log"?> 2>&1</small></p>
+                    </div>
+                  </div>
+                    <div class="form-group">
+                <label for="fix_subj" class="col-sm-4 control-label"><small><?=lang('CONF_subj');?></small></label>
+                <div class="col-sm-8">
+              <select class="chosen-select_no_search form-control input-sm" id="fix_subj">
+              <option value="true" <?php if (get_conf_param('fix_subj') == "true") {echo "selected";} ?>><?=lang('CONF_fix_list');?></option>
+              <option value="false" <?php if (get_conf_param('fix_subj') == "false") {echo "selected";} ?>><?=lang('CONF_subj_text');?></option>
+            </select>
+            <p class="help-block"><small>
+            <?=lang('CONF_subj_info');?>
+            </small></p>
+            </div>
+              </div>
+
+                      <div class="form-group">
+                <label for="file_uploads" class="col-sm-4 control-label"><small><?=lang('CONF_fup');?></small></label>
+                <div class="col-sm-8">
+              <select class="chosen-select_no_search form-control input-sm" id="file_uploads">
+              <option value="true" <?php if (get_conf_param('file_uploads') == "true") {echo "selected";} ?>><?=lang('CONF_true');?></option>
+              <option value="false" <?php if (get_conf_param('file_uploads') == "false") {echo "selected";} ?>><?=lang('CONF_false');?></option>
+            </select>
+            <p class="help-block"><small>
+            <?=lang('CONF_fup_info');?>
+            </small></p>
+            </div>
+              </div>
+
+
+
+              <div class="form-group">
+                <label for="file_types" class="col-sm-4 control-label"><small><?=lang('CONF_file_types');?></small></label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control input-sm" id="file_types" placeholder="gif,jpe?g,png,doc,xls,rtf,pdf,zip,rar,bmp,docx,xlsx" value="<?php
+                  $bodytag = str_replace("|", ",", get_conf_param('file_types'));
+                  echo $bodytag;
+
+                  ?>">
+
+                </div>
+              </div>
+
+                <div class="form-group">
+                <label for="file_size" class="col-sm-4 control-label"><small><?=lang('CONF_file_size');?></small></label>
+                <div class="col-sm-8">
+                <div class="input-group">
+                  <input type="text" class="form-control input-sm" id="file_size" placeholder="5" value="<?=round(get_conf_param('file_size')/1024/1024);?>">
+            <span class="input-group-addon">Mb</span>
+                </div>
+                </div>
+              </div>
+              <div class="col-md-offset-3 col-md-6">
+            <center>
+                <button type="submit" id="conf_edit_ticket" class="btn btn-success"><i class="fa fa-pencil"></i> <?=lang('CONF_act_edit');?></button>
+
+            </center>
+
+            </div>
+                  </form>
+                  <div class="col-md-12" style="margin-top:10px;" id="conf_edit_ticket_res"></div>
+                </div>
+              </div>
     <div class="tab-pane fade" id="conf_jabber">
       <div class="col-md-12 box-body_conf">
         <form class="form-horizontal" role="form">

@@ -2117,18 +2117,26 @@ if ($mode == "conf_edit_main") {
 update_val_by_key("name_of_firm", $_POST['name_of_firm']);
 update_val_by_key("title_header", $_POST['title_header']);
 update_val_by_key("hostname", 'http://'.$_POST['hostname']);
-update_val_by_key("days2arch", $_POST['days2arch']);
 update_val_by_key("first_login", $_POST['first_login']);
+update_val_by_key("shutdown", $_POST['shutdown']);
+update_val_by_key("pass_server", $_POST['pass_server']);
+update_val_by_key("time_zone", $_POST['time_zone']);
+update_val_by_key("mail", $_POST['mail']);
+?>
+<div class="alert alert-success">
+<?=lang('PROFILE_msg_ok');?>
+</div>
+<?php
+}
+if ($mode == "conf_edit_ticket") {
+update_val_by_key("days2arch", $_POST['days2arch']);
 update_val_by_key("fix_subj", $_POST['fix_subj']);
 update_val_by_key("file_uploads", $_POST['file_uploads']);
-update_val_by_key("time_zone", $_POST['time_zone']);
 
 $bodytag = str_replace(",", "|", $_POST['file_types']);
 
-
 update_val_by_key("file_types", $bodytag);
 update_val_by_key("file_size", $_POST['file_size']);
-update_val_by_key("mail", $_POST['mail']);
 ?>
 <div class="alert alert-success">
 <?=lang('PROFILE_msg_ok');?>

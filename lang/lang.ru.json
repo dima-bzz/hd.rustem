@@ -69,6 +69,7 @@
 "CONF_mail_type":"Тип",
 "CONF_file_types":"Допустимые типы файлов",
 "CONF_file_size":"Максимальный размер файла",
+"CONF_ticket_name":"Параметры заявок",
 "CONF_jabber_name":"Настройки Jabber",
 "CONF_jabber_status":"Уведомления jabber",
 "CONF_jabber_server":"Сервер jabber",
