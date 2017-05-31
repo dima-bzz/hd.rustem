@@ -24,7 +24,7 @@
 <script src="<?=$CONF['hostname']?>js/s2/select2.min.js"></script>
 <script src="<?=$CONF['hostname']?>js/bootstrap-paginator.js"></script>
 <script src="<?=$CONF['hostname']?>js/jquery.autosize.min.js"></script>
-<script src="<?=$CONF['hostname']?>js/jquery.noty.packaged.min.js"></script>
+<script src="<?=$CONF['hostname']?>js/jquery.noty.packaged.js"></script>
 <script src="<?=$CONF['hostname']?>js/ion.sound.min.js"></script>
 <script src="<?=$CONF['hostname']?>js/jquery.multi-select.js"></script>
 <script src="<?=$CONF['hostname']?>js/moment.min.js"></script>

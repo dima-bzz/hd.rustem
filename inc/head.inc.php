@@ -25,6 +25,7 @@
 <link rel="stylesheet" href="<?=$CONF['hostname']?>js/s2/select2.css?v2">
 <link rel="stylesheet" href="<?=$CONF['hostname']?>js/s2/select2-bootstrap.css">
 <link rel="stylesheet" href="<?=$CONF['hostname']?>css/bootstrap-datetimepicker.css">
+<link rel="stylesheet" type="text/css" href="<?=$CONF['hostname']?>css/animate.css">
 <style type="text/css" media="all">
     .chosen-rtl .chosen-drop { left: -9000px; }
 </style>

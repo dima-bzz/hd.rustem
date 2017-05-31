@@ -1,4 +1,4 @@
-var my_errors = {fio: false, login: false, pass: false};
+var my_errors = {fio: false, login: false, pass: false, noty: false};
 $(document).ready(function() {
 
 
@@ -1042,7 +1042,85 @@ window.addEventListener('load', function() {
     }
     };
 
+    function Noty_Show(){
+    $.ajax({
+    url:  ACTIONPATH,
+    type: "POST",
+    data:"mode=update_noty",
+    dataType: "json",
+    success: function(html){
+    if(html){
 
+      $.each(html, function(i, item) {
+
+          if (item.show == "true"){
+          var nt = $('#'+item.name).attr('id');
+          var noty_id = item.name.split('_')[4];
+          console.log(item.name);
+          if ((nt == item.name) && (nt != undefined)){
+              my_errors.noty = true;
+            }
+            else{
+              my_errors.noty = false;
+            }
+          if (my_errors.noty == false){
+
+            var t= item.message + '<br><div style=\'float: right;\'><small><i class=\"fa fa-clock-o fa-fw\" aria-hidden=\"true\"></i>&nbsp;'+item.time+'</small></div>';
+
+          var n = noty({
+            //theme: 'metroui',
+            layout: item.layout,
+            maxVisible: 5,
+            type: item.type,
+            text: t,
+            dismissQueue: true,
+            force: false,
+            modal: item.modal,
+            killer: false,
+            id: item.name,
+            animation: {
+              open: item.animated_open,
+              close: item.animated_close,
+              easing: 'swing',
+              speed: 500
+            },
+            closeWith: ['click'],
+            callback:{
+                        onClose: function(){
+                          $.ajax({
+                          url:  ACTIONPATH,
+                          type: "POST",
+                          data:"mode=update_noty_id_read"+
+                          "&id=" + noty_id,
+                          success: function(){
+                            if (item.noty_w == 'system_update'){
+                              window.location.href = MyHOSTNAME + 'index.php?logout';
+                            }
+                          }
+                        })
+                      },
+            }
+          });
+          if (item.noty_w != 'system_update'){
+          sendNotification(item.name_firm, {
+          body: item.message,
+          icon: MyHOSTNAME+"images/logo32.png",
+          dir: 'auto',
+          tag: item.name
+          }, noty_id);
+          }
+          $.ionSound.play("button_tiny");
+          }
+        }
+        makemytime(true);
+        })
+    }
+    }
+    })
+
+    }
+
+    Noty_Show();
 
 
     function check_update() {
@@ -1120,6 +1198,7 @@ if (url.search("inc") >= 0) {
                         });
                     }
                 }});
+                Noty_Show();
                 check_approve();
         }
     };
@@ -1241,6 +1320,7 @@ makemytime(false);
                 }});
         }
 	}});
+  Noty_Show();
   check_approve();
 	}
     };
@@ -2655,7 +2735,33 @@ $('body').on('click', 'button#files_del_upload', function(event) {
         });
     });
 
-
+    // ******Проверка наличия обновлений******
+    $('body').on('click', 'button#conf_check_update', function(event) {
+            event.preventDefault();
+            $.ajax({
+            type: "POST",
+            url: ACTIONPATH,
+            data: "mode=conf_check_update",
+            success: function(html){
+              $("#conf_check_update").blur();
+              $("#check_update").hide().html(html).fadeIn(500);
+            }
+            });
+          });
+    // ******Послание обновления******
+    $('body').on('click', 'button#conf_system_update', function(event) {
+            event.preventDefault();
+            $.ajax({
+            type: "POST",
+            url: ACTIONPATH,
+            data: "mode=conf_system_update",
+            success: function(html){
+              $("#conf_system_update").blur();
+              $("#up_success").hide().html(html).fadeIn(500);
+              setTimeout(function() {$('#up_success').children('.alert').fadeOut(500);}, 3000);
+            }
+            });
+          });
 //conf_edit_main
 $('body').on('click', 'button#conf_edit_main', function(event) {
 event.preventDefault();
