@@ -139,8 +139,7 @@ function sendFile(file, editor, welEditable) {
 
 
  $(".chosen-select_no_search").chosen({
-   disable_search: true,
-   width: "100%"
+   disable_search: true
  });
 
  $.i18n.debug = false;

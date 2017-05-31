@@ -14,6 +14,9 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) {
 .alert-info hr{
   border-top-color: #fff !important;
 }
+.chosen-container{
+  width: 100% !important;
+}
 </style>
 
 <div class="container">
