@@ -2762,6 +2762,12 @@ $('body').on('click', 'button#files_del_upload', function(event) {
             }
             });
           });
+          $('body').on('click', 'a#conf_menu', function(event) {
+            event.preventDefault();
+            $that = $(this);
+            $that.parent().find('a').removeClass('active');
+            $that.addClass('active');
+          });
 //conf_edit_main
 $('body').on('click', 'button#conf_edit_main', function(event) {
 event.preventDefault();
