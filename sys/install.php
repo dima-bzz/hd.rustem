@@ -130,6 +130,7 @@ if (isset($_POST['mode'])) {
 // Name of the file
 $filename = realpath(dirname(dirname(__FILE__))).'/DB/HD.db.sql';
 $fileconf = realpath(dirname(dirname(__FILE__))).'/conf.php';
+$file_mysql_baclup = realpath(dirname(__FILE__)).'/mysql_backup';
 // MySQL host
 $mysql_host = $_POST['host'];
 // MySQL username
@@ -228,6 +229,9 @@ $current .= ");\n";
 
 $current .= "?>\n";
 file_put_contents($fileconf, $current);
+
+$current_backup .= "mysqldump -u".$mysql_username." -h".$mysql_host." -p".$mysql_password." ".$mysql_database." > ".realpath(dirname(dirname(__FILE__)))."/backup/mysql_backup`date +%d%m%Y`.sql";
+file_put_contents($file_mysql_baclup, $current_backup);
 
 // $pos = strrpos($_SERVER['REQUEST_URI'], '/');
 // $sys_url= "http://".$_SERVER['HTTP_HOST'].substr($_SERVER['REQUEST_URI'], 0, $pos + 1);

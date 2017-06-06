@@ -58,11 +58,30 @@ cursor: pointer;
   padding: 10px;
   position: relative;
 }
+.box-header_conf{
+  color: #444;
+  display: block;
+  padding: 10px 0px;
+  position: relative;
+}
+.box-title_conf{
+  display: inline-block;
+  font-size: 18px;
+  margin: 0px;
+  line-height: 1;
+}
 .box-header_files::before,.box-header_files:after{
   content: " ";
   display: table;
 }
 .box-header_files:after{
+clear: both;
+}
+.box-header_conf::before,.box-header_conf:after{
+  content: " ";
+  display: table;
+}
+.box-header_conf:after{
 clear: both;
 }
 .badge-info{
@@ -120,15 +139,14 @@ clear: both;
 }
 .box-body_conf{
   background-color: #fff;
-  border-left: 1px solid #ddd;
-  border-right: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
+  border: 1px solid #ddd;
   border-bottom-right-radius: 3px;
   border-bottom-left-radius: 3px;
+  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
   box-shadow: 0 1px 2px #ddd;
-  padding: 20px;
 }
-.tabbable_files, .tab_conf{
+.tabbable_files{
   background-color: #fff;
   box-shadow: 0 1px 2px #ddd;
   border-top-left-radius: 3px;

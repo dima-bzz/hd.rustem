@@ -33,6 +33,14 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) {
 
 <div class="row" >
 <div class="col-md-3">
+  <div class="list-gtoup">
+  <a href="#conf_main" id="conf_menu" class="list-group-item active" data-toggle="tab"><?=lang('CONF_mains');?></a>
+  <a href="#conf_ticket" id="conf_menu" class="list-group-item" data-toggle="tab"><?=lang('CONF_ticket_name');?></a>
+  <a href="#conf_jabber" id="conf_menu" class="list-group-item" data-toggle="tab"><?=lang('CONF_jabber_name');?></a>
+  <a href="#conf_mail" id="conf_menu" class="list-group-item" data-toggle="tab"><?=lang('CONF_mail_name');?></a></a>
+  <a href="#conf_info" id="conf_menu" class="list-group-item" data-toggle="tab"><?=lang('CONF_information');?></a></a>
+</div>
+<br>
   <div class="alert alert-info" role="alert">
   <small>
   <i class="fa fa-info-circle" aria-hidden="true"></i>
@@ -66,16 +74,14 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) {
 
       <div class="col-md-9" id="content_info">
 
-        <div  class="tab_conf">
-            <ul class="nav nav-tabs">
-                <li class="active"><a href="#conf_main" data-toggle="tab"><i class="fa fa-cog"></i> <?=lang('CONF_mains');?></a></li>
-                <li><a href="#conf_ticket" data-toggle="tab"><i class="fa fa-tag"></i> <?=lang('CONF_ticket_name');?></a></li>
-                <li><a href="#conf_jabber" data-toggle="tab"><i class="fa fa-bell"></i> <?=lang('CONF_jabber_name');?></a></li>
-                <li><a href="#conf_mail" data-toggle="tab"><i class="fa fa-send"></i> <?=lang('CONF_mail_name');?></a></li>
-            </ul>
             <div class="tab-content">
                 <div class="tab-pane fade in active" id="conf_main">
                   <div class="col-md-12 box-body_conf">
+                    <div class="box-header_conf">
+                      <h3 class="box-title_conf">
+                        <i class="fa fa-cog"></i> <?=lang('CONF_mains');?>
+                      </h3>
+                    </div>
                   <form class="form-horizontal" role="form">
                   <div class="form-group">
                   <label for="name_of_firm" class="col-sm-4 control-label"><small><?=lang('CONF_name');?></small></label>
@@ -145,17 +151,16 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) {
                 </div>
                 <div class="tab-pane fade" id="conf_ticket">
                   <div class="col-md-12 box-body_conf">
+                    <div class="box-header_conf">
+                      <h3 class="box-title_conf">
+                        <i class="fa fa-tag"></i> <?=lang('CONF_ticket_name');?>
+                      </h3>
+                    </div>
                   <form class="form-horizontal" role="form">
                     <div class="form-group">
                     <label for="days2arch" class="col-sm-4 control-label"><small><?=lang('CONF_2arch');?></small></label>
                     <div class="col-sm-8">
                       <input type="text" class="form-control input-sm" id="days2arch" placeholder="<?=lang('CONF_2arch');?>" value="<?=get_conf_param('days2arch');?>">
-                      <p class="help-block"><small><?=lang('CONF_2arch_info');?></small><br>
-                      <pre><small class="pull-left">5 0 * * * /usr/bin/php5 -f <?=realpath(dirname(dirname(__FILE__)))."/sys/4cron.php"?> > <?=realpath(dirname(dirname(__FILE__)))."/4cron.log"?> 2>&1</small></pre>
-                    </p>
-                      <p class="help-block"><small><?=lang('CONF_ticket_update');?></small><br>
-                      <pre><small>5 0 * * * /usr/bin/php5 -f <?=realpath(dirname(dirname(__FILE__)))."/sys/4cron_live_ticket.php"?> > <?=realpath(dirname(dirname(__FILE__)))."/4cron.log"?> 2>&1</small></pre>
-                    </p>
                     </div>
                   </div>
                     <div class="form-group">
@@ -220,6 +225,11 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) {
               </div>
     <div class="tab-pane fade" id="conf_jabber">
       <div class="col-md-12 box-body_conf">
+        <div class="box-header_conf">
+          <h3 class="box-title_conf">
+            <i class="fa fa-bell"></i> <?=lang('CONF_jabber_name');?>
+          </h3>
+        </div>
         <form class="form-horizontal" role="form">
           <div class="form-group">
             <label for="jabber_active" class="col-sm-4 control-label"><small><?=lang('CONF_jabber_status');?></small></label>
@@ -268,6 +278,11 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) {
 
       <div class="tab-pane fade" id="conf_mail">
         <div class="col-md-12 box-body_conf">
+          <div class="box-header_conf">
+            <h3 class="box-title_conf">
+              <i class="fa fa-send"></i> <?=lang('CONF_mail_name');?>
+            </h3>
+          </div>
           <form class="form-horizontal" role="form">
 
           <div class="form-group">
@@ -357,8 +372,25 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) {
             <div class="col-md-12" style="margin-top:10px;" id="conf_test_mail_res"></div>
         </div>
       </div>
+      <div class="tab-pane fade" id="conf_info">
+        <div class="col-md-12 box-body_conf">
+          <div class="box-header_conf">
+            <h3 class="box-title_conf">
+              CRON
+            </h3>
+          </div>
+          <p class="help-block"><small><?=lang('CONF_2arch_info');?></small><br>
+          <pre><small class="pull-left">5 0 * * * /usr/bin/php5 -f <?=realpath(dirname(dirname(__FILE__)))."/sys/4cron.php"?> > <?=realpath(dirname(dirname(__FILE__)))."/4cron.log"?> 2>&1</small></pre>
+        </p>
+          <p class="help-block"><small><?=lang('CONF_ticket_update');?></small><br>
+          <pre><small>5 0 * * * /usr/bin/php5 -f <?=realpath(dirname(dirname(__FILE__)))."/sys/4cron_live_ticket.php"?> > <?=realpath(dirname(dirname(__FILE__)))."/4cron.log"?> 2>&1</small></pre>
+        </p>
+        <p class="help-block"><small><?=lang('CONF_mysql_backup');?></small><br>
+        <pre><small>0 2 * * 2,3,4,5 root <?=realpath(dirname(dirname(__FILE__)))."/sys/mysql_backup"?> > <?=realpath(dirname(dirname(__FILE__)))."/4cron.log"?> 2>&1</small></pre>
+      </p>
+        </div>
+      </div>
     </div>
-  </div>
 
 
 

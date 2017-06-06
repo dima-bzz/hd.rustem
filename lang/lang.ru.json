@@ -80,6 +80,7 @@
 "CONF_version_1":"Актуальная версия ПО: <a href=\"https://github.com/dima-bzz/hd.rustem\" target=\"blank\"><i class=\"fa fa-github\" aria-hidden=\"true\"></i>&nbsp;GitHub</a>",
 "CONF_time_zone" : "Временная зона",
 "CONF_ticket_update" : "Для отображения времени работы над заявкой, добавьте в cron-планировщик строку:",
+"CONF_mysql_backup" : "Для бэкапа базы данных, добавьте в cron-планировщик строку:",
 "CONF_system_update":"Послать обновление",
 "CONF_system_update_success" : "Сообщения успешно посланы",
 "CONF_system_update_title" : "Будет послано уведомления всем пользователям Online, что система обновлена!",
@@ -88,6 +89,7 @@
 "CONF_check_update_latest": "У вас последняя версия.",
 "CONF_check_update_download": "Скачать послдению версию.",
 "CONF_check_update_actual": "<b>Последняя версия:</b> ",
+"CONF_information": "Информация",
 
  "HELPER_info":"В данном разделе могут содержаться инструкции и документация для решения типичных проблем.",
  "NAVBAR_conf":"Настройки системы",
