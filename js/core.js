@@ -347,6 +347,7 @@ $('body').on('click', 'a#show_online_users', function(event) {
             data:"mode=approve_online_users_table",
             success: function(html){
               $('#online3').html(html);
+              $('[data-toggle="tooltip"]').tooltip({container: 'body', html:true});
             }
           })
           $.ajax({
