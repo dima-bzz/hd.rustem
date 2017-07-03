@@ -3585,6 +3585,9 @@ if ($mode == "ticket_delete"){
     $stmt = $dbConnection->prepare('delete from comments where t_id=:id');
     $stmt->execute(array(':id' => $t_d_id));
 
+    $stmt = $dbConnection->prepare('delete from tickets_fields where ticket_hash=:td');
+    $stmt->execute(array(':td' => $td));
+
 
     $stmt = $dbConnection->prepare('delete from tickets where hash_name=:td');
     $stmt->execute(array(':td' => $td));
