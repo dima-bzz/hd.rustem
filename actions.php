@@ -3946,6 +3946,9 @@ if ($mode == "change_subj_plus_fields"){
   $id = $_POST['subj_id'];
   form_subj($id);
 }
+if ($mode == "update_dop_fields"){
+  dop_fields();
+}
 if ($mode == "change_field_check_subj"){
 
   $stmt = $dbConnection->prepare('UPDATE dop_fields SET field_status= :name where field_subj<>:subj');

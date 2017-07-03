@@ -2830,9 +2830,31 @@ success: function(html) {
 $("#conf_edit_ticket_res").hide().html(html).fadeIn(500);
 setTimeout(function() {$('#conf_edit_ticket_res').children('.alert').fadeOut(500);}, 3000);
 if ($("#fix_subj").val() == "false"){
-      $.post(ACTIONPATH, {
-        mode: 'change_field_check_subj',
+      $.ajax({
+      type: "POST",
+      url: ACTIONPATH,
+      data: "mode=change_field_check_subj",
+      success: function(){
+        $.ajax({
+        type: "POST",
+        url: ACTIONPATH,
+        data: "mode=update_dop_fields",
+        success: function(html){
+          $("#ticket_fields_res").html(html);
+        }
+        });
+      }
       });
+}
+else{
+$.ajax({
+type: "POST",
+url: ACTIONPATH,
+data: "mode=update_dop_fields",
+success: function(html){
+  $("#ticket_fields_res").html(html);
+}
+});
 }
 }
 });
