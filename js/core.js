@@ -723,12 +723,22 @@ if ( $('select#mail_type').val() == "sendmail" ){
 
         if ( $('select#subj').val() != 0 ){
 
+          $.ajax({
+              type: "POST",
+              url: ACTIONPATH,
+              data: "mode=change_subj_plus_fields"+
+              "&subj_id=" + $("select#subj option[value='"+$(this).val()+"']").attr('valueid'),
+              success: function(html){
+                  $("#form_subj").html(html);
+              }
+          });
+
             $('#for_subj').popover('hide');
             $('#for_subj').removeClass('has-error');
             $('#for_subj').addClass('has-success');
         }
         else {
-
+            $("#form_subj").html('');
             $('#for_subj').popover('show');
             $('#for_subj').addClass('has-error');
 
@@ -1508,11 +1518,27 @@ if (ispath('profile') ) {
         },5000);
     }
     if (ispath('create') ) {
+      $(".multi_field").select2({
+          allowClear: true,
+          width:'100%',
+          maximumSelectionSize: 15,
+          formatNoMatches:$.i18n('JS_not_found'),
+          escapeMarkup: function(m) { return m; }
+      });
     //if (def_filename == "new.php") {
         setInterval(function(){
             check_update();
         },5000);
     }
+    if (!ispath('create') ) {
+        $(".multi_field").select2({
+            allowClear: true,
+            width:'100%',
+            maximumSelectionSize: 15,
+            formatNoMatches:$.i18n('JS_not_found'),
+            escapeMarkup: function(m) { return m; }
+        });
+      }
 if (ispath('notes') ) {
     //if (def_filename == "notes.php") {
         $('#buttons').hide();
@@ -2770,7 +2796,6 @@ $('body').on('click', 'button#files_del_upload', function(event) {
             $that.addClass('active');
           });
 //conf_edit_main
-$('body').on('click', 'button#conf_edit_main', function(event) {
 event.preventDefault();
 $.ajax({
 type: "POST",
@@ -2780,16 +2805,35 @@ data: "mode=conf_edit_main"+
 "&title_header="+encodeURIComponent($("input#title_header").val())+
 "&hostname="+encodeURIComponent($("input#hostname").val())+
 "&mail="+encodeURIComponent($("input#mail").val())+
-"&days2arch="+encodeURIComponent($("input#days2arch").val())+
 "&first_login="+encodeURIComponent($("#first_login").val())+
-"&fix_subj="+encodeURIComponent($("#fix_subj").val())+
-"&file_uploads="+encodeURIComponent($("#file_uploads").val())+
-"&file_types="+encodeURIComponent($("#file_types").val())+
-"&time_zone="+encodeURIComponent($("#time_zone").val())+
-"&file_size="+encodeURIComponent($("#file_size").val()*1024*1024),
+"&shutdown="+encodeURIComponent($("#permit_users_shutdown").val())+
+"&pass_server="+encodeURIComponent($("#pass_server").val())+
+"&time_zone="+encodeURIComponent($("#time_zone").val()),
 success: function(html) {
 $("#conf_edit_main_res").hide().html(html).fadeIn(500);
 setTimeout(function() {$('#conf_edit_main_res').children('.alert').fadeOut(500);}, 3000);
+}
+});
+});
+$('body').on('click', 'button#conf_edit_ticket', function(event) {
+event.preventDefault();
+$.ajax({
+type: "POST",
+url: ACTIONPATH,
+data: "mode=conf_edit_ticket"+
+"&days2arch="+encodeURIComponent($("input#days2arch").val())+
+"&fix_subj="+encodeURIComponent($("#fix_subj").val())+
+"&file_uploads="+encodeURIComponent($("#file_uploads").val())+
+"&file_types="+encodeURIComponent($("#file_types").val())+
+"&file_size="+encodeURIComponent($("#file_size").val()*1024*1024),
+success: function(html) {
+$("#conf_edit_ticket_res").hide().html(html).fadeIn(500);
+setTimeout(function() {$('#conf_edit_ticket_res').children('.alert').fadeOut(500);}, 3000);
+if ($("#fix_subj").val() == "false"){
+      $.post(ACTIONPATH, {
+        mode: 'change_field_check_subj',
+      });
+}
 }
 });
 });
@@ -3849,6 +3893,96 @@ $("body").on("click", "a#select_init_user", function(event) {
         });
       });
 
+      $('body').on('click', 'button#ticket_field_plus', function(event) {
+          event.preventDefault();
+          $.ajax({
+              type: "POST",
+              url: ACTIONPATH,
+              data: "mode=add_field_item",
+              success: function(html){
+                $('#ticket_fields_res').html(html);
+              }
+          });
+        });
+        $('body').on('change', '#field_perf_name', function(event) {
+            event.preventDefault();
+            var hash = $(this).closest('tr').attr('id');
+            var name = $(this).val();
+            $.post(ACTIONPATH, {
+              mode: 'change_field_name',
+              hash: hash,
+              name: name
+            });
+          });
+          $('body').on('change', '#field_perf_placeholder', function(event) {
+              event.preventDefault();
+              var hash = $(this).closest('tr').attr('id');
+              var name = $(this).val();
+              $.post(ACTIONPATH, {
+                mode: 'change_field_placeholder',
+                hash: hash,
+                name: name
+              });
+            });
+            $('body').on('change', '#field_perf_value', function(event) {
+                event.preventDefault();
+                var hash = $(this).closest('tr').attr('id');
+                var name = $(this).val();
+                $.post(ACTIONPATH, {
+                  mode: 'change_field_value',
+                  hash: hash,
+                  name: name
+                });
+              });
+              $('body').on('change', '#field_perf_select', function(event) {
+                  event.preventDefault();
+                  var hash = $(this).closest('tr').attr('id');
+                  var name = $(this).val();
+                  $.post(ACTIONPATH, {
+                    mode: 'change_field_select',
+                    hash: hash,
+                    name: name
+                  });
+                });
+                $('body').on('change', '#field_perf_subj_select', function(event) {
+                    event.preventDefault();
+                    var hash = $(this).closest('tr').attr('id');
+                    var name = $(this).val();
+                    $.post(ACTIONPATH, {
+                      mode: 'change_field_subj_select',
+                      hash: hash,
+                      name: name
+                    });
+                  });
+                $('body').on('change', '#field_perf_check', function(event) {
+                    event.preventDefault();
+                    var hash = $(this).closest('tr').attr('id');
+                    var name = $(this).prop('checked');
+                    $.post(ACTIONPATH, {
+                      mode: 'change_field_check',
+                      hash: hash,
+                      name: name
+                    });
+                  });
+                  $('body').on('click', 'button#del_field_item', function(event) {
+                      event.preventDefault();
+                      var hash = $(this).closest('tr').attr('id');
+                      bootbox.confirm($.i18n('JS_del'), function(result){
+                        if (result == true){
+                          $.ajax({
+                              type: "POST",
+                              url: ACTIONPATH,
+                              async:false,
+                              data: "mode=del_field_item"+
+                                  "&hash="+hash,
+                              success: function(html){
+                                  $('#ticket_fields_res').html(html);
+
+                                  }
+                          });
+                        }
+                      })
+                    });
 
     $('body').on('click', 'button#ref_ticket', function(event) {
         event.preventDefault();
@@ -4102,6 +4236,8 @@ if (!$('#s_start').length) {
 function enter_ticket() {
 	    var status_action=$("#status_action").val();
 		var u_do;
+    var add_form = $("#add_field_form").serialize();
+    var add_form_subj = $("#add_field_form_subj").serialize();
             if (status_action =='add') {
 
                 //uploadObj.startUpload();
@@ -4141,7 +4277,9 @@ if( $("#users_do").val() != null ) {
                         "&prio="+encodeURIComponent($("#prio").val())+
                         "&confirm="+encodeURIComponent($("#confirm").prop('checked'))+
                         "&deadline_t="+encodeURIComponent($("#deadline_t").val())+
-                        "&hashname="+encodeURIComponent($("#hashname").val()),
+                        "&hashname="+encodeURIComponent($("#hashname").val())+
+                        "&" + add_form+
+                        "&" + add_form_subj,
                     success: function(html) {
 
 
@@ -4193,7 +4331,9 @@ if( $("#users_do").val() != null ) {
                         "&prio="+encodeURIComponent($("#prio").val())+
                         "&confirm="+encodeURIComponent($("#confirm").prop('checked'))+
                         "&deadline_t="+encodeURIComponent($("#deadline_t").val())+
-                        "&hashname="+encodeURIComponent($("#hashname").val()),
+                        "&hashname="+encodeURIComponent($("#hashname").val())+
+                        "&" + add_form+
+                        "&" + add_form_subj,
                     success: function(html) {
 
 
