@@ -62,7 +62,7 @@ body {
   cursor: pointer;
 
 }
-.checkbox_fields:focus{
+#ticket_fields_res input[type='checkbox']:focus{
   outline: 0;
   outline-offset: 0;
 }

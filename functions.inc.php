@@ -728,13 +728,30 @@ function dop_fields(){
       foreach ($res1 as $row) {
         if (($CONF['fix_subj'] == "false") && ($row['field_subj'] != '0')){
           $dis = "disabled";
+          $dis2 = "active";
         }
         else{
           $dis = "";
+          $dis2 = "";
         }
+        switch ($row['field_type']) {
+        case 'text':
+          $val = 'value';
+          break;
+          case 'textarea':
+            $val = 'value';
+            break;
+            case 'select':
+              $val = 'value,value,value';
+              break;
+              case 'multiselect':
+                $val = 'value,value,value';
+                break;
+
+                  }
         ?>
-        <tr id="<?=$row['field_hash'];?>">
-          <td style="display: flex;align-items: center;justify-content: center;">
+        <tr id="<?=$row['field_hash'];?>" class="<?=$dis2;?>">
+          <td style="text-align:center;">
                 <input type="checkbox" class="checkbox_fields" <?=$dis;?> id="field_perf_check" value="<?=$row['field_status']?>" <?php if ($row['field_status']=="1") {echo "checked";};?>>
           </td>
           <?php
@@ -765,7 +782,7 @@ function dop_fields(){
             <input autocomplete="off" type="text" class="form-control input-sm" id="field_perf_placeholder" <?=$dis;?> placeholder="placeholder" value="<?=$row['field_placeholder'];?>">
           </td>
           <td>
-            <input autocomplete="off" type="text" class="form-control input-sm" id="field_perf_value" <?=$dis;?> placeholder="value" value="<?=$row['field_value'];?>">
+            <input autocomplete="off" type="text" class="form-control input-sm" id="field_perf_value" <?=$dis;?> placeholder="<?=$val;?>" value="<?=$row['field_value'];?>">
           </td>
           <td>
             <select id="field_perf_select" <?=$dis;?> class="form-control input-sm">

@@ -3958,12 +3958,38 @@ $("body").on("click", "a#select_init_user", function(event) {
               });
               $('body').on('change', '#field_perf_select', function(event) {
                   event.preventDefault();
-                  var hash = $(this).closest('tr').attr('id');
-                  var name = $(this).val();
-                  $.post(ACTIONPATH, {
-                    mode: 'change_field_select',
-                    hash: hash,
-                    name: name
+                  $that = $(this)
+                  var hash = $that.closest('tr').attr('id');
+                  var name = $that.val();
+                  // $.post(ACTIONPATH, {
+                  //   mode: 'change_field_select',
+                  //   hash: hash,
+                  //   name: name
+                  // });
+
+                  $.ajax({
+                      type: "POST",
+                      url: ACTIONPATH,
+                      data: "mode=change_field_select"+
+                          "&hash="+hash +
+                          "&name="+name,
+                      success: function(){
+                          switch (name) {
+                            case 'text':
+                              $that.closest('tr').find('#field_perf_value').attr('placeholder','value');
+                              break;
+                              case 'textarea':
+                                $that.closest('tr').find('#field_perf_value').attr('placeholder','value');
+                                break;
+                                case 'select':
+                                  $that.closest('tr').find('#field_perf_value').attr('placeholder','value,value,value');
+                                  break;
+                                  case 'multiselect':
+                                    $that.closest('tr').find('#field_perf_value').attr('placeholder','value,value,value');
+                                    break;
+                          };
+
+                          }
                   });
                 });
                 $('body').on('change', '#field_perf_subj_select', function(event) {
