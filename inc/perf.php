@@ -222,6 +222,22 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) {
                   </form>
                   <div class="col-md-12" style="margin-top:10px;" id="conf_edit_ticket_res"></div>
                 </div>
+                <div class="col-md-12 box-body_conf" style="margin-top:20px;">
+                <div class="box-header_conf">
+                  <h3 class="box-title_conf">
+                    <i class="fa fa-bookmark-o"></i> <?=lang('CONF_ticket_dop_fields');?>
+                  </h3>
+                  <div class="box-tools pull-right">
+                    <button id="ticket_field_plus" class="btn btn-success btn-xs" type="submit"><?=lang('CONF_new_field');?></button>
+                  </div>
+                </div>
+                <div id="ticket_fields_res">
+                <?php
+                dop_fields();
+                ?>
+              </div>
+              </div>
+
               </div>
     <div class="tab-pane fade" id="conf_jabber">
       <div class="col-md-12 box-body_conf">

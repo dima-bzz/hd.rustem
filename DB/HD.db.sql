@@ -107,6 +107,25 @@ UNLOCK TABLES;
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `dop_field`
+--
+
+CREATE TABLE IF NOT EXISTS `dop_fields` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `field_hash` varchar(256) NOT NULL,
+  `field_subj` int(11) DEFAULT '0',
+  `field_name` varchar(256) NOT NULL,
+  `field_placeholder` varchar(256) NOT NULL,
+  `field_value` longtext NOT NULL,
+  `field_type` varchar(100) NOT NULL DEFAULT 'text',
+  `field_status` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+/*!40000 ALTER TABLE `dop_field` ENABLE KEYS */;
+UNLOCK TABLES;
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `files`
 --
 
@@ -330,6 +349,20 @@ CREATE TABLE IF NOT EXISTS `tickets` (
   `permit_ok` int(11) DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `tickets_fields`
+--
+
+CREATE TABLE IF NOT EXISTS `tickets_fields` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ticket_hash` varchar(256) NOT NULL,
+  `field_name` varchar(256) NOT NULL,
+  `field_value` longtext NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 

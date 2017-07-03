@@ -90,6 +90,20 @@
 "CONF_check_update_download": "Скачать послдению версию.",
 "CONF_check_update_actual": "<b>Последняя версия:</b> ",
 "CONF_information": "Информация",
+"CONF_status":"статус",
+"CONF_name":"имя",
+"CONF_placeholder":"placeholder",
+"CONF_value":"значение",
+"CONF_type":"тип",
+"CONF_del":"удалить",
+"CONF_text":"Текст",
+"CONF_textarea":"Большой текст",
+"CONF_select":"Список",
+"CONF_multiselect":"Мультиселект",
+"CONF_ticket_dop_fields":"Дополнительные поля",
+"CONF_new_field":"Новое поле",
+"CONF_subj_select":"Выберите тему",
+"CONF_subj_h":"тема",
 
  "HELPER_info":"В данном разделе могут содержаться инструкции и документация для решения типичных проблем.",
  "NAVBAR_conf":"Настройки системы",
@@ -337,6 +351,7 @@
 "TICKET_reaction":"Время реакции на заявку",
 "TICKET_not_lock":"еще не взята",
 "TICKET_ok_dt":"Время выполнения заявки",
+"TICKET_dop_info":"Дополнительная информация",
 
 
 "CLIENTS_name":"Пользователи",

@@ -306,7 +306,7 @@ if ($CONF['fix_subj'] == "false") {
 		    */
 
 
-	$stmt = $dbConnection->prepare('SELECT name FROM subj order by name COLLATE utf8_unicode_ci ASC');
+	$stmt = $dbConnection->prepare('SELECT name,id FROM subj order by name COLLATE utf8_unicode_ci ASC');
 	$stmt->execute();
 	$res1 = $stmt->fetchAll();
         foreach($res1 as $row) {
@@ -314,7 +314,7 @@ if ($CONF['fix_subj'] == "false") {
 
                         ?>
 
-                        <option value="<?=$row['name']?>"><?=$row['name']?></option>
+                        <option value="<?=$row['name']?>" valueid="<?=$row['id']?>"><?=$row['name']?></option>
 
                     <?php
 
@@ -329,7 +329,8 @@ if ($CONF['fix_subj'] == "false") {
 
     </div>
 </div>
-
+<div id="form_subj">
+</div>
 
 <?php }
 ?>
@@ -391,7 +392,7 @@ if ($CONF['fix_subj'] == "false") {
 		    */
 
 
-	$stmt = $dbConnection->prepare('SELECT name FROM subj order by name COLLATE utf8_unicode_ci ASC');
+	$stmt = $dbConnection->prepare('SELECT name,id FROM subj order by name COLLATE utf8_unicode_ci ASC');
 	$stmt->execute();
 	$res1 = $stmt->fetchAll();
         foreach($res1 as $row) {
@@ -399,7 +400,7 @@ if ($CONF['fix_subj'] == "false") {
 
                         ?>
 
-                        <option value="<?=$row['name']?>"><?=$row['name']?></option>
+                        <option value="<?=$row['name']?>" valueid="<?=$row['id']?>"><?=$row['name']?></option>
 
                     <?php
 
@@ -414,7 +415,8 @@ if ($CONF['fix_subj'] == "false") {
 
     </div>
 </div>
-
+<div id="form_subj">
+</div>
 
 <?php }
 ?>
@@ -469,7 +471,7 @@ if ($CONF['fix_subj'] == "false") {
 		    */
 
 
-	$stmt = $dbConnection->prepare('SELECT name FROM subj order by name COLLATE utf8_unicode_ci ASC');
+	$stmt = $dbConnection->prepare('SELECT name,id FROM subj order by name COLLATE utf8_unicode_ci ASC');
 	$stmt->execute();
 	$res1 = $stmt->fetchAll();
         foreach($res1 as $row) {
@@ -477,7 +479,7 @@ if ($CONF['fix_subj'] == "false") {
 
                         ?>
 
-                        <option value="<?=$row['name']?>"><?=$row['name']?></option>
+                        <option value="<?=$row['name']?>" valueid="<?=$row['id']?>"><?=$row['name']?></option>
 
                     <?php
 
@@ -492,7 +494,8 @@ if ($CONF['fix_subj'] == "false") {
 
     </div>
 </div>
-
+<div id="form_subj">
+</div>
 
 <?php }
 ?>
@@ -570,7 +573,72 @@ if ($CONF['fix_subj'] == "false") {
 </div>
 </div-->
 <?php } ?>
-
+<form id="add_field_form">
+  <div>
+    <?php
+    $stmt = $dbConnection->prepare('SELECT field_hash, field_name, field_placeholder, field_value, field_type, field_status FROM dop_fields WHERE field_status = :n and field_subj = :n2 and field_name <> "" order by id asc');
+    $stmt->execute(array(':n' => '1', ':n2' => '0'));
+    $res1 = $stmt->fetchAll();
+    foreach ($res1 as $row) {
+     ?>
+    <div class="control-group">
+      <div class="controls">
+        <div class="form-group">
+          <label for="<?=$row['field_hash'];?>" class="col-sm-2 control-label"><small><?=$row['field_name']?>:</small></label>
+          <div class="col-sm-10" style="padding-top: 5px;">
+            <?php
+            if ($row['field_type'] == "text"){
+              ?>
+              <input type="text" class="form-control input-sm" name="<?=$row['field_hash'];?>" id="<?=$row['field_hash'];?>" placeholder="<?=$row['field_placeholder']?>" value="<?=$row['field_value']?>">
+              <?php
+            }
+             ?>
+             <?php
+             if ($row['field_type'] == "textarea"){
+               ?>
+               <textarea rows="3" class="form-control input-sm" name="<?=$row['field_hash'];?>" id="<?=$row['field_hash'];?>" placeholder="<?=$row['field_placeholder']?>" style="overflow:hidden; word-wrap:break-word; resize: horizontal; height: 66px;"><?=$row['field_value']?></textarea>
+               <?php
+             }
+              ?>
+              <?php
+              if ($row['field_type'] == "select"){
+                ?>
+                <select data-placeholder="<?=$row['field_placeholder']?>" class="chosen-select form-control" id="<?=$row['field_hash'];?>" name="<?=$row['field_hash'];?>">
+                  <?php
+                  $val = explode(',',$row['field_value']);
+                  foreach ($val as $key) {
+                    ?>
+                    <option value="<?=$key;?>"><?=$key;?></option>
+                    <?php
+                  }
+                   ?>
+                </select>
+                <?php
+              }
+               if ($row['field_type'] == "multiselect"){
+                 ?>
+                 <select data-placeholder="<?=$row['field_placeholder']?>" class="multi_field select2-offscreen" id="<?=$row['field_hash'];?>" name="<?=$row['field_hash'];?>[]" multiple="multiple">
+                   <?php
+                   $val = explode(',',$row['field_value']);
+                   foreach ($val as $key) {
+                     ?>
+                     <option value="<?=$key;?>"><?=$key;?></option>
+                     <?php
+                   }
+                    ?>
+                 </select>
+                 <?php
+               }
+                ?>
+        </div>
+      </div>
+    </div>
+  </div>
+    <?php
+  }
+     ?>
+  </div>
+</form>
 <div class="col-md-2"></div>
 <div class="col-md-10" id="processing">
     <div class="btn-group btn-group-justified">

@@ -353,7 +353,31 @@ if ($rows['name'] == $row['subj']) {$sel_flag="selected";}
 </div><!-- /.modal-content -->
 </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-<?php } ?>
+<?php
+}
+$stmt = $dbConnection->prepare('SELECT field_name, field_value FROM tickets_fields WHERE ticket_hash = :hashname order by id asc');
+$stmt->execute(array(':hashname' => $hn));
+$res1 = $stmt->fetchAll();
+if (!empty($res1)){
+?>
+<label class="control-label"><small><?=lang('TICKET_dop_info');?>:</small></label>
+<table class="table table-bordered">
+<tbody>
+<?php
+foreach ($res1 as $row2) {
+  ?>
+  <tr>
+    <td style="width:150px;"><small><?=$row2['field_name']?>:</small></td>
+    <td><small><?=$row2['field_value']?></small></td>
+  </tr>
+  <?php
+}
+ ?>
+ </tbody>
+ </table>
+ <?php
+}
+  ?>
 <div class="panel panel-default">
 <table class="table table-bordered">
 <tbody>

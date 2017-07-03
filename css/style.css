@@ -48,7 +48,44 @@ body {
 /* Custom page CSS
 -------------------------------------------------- */
 /* Not required for template or sticky footer method. */
+.center_header{
+  text-align: center;
+  vertical-align:middle !important;
+}
+.checkbox_fields {
+  vertical-align: middle;
+  position: relative;
+  top: 3px;
+  -webkit-appearance: none;
+  -moz-appearance:  none;
+  appearance:  none;
+  cursor: pointer;
 
+}
+.checkbox_fields:focus{
+  outline: 0;
+  outline-offset: 0;
+}
+.checkbox_fields:disabled{
+  color: #c1bcbc;
+}
+.checkbox_fields:not(:checked)::after{
+  font-family: FontAwesome;
+  display: inline-block;
+  text-align: center;
+  content: "\f096";
+  font-size: 20px;
+  width: 14px;
+}
+.checkbox_fields:checked::after{
+  font-family: FontAwesome;
+  display: inline-block;
+  text-align: center;
+  content: "\f046";
+  font-size: 20px;
+  width: 14px;
+
+}
 .pointer-cursor {
 cursor: pointer;
 }

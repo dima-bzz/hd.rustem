@@ -65,7 +65,7 @@ if ($forhostname == "/") {$CONF['hostname']=$CONF['hostname'];}
 else if ($forhostname <> "/") {$CONF['hostname']=$CONF['hostname']."/";}
 
 function get_version(){
-  $v = '2.20.0';
+  $v = '2.20.1';
   return $v;
 }
 
@@ -279,6 +279,7 @@ function get_file_icon($in) {
     return $icon;
 }
 function view_files_ticket(){
+  global $CONF;
   global $dbConnection;
   $stmt = $dbConnection->prepare('select id, ticket_hash, original_name,file_hash,file_type,file_size,file_ext from files');
   $stmt->execute();
@@ -698,7 +699,177 @@ function view_comment($tid) {
 <?php
 
 }
+function dop_fields(){
+  global $CONF;
+  global $dbConnection;
+  $stmt = $dbConnection->prepare('SELECT field_hash, field_name, field_subj, field_placeholder, field_value, field_type, field_status FROM dop_fields order by id asc');
+  $stmt->execute();
+  $res1 = $stmt->fetchAll();
+  if (!empty($res1)) {
+    ?>
+    <table class="table table-hover">
+      <tbody>
+        <tr>
+          <th class="center_header"><?=lang('CONF_status');?></th>
+          <?php
+          if ($CONF['fix_subj'] == "true") {
+            ?>
+            <th class="center_header"><?=lang('CONF_subj_h');?></th>
+            <?php
+          }
+            ?>
+          <th class="center_header"><?=lang('CONF_name');?></th>
+          <th class="center_header"><?=lang('CONF_placeholder');?></th>
+          <th class="center_header"><?=lang('CONF_value');?></th>
+          <th class="center_header"><?=lang('CONF_type');?></th>
+          <th class="center_header"><?=lang('CONF_del');?></th>
+        </tr>
+      <?php
+      foreach ($res1 as $row) {
+        if (($CONF['fix_subj'] == "false") && ($row['field_subj'] != '0')){
+          $dis = "disabled";
+        }
+        else{
+          $dis = "";
+        }
+        ?>
+        <tr id="<?=$row['field_hash'];?>">
+          <td style="display: flex;align-items: center;justify-content: center;">
+                <input type="checkbox" class="checkbox_fields" <?=$dis;?> id="field_perf_check" value="<?=$row['field_status']?>" <?php if ($row['field_status']=="1") {echo "checked";};?>>
+          </td>
+          <?php
+          if ($CONF['fix_subj'] == "true") {
+            ?>
+            <td>
+              <select id="field_perf_subj_select" class="form-control input-sm">
+                <option value=""><?=lang('CONF_subj_select');?></option>
+                <?php
+                $stmt = $dbConnection->prepare('SELECT name, id FROM subj order by id asc');
+                $stmt->execute();
+                $res2 = $stmt->fetchAll();
+                foreach ($res2 as $row2) {
+                  ?>
+                  <option value="<?=$row2['id'];?>" <?php if($row['field_subj'] == $row2['id']) echo 'selected="selected"';?>><?=$row2['name']?></option>
+                  <?php
+                }
+                 ?>
+              </select>
+            </td>
+            <?php
+          }
+           ?>
+          <td>
+            <input autocomplete="off" type="text" class="form-control input-sm" id="field_perf_name" <?=$dis;?> placeholder="name" value="<?=$row['field_name'];?>">
+          </td>
+          <td>
+            <input autocomplete="off" type="text" class="form-control input-sm" id="field_perf_placeholder" <?=$dis;?> placeholder="placeholder" value="<?=$row['field_placeholder'];?>">
+          </td>
+          <td>
+            <input autocomplete="off" type="text" class="form-control input-sm" id="field_perf_value" <?=$dis;?> placeholder="value" value="<?=$row['field_value'];?>">
+          </td>
+          <td>
+            <select id="field_perf_select" <?=$dis;?> class="form-control input-sm">
+              <option value="text" <?php if($row['field_type'] == "text") echo 'selected="selected"';?>><?=lang('CONF_text');?></option>
+              <option value="textarea" <?php if($row['field_type'] == "textarea") echo 'selected="selected"';?>><?=lang('CONF_textarea');?></option>
+              <option value="select" <?php if($row['field_type'] == "select") echo 'selected="selected"';?>><?=lang('CONF_select');?></option>
+              <option value="multiselect" <?php if($row['field_type'] == "multiselect") echo 'selected="selected"';?>><?=lang('CONF_multiselect');?></option>
+            </select>
+          </td>
+          <td style="text-align:center;">
+            <button id="del_field_item" <?=$dis;?> class="btn btn-danger btn-sm"  type="submit"><i class="fa fa-trash"></i>
+          </td>
+        </tr>
+        <?php
+      }
+       ?>
+      </tbody>
+    </table>
+    <br>
+    <?php
+  }
+  else{
+    ?>
+<div class="well well-large well-transparent lead">
+  <center>
+    <?=lang('MSG_no_records')?>
+  </center>
+</div>
+    <?php
+  }
+}
+function form_subj($in){
+  global $dbConnection;
+  ?>
+  <form id="add_field_form_subj">
+    <div>
+      <?php
+      $stmt = $dbConnection->prepare('SELECT field_hash, field_name, field_placeholder, field_value, field_type, field_status FROM dop_fields WHERE field_status = :n and field_subj = :n2 and field_name <> "" order by id asc');
+      $stmt->execute(array(':n' => '1', ':n2' => $in));
+      $res1 = $stmt->fetchAll();
+      foreach ($res1 as $row) {
+       ?>
+      <div class="control-group">
+        <div class="controls">
+          <div class="form-group">
+            <label for="<?=$row['field_hash'];?>" class="col-sm-2 control-label"><small><?=$row['field_name']?>:</small></label>
+            <div class="col-sm-10" style="padding-top: 5px;">
+              <?php
+              if ($row['field_type'] == "text"){
+                ?>
+                <input type="text" class="form-control input-sm" name="<?=$row['field_hash'];?>" id="<?=$row['field_hash'];?>" placeholder="<?=$row['field_placeholder']?>" value="<?=$row['field_value']?>">
+                <?php
+              }
+               ?>
+               <?php
+               if ($row['field_type'] == "textarea"){
+                 ?>
+                 <textarea rows="3" class="form-control input-sm" name="<?=$row['field_hash'];?>" id="<?=$row['field_hash'];?>" placeholder="<?=$row['field_placeholder']?>" style="overflow:hidden; word-wrap:break-word; resize: horizontal; height: 66px;"><?=$row['field_value']?></textarea>
+                 <?php
+               }
+                ?>
+                <?php
+                if ($row['field_type'] == "select"){
+                  ?>
+                  <select data-placeholder="<?=$row['field_placeholder']?>" class="chosen-select form-control" id="<?=$row['field_hash'];?>" name="<?=$row['field_hash'];?>">
+                    <?php
+                    $val = explode(',',$row['field_value']);
+                    foreach ($val as $key) {
+                      ?>
+                      <option value="<?=$key;?>"><?=$key;?></option>
+                      <?php
+                    }
+                     ?>
+                  </select>
+                  <?php
+                }
+                 if ($row['field_type'] == "multiselect"){
+                   ?>
+                   <select data-placeholder="<?=$row['field_placeholder']?>" class="multi_field select2-offscreen" id="<?=$row['field_hash'];?>" name="<?=$row['field_hash'];?>[]" multiple="multiple">
+                     <?php
+                     $val = explode(',',$row['field_value']);
+                     foreach ($val as $key) {
+                       ?>
+                       <option value="<?=$key;?>"><?=$key;?></option>
+                       <?php
+                     }
+                      ?>
+                   </select>
+                   <?php
+                 }
+                  ?>
+          </div>
+        </div>
+      </div>
+    </div>
+      <?php
+    }
+       ?>
+    </div>
+  </form>
+  <?php
+}
 function show_files($hn){
+  global $CONF;
   global $dbConnection;
 
   $stmt = $dbConnection->prepare('SELECT file_hash, original_name, file_size FROM files_comment where comment_hash=:tid');

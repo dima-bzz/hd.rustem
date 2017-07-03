@@ -3888,6 +3888,70 @@ if ($mode == "update_noty_id_read"){
 
 
 }
+if ($mode == "add_field_item"){
+  $hash = md5(time());
+  $stmt = $dbConnection->prepare('INSERT INTO dop_fields (field_hash) VALUES (:hash)');
+  $stmt->execute(array(':hash'=>$hash));
+
+  dop_fields();
+}
+if ($mode == "change_field_name"){
+  $hash = ($_POST['hash']);
+  $name = $_POST['name'];
+  $stmt = $dbConnection->prepare('UPDATE dop_fields SET field_name= :name where field_hash=:hash');
+  $stmt->execute(array(':name' => $name, ':hash'=>$hash));
+}
+if ($mode == "change_field_placeholder"){
+  $hash = ($_POST['hash']);
+  $name = $_POST['name'];
+  $stmt = $dbConnection->prepare('UPDATE dop_fields SET field_placeholder= :name where field_hash=:hash');
+  $stmt->execute(array(':name' => $name, ':hash'=>$hash));
+}
+if ($mode == "change_field_value"){
+  $hash = ($_POST['hash']);
+  $name = $_POST['name'];
+  $stmt = $dbConnection->prepare('UPDATE dop_fields SET field_value= :name where field_hash=:hash');
+  $stmt->execute(array(':name' => $name, ':hash'=>$hash));
+}
+if ($mode == "change_field_select"){
+  $hash = ($_POST['hash']);
+  $name = $_POST['name'];
+  $stmt = $dbConnection->prepare('UPDATE dop_fields SET field_type= :name where field_hash=:hash');
+  $stmt->execute(array(':name' => $name, ':hash'=>$hash));
+}
+if ($mode == "change_field_subj_select"){
+  $hash = ($_POST['hash']);
+  $name = $_POST['name'];
+  $stmt = $dbConnection->prepare('UPDATE dop_fields SET field_subj= :name where field_hash=:hash');
+  $stmt->execute(array(':name' => $name, ':hash'=>$hash));
+}
+if ($mode == "change_field_check"){
+  $hash = ($_POST['hash']);
+  $name = $_POST['name'];
+  if ($name == 'true'){$name = '1';}else{$name = '0';}
+  $stmt = $dbConnection->prepare('UPDATE dop_fields SET field_status= :name where field_hash=:hash');
+  $stmt->execute(array(':name' => $name, ':hash'=>$hash));
+}
+if ($mode == "del_field_item"){
+  $hash = ($_POST['hash']);
+
+  $stmt = $dbConnection->prepare('DELETE FROM dop_fields WHERE field_hash=:hash');
+  $stmt->execute(array(':hash'=>$hash));
+
+  dop_fields();
+
+}
+
+if ($mode == "change_subj_plus_fields"){
+  $id = $_POST['subj_id'];
+  form_subj($id);
+}
+if ($mode == "change_field_check_subj"){
+
+  $stmt = $dbConnection->prepare('UPDATE dop_fields SET field_status= :name where field_subj<>:subj');
+  $stmt->execute(array(':name' => '0', ':subj'=>'0'));
+
+}
 if ($mode == "conf_test_mail") {
 /*
 if (get_conf_param('mail_auth_type') != "none")
@@ -4043,7 +4107,27 @@ $client_posada	Должность клиента
 
 
 
+                $stmt = $dbConnection->prepare('SELECT field_hash, field_name FROM dop_fields');
+                $stmt->execute();
+                $res1 = $stmt->fetchAll();
+                foreach ($res1 as $row) {
+                  $field_hash = $row['field_hash'];
+                  $field_value = $_POST[$field_hash];
+                  $field_name = $row['field_name'];
+                  if (is_array($field_value)){
+                    if (!empty($field_value)){
+                      $field_value_end = implode(',',$field_value);
+                  }
 
+                  }
+                  else{
+                    $field_value_end = $field_value;
+                  }
+                  if ($field_value_end != ""){
+                  $stmt = $dbConnection->prepare('INSERT INTO tickets_fields (ticket_hash, field_name, field_value) values (:hashname, :field_name, :field_value)');
+                  $stmt->execute(array(':hashname'=>$hashname, ':field_name' => $field_name, ':field_value' => $field_value_end));
+                  }
+                }
 
 
 
@@ -4109,6 +4193,29 @@ if ($CONF_JABBER['active'] == "true") {
                 $stmt = $dbConnection->prepare('INSERT INTO tickets
 				(id, user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio, last_update, deadline_t, permit_ok) VALUES (:max_id_res_ticket, :user_init_id, :user_to_id, now(),:subj, :msg,:max_id,:unit_id, :status, :hashname, :prio, now(), :deadline_t, :permit_ok)');
                 $stmt->execute(array(':max_id_res_ticket'=>$max_id_res_ticket,':user_init_id'=>$user_init_id,':user_to_id'=>$user_to_id,':subj'=>$subj,':msg'=>$msg,':max_id'=>$client_id_param,':unit_id'=>$unit_id,':status'=>$status,':hashname'=>$hashname,':prio'=>$prio, ':deadline_t'=>$deadline_t, ':permit_ok'=>$confirm));
+
+
+                $stmt = $dbConnection->prepare('SELECT field_hash, field_name FROM dop_fields');
+                $stmt->execute();
+                $res1 = $stmt->fetchAll();
+                foreach ($res1 as $row) {
+                  $field_hash = $row['field_hash'];
+                  $field_value = $_POST[$field_hash];
+                  $field_name = $row['field_name'];
+                  if (is_array($field_value)){
+                    if (!empty($field_value)){
+                      $field_value_end = implode(',',$field_value);
+                  }
+
+                  }
+                  else{
+                    $field_value_end = $field_value;
+                  }
+                  if ($field_value_end != ""){
+                  $stmt = $dbConnection->prepare('INSERT INTO tickets_fields (ticket_hash, field_name, field_value) values (:hashname, :field_name, :field_value)');
+                  $stmt->execute(array(':hashname'=>$hashname, ':field_name' => $field_name, ':field_value' => $field_value_end));
+                  }
+                }
 
 
                 $unow=$_SESSION['helpdesk_user_id'];
