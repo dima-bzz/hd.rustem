@@ -752,13 +752,13 @@ function dop_fields(){
         ?>
         <tr id="<?=$row['field_hash'];?>" class="<?=$dis2;?>">
           <td style="text-align:center;">
-                <input type="checkbox" class="checkbox_fields" <?=$dis;?> id="field_perf_check" value="<?=$row['field_status']?>" <?php if ($row['field_status']=="1") {echo "checked";};?>>
+                <input type="checkbox" class="checkbox_fields" <?=$dis;?> id="field_checkbox" value="<?=$row['field_status']?>" <?php if ($row['field_status']=="1") {echo "checked";};?>>
           </td>
           <?php
           if ($CONF['fix_subj'] == "true") {
             ?>
             <td>
-              <select id="field_perf_subj_select" class="form-control input-sm">
+              <select id="field_subj_select" class="form-control input-sm">
                 <option value=""><?=lang('CONF_subj_select');?></option>
                 <?php
                 $stmt = $dbConnection->prepare('SELECT name, id FROM subj order by id asc');
@@ -776,16 +776,16 @@ function dop_fields(){
           }
            ?>
           <td>
-            <input autocomplete="off" type="text" class="form-control input-sm" id="field_perf_name" <?=$dis;?> placeholder="name" value="<?=$row['field_name'];?>">
+            <input autocomplete="off" type="text" class="form-control input-sm" id="field_name" <?=$dis;?> placeholder="name" value="<?=$row['field_name'];?>">
           </td>
           <td>
-            <input autocomplete="off" type="text" class="form-control input-sm" id="field_perf_placeholder" <?=$dis;?> placeholder="placeholder" value="<?=$row['field_placeholder'];?>">
+            <input autocomplete="off" type="text" class="form-control input-sm" id="field_placeholder" <?=$dis;?> placeholder="placeholder" value="<?=$row['field_placeholder'];?>">
           </td>
           <td>
-            <input autocomplete="off" type="text" class="form-control input-sm" id="field_perf_value" <?=$dis;?> placeholder="<?=$val;?>" value="<?=$row['field_value'];?>">
+            <input autocomplete="off" type="text" class="form-control input-sm" id="field_value" <?=$dis;?> placeholder="<?=$val;?>" value="<?=$row['field_value'];?>">
           </td>
           <td>
-            <select id="field_perf_select" <?=$dis;?> class="form-control input-sm">
+            <select id="field_select" <?=$dis;?> class="form-control input-sm">
               <option value="text" <?php if($row['field_type'] == "text") echo 'selected="selected"';?>><?=lang('CONF_text');?></option>
               <option value="textarea" <?php if($row['field_type'] == "textarea") echo 'selected="selected"';?>><?=lang('CONF_textarea');?></option>
               <option value="select" <?php if($row['field_type'] == "select") echo 'selected="selected"';?>><?=lang('CONF_select');?></option>
@@ -793,7 +793,7 @@ function dop_fields(){
             </select>
           </td>
           <td style="text-align:center;">
-            <button id="del_field_item" <?=$dis;?> class="btn btn-danger btn-sm"  type="submit"><i class="fa fa-trash"></i>
+            <button id="del_field" <?=$dis;?> class="btn btn-danger btn-sm"  type="submit"><i class="fa fa-trash"></i>
           </td>
         </tr>
         <?php

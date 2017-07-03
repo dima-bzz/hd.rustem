@@ -3926,46 +3926,44 @@ $("body").on("click", "a#select_init_user", function(event) {
               }
           });
         });
-        $('body').on('change', '#field_perf_name', function(event) {
+        $('body').on('change', '#field_name', function(event) {
             event.preventDefault();
-            var hash = $(this).closest('tr').attr('id');
-            var name = $(this).val();
+            $that = $(this)
+            var hash = $that.closest('tr').attr('id');
+            var name = $that.val();
             $.post(ACTIONPATH, {
               mode: 'change_field_name',
               hash: hash,
               name: name
             });
           });
-          $('body').on('change', '#field_perf_placeholder', function(event) {
+          $('body').on('change', '#field_placeholder', function(event) {
               event.preventDefault();
-              var hash = $(this).closest('tr').attr('id');
-              var name = $(this).val();
+              $that = $(this)
+              var hash = $that.closest('tr').attr('id');
+              var name = $that.val();
               $.post(ACTIONPATH, {
                 mode: 'change_field_placeholder',
                 hash: hash,
                 name: name
               });
             });
-            $('body').on('change', '#field_perf_value', function(event) {
+            $('body').on('change', '#field_value', function(event) {
                 event.preventDefault();
-                var hash = $(this).closest('tr').attr('id');
-                var name = $(this).val();
+                $that = $(this)
+                var hash = $that.closest('tr').attr('id');
+                var name = $that.val();
                 $.post(ACTIONPATH, {
                   mode: 'change_field_value',
                   hash: hash,
                   name: name
                 });
               });
-              $('body').on('change', '#field_perf_select', function(event) {
+              $('body').on('change', '#field_select', function(event) {
                   event.preventDefault();
                   $that = $(this)
                   var hash = $that.closest('tr').attr('id');
                   var name = $that.val();
-                  // $.post(ACTIONPATH, {
-                  //   mode: 'change_field_select',
-                  //   hash: hash,
-                  //   name: name
-                  // });
 
                   $.ajax({
                       type: "POST",
@@ -3976,52 +3974,55 @@ $("body").on("click", "a#select_init_user", function(event) {
                       success: function(){
                           switch (name) {
                             case 'text':
-                              $that.closest('tr').find('#field_perf_value').attr('placeholder','value');
+                              $that.closest('tr').find('#field_value').attr('placeholder','value');
                               break;
                               case 'textarea':
-                                $that.closest('tr').find('#field_perf_value').attr('placeholder','value');
+                                $that.closest('tr').find('#field_value').attr('placeholder','value');
                                 break;
                                 case 'select':
-                                  $that.closest('tr').find('#field_perf_value').attr('placeholder','value,value,value');
+                                  $that.closest('tr').find('#field_value').attr('placeholder','value,value,value');
                                   break;
                                   case 'multiselect':
-                                    $that.closest('tr').find('#field_perf_value').attr('placeholder','value,value,value');
+                                    $that.closest('tr').find('#field_value').attr('placeholder','value,value,value');
                                     break;
                           };
 
                           }
                   });
                 });
-                $('body').on('change', '#field_perf_subj_select', function(event) {
+                $('body').on('change', '#field_subj_select', function(event) {
                     event.preventDefault();
-                    var hash = $(this).closest('tr').attr('id');
-                    var name = $(this).val();
+                    $that = $(this)
+                    var hash = $that.closest('tr').attr('id');
+                    var name = $that.val();
                     $.post(ACTIONPATH, {
                       mode: 'change_field_subj_select',
                       hash: hash,
                       name: name
                     });
                   });
-                $('body').on('change', '#field_perf_check', function(event) {
+                $('body').on('change', '#field_checkbox', function(event) {
                     event.preventDefault();
-                    var hash = $(this).closest('tr').attr('id');
-                    var name = $(this).prop('checked');
+                    $that = $(this)
+                    var hash = $that.closest('tr').attr('id');
+                    var name = $that.val();
                     $.post(ACTIONPATH, {
-                      mode: 'change_field_check',
+                      mode: 'change_field_checkbox',
                       hash: hash,
                       name: name
                     });
                   });
-                  $('body').on('click', 'button#del_field_item', function(event) {
+                  $('body').on('click', 'button#del_field', function(event) {
                       event.preventDefault();
-                      var hash = $(this).closest('tr').attr('id');
+                      $that = $(this)
+                      var hash = $that.closest('tr').attr('id');
                       bootbox.confirm($.i18n('JS_del'), function(result){
                         if (result == true){
                           $.ajax({
                               type: "POST",
                               url: ACTIONPATH,
                               async:false,
-                              data: "mode=del_field_item"+
+                              data: "mode=del_field"+
                                   "&hash="+hash,
                               success: function(html){
                                   $('#ticket_fields_res').html(html);

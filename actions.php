@@ -3925,14 +3925,14 @@ if ($mode == "change_field_subj_select"){
   $stmt = $dbConnection->prepare('UPDATE dop_fields SET field_subj= :name where field_hash=:hash');
   $stmt->execute(array(':name' => $name, ':hash'=>$hash));
 }
-if ($mode == "change_field_check"){
+if ($mode == "change_field_checkbox"){
   $hash = ($_POST['hash']);
   $name = $_POST['name'];
   if ($name == 'true'){$name = '1';}else{$name = '0';}
   $stmt = $dbConnection->prepare('UPDATE dop_fields SET field_status= :name where field_hash=:hash');
   $stmt->execute(array(':name' => $name, ':hash'=>$hash));
 }
-if ($mode == "del_field_item"){
+if ($mode == "del_field"){
   $hash = ($_POST['hash']);
 
   $stmt = $dbConnection->prepare('DELETE FROM dop_fields WHERE field_hash=:hash');
