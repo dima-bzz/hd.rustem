@@ -1995,7 +1995,7 @@ foreach ($ee2 as $key2=>$value2) { $vv2[":vall_" . $key2]=$value2;}
                                 <div class="form-group">
                                     <label for="tel" class="col-sm-2 control-label"><small><?=lang('WORKER_tel');?></small></label>
                                     <div class="col-sm-10">
-                                        <input type="text" name="tel" class="form-control input-sm" id="tel" placeholder="<?=lang('WORKER_tel_full');?>" value="<?php echo $tel_user." ".$tel_ext; ?>">
+                                        <input type="text" name="tel" class="form-control input-sm" id="tel" placeholder="<?=lang('WORKER_tel_full');?>" value="<?php if ($tel_ext != "") {echo $tel_user." ".$tel_ext;} else {echo $tel_user;}?>">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -2046,14 +2046,14 @@ foreach ($ee2 as $key2=>$value2) { $vv2[":vall_" . $key2]=$value2;}
             $fio = $stmt->fetch(PDO::FETCH_ASSOC);
 
 
-            $qfio=($fio['fio']);
-            $qlogin=($fio['login']);
-            $tel=($fio['tel']);
+            $qfio=trim($fio['fio']);
+            $qlogin=trim($fio['login']);
+            $tel=trim($fio['tel']);
             $qpod=($fio['unit_desc']);
-            $adr=($fio['adr']);
+            $adr=trim($fio['adr']);
 
-            $email=($fio['email']);
-            $posada=($fio['posada']);
+            $email=trim($fio['email']);
+            $posada=trim($fio['posada']);
             $cid=($fio['client_id']);
 
 
@@ -2863,13 +2863,13 @@ $cl="";
 
          }
         if ($mode == "send_zapit_add") {
-            $pib=($_POST['pib']);
-            $login=($_POST['login']);
+            $pib=trim($_POST['pib']);
+            $login=trim($_POST['login']);
             $posada=($_POST['posada']);
             $pid=($_POST['pid']);
-            $tel=($_POST['tel']);
-            $adr=($_POST['adr']);
-            $mail=($_POST['mail']);
+            $tel=trim($_POST['tel']);
+            $adr=trim($_POST['adr']);
+            $mail=trim($_POST['mail']);
 
             $stmt = $dbConnection->prepare('insert into clients
 	    (fio, tel, login, unit_desc, adr, email, posada,status)
@@ -2885,13 +2885,13 @@ $cl="";
         }
 
         if ($mode == "send_zapit_edit_ok") {
-            $pib=($_POST['pib']);
-            $login=($_POST['login']);
+            $pib=trim($_POST['pib']);
+            $login=trim($_POST['login']);
             $posada=($_POST['posada']);
             $pid=($_POST['pid']);
-            $tel=($_POST['tel']);
-            $adr=($_POST['adr']);
-            $mail=($_POST['mail']);
+            $tel=trim($_POST['tel']);
+            $adr=trim($_POST['adr']);
+            $mail=trim($_POST['mail']);
             $id=($_POST['id_client']);
 //echo "ff";
             $stmt = $dbConnection->prepare('update clients set
@@ -2920,13 +2920,13 @@ posada=:posada where id = :id');
 
 
         if ($mode == "send_zapit_edit") {
-            $pib=($_POST['pib']);
-            $login=($_POST['login']);
+            $pib=trim($_POST['pib']);
+            $login=trim($_POST['login']);
             $posada=($_POST['posada']);
             $pid=($_POST['pid']);
-            $tel=($_POST['tel']);
-            $adr=($_POST['adr']);
-            $mail=($_POST['mail']);
+            $tel=trim($_POST['tel']);
+            $adr=trim($_POST['adr']);
+            $mail=trim($_POST['mail']);
             $uf=$_SESSION['helpdesk_user_id'];
             $id=($_POST['id_client']);
 
@@ -3894,19 +3894,19 @@ if ($mode == "add_field_item"){
 }
 if ($mode == "change_field_name"){
   $hash = ($_POST['hash']);
-  $name = $_POST['name'];
+  $name = trim($_POST['name']);
   $stmt = $dbConnection->prepare('UPDATE dop_fields SET field_name= :name where field_hash=:hash');
   $stmt->execute(array(':name' => $name, ':hash'=>$hash));
 }
 if ($mode == "change_field_placeholder"){
   $hash = ($_POST['hash']);
-  $name = $_POST['name'];
+  $name = trim($_POST['name']);
   $stmt = $dbConnection->prepare('UPDATE dop_fields SET field_placeholder= :name where field_hash=:hash');
   $stmt->execute(array(':name' => $name, ':hash'=>$hash));
 }
 if ($mode == "change_field_value"){
   $hash = ($_POST['hash']);
-  $name = $_POST['name'];
+  $name = trim($_POST['name']);
   $stmt = $dbConnection->prepare('UPDATE dop_fields SET field_value= :name where field_hash=:hash');
   $stmt->execute(array(':name' => $name, ':hash'=>$hash));
 }
@@ -4024,14 +4024,14 @@ echo $e->getMessage(); //Boring error messages from anything else!
             $confirm = $_POST['confirm'];
             if ($confirm == "true") {$confirm=1;} else {$confirm=0;}
 
-            $client_fio=strip_tags(xss_clean(($_POST['fio'])));
-            $client_tel=strip_tags(xss_clean(($_POST['tel'])));
-            $client_login=strip_tags(xss_clean(($_POST['login'])));
+            $client_fio=trim(strip_tags(xss_clean(($_POST['fio']))));
+            $client_tel=trim(strip_tags(xss_clean(($_POST['tel']))));
+            $client_login=trim(strip_tags(xss_clean(($_POST['login']))));
             $unit_desc=strip_tags(xss_clean(($_POST['pod'])));
 
-            $client_adr=strip_tags(xss_clean(($_POST['adr'])));
-            $client_mail=strip_tags(xss_clean(($_POST['mail'])));
-            $client_posada=strip_tags(xss_clean(($_POST['posada'])));
+            $client_adr=trim(strip_tags(xss_clean(($_POST['adr']))));
+            $client_mail=trim(strip_tags(xss_clean(($_POST['mail']))));
+            $client_posada=trim(strip_tags(xss_clean(($_POST['posada']))));
 
             $client_id_param=($_POST['client_id_param']);
 

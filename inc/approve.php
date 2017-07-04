@@ -119,7 +119,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                             </td>
                         </tr>
                         <tr>
-                            <td><small><em><?=name_of_user($row['user_from']);?></em> <?=lang('APPROVE_want');?></small></td>
+                            <td><small><em><?=name_of_user($row['user_from']);?></em><br><?=lang('APPROVE_want');?></small></td>
 
                             <td><small><?=$row['fio'];?></small></td>
                             <td><small><?=$row['login'];?></small></td>
