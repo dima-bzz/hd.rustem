@@ -296,6 +296,7 @@ UNLOCK TABLES;
 
 CREATE TABLE IF NOT EXISTS `subj` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `position` int(11) NOT NULL,
   `name` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;

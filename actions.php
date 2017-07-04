@@ -2285,12 +2285,24 @@ update_val_by_key("file_size", $_POST['file_size']);
         if ($mode == "subj_del") {
             $id=($_POST['id']);
 
+            $stmt = $dbConnection->prepare('SELECT max(position) as position FROM subj');
+            $stmt->execute();
+            $row1 = $stmt->fetch(PDO::FETCH_ASSOC);
+            $position = (int)$row1["position"];
+
+            $stmt = $dbConnection->prepare('SELECT position FROM subj WHERE id = :id');
+            $stmt->execute(array(':id' => $id));
+            $row2 = $stmt->fetch(PDO::FETCH_ASSOC);
+            $ps = (int)$row2["position"];
+
+              $stmt = $dbConnection->prepare('UPDATE subj SET position = position-1 WHERE position <= :position and position > :ps');
+              $stmt->execute(array(':position' => $position, ':ps' => $ps));
 
             $stmt = $dbConnection->prepare('delete from subj where id=:id');
             $stmt->execute(array(':id' => $id));
 
 
-            $stmt = $dbConnection->prepare('select id, name from subj');
+            $stmt = $dbConnection->prepare('select id, name from subj order by position asc');
             $stmt->execute();
             $res1 = $stmt->fetchAll();
 
@@ -2298,7 +2310,7 @@ update_val_by_key("file_size", $_POST['file_size']);
 
 
 
-            <table class="table table-bordered table-hover" style=" font-size: 14px; " id="">
+            <table class="table table-bordered table-hover" style=" font-size: 14px;background-color:#fff " id="">
                 <thead>
                 <tr>
                     <th><center>ID</center></th>
@@ -2311,11 +2323,11 @@ update_val_by_key("file_size", $_POST['file_size']);
                 foreach($res1 as $row) {
 
                     ?>
-                    <tr id="tr_<?=$row['id'];?>">
+                    <tr id="tr_<?=$row['id'];?>" style="cursor:move;">
 
 
                         <td><small><center><?=$row['id'];?></center></small></td>
-                        <td><small><?=$row['name'];?></small></td>
+                        <td><small><a href="#" data-pk="<?=$row['id']?>" data-url="actions.php" id="edit_subj" data-type="text"><?=$row['name'];?></a></small></td>
                         <td><small><center><button id="subj_del" type="button" class="btn btn-danger btn-xs" value="<?=$row['id'];?>">del</button></center></small></td>
                     </tr>
                 <?php } ?>
@@ -2329,6 +2341,18 @@ update_val_by_key("file_size", $_POST['file_size']);
 
 
         }
+
+        if ($mode == "edit_subj") {
+         $v=($_POST['value']);
+         $pk=($_POST['pk']);
+
+
+
+         $stmt = $dbConnection->prepare('update subj set name=:v where id=:pk');
+         $stmt->execute(array(':v'=>$v, ':pk'=>$pk));
+
+         }
+
         if ($mode == "deps_add") {
             $t=($_POST['text']);
 
@@ -2346,7 +2370,7 @@ update_val_by_key("file_size", $_POST['file_size']);
 
 
 
-            <table class="table table-bordered table-hover" style=" font-size: 14px; " id="">
+            <table class="table table-bordered table-hover" style=" font-size: 14px;background-color:#fff " id="">
                 <thead>
                 <tr>
                     <th><center>ID</center></th>
@@ -2538,7 +2562,7 @@ $cl="";
 
 
 
-            <table class="table table-bordered table-hover" style=" font-size: 14px; " id="">
+            <table class="table table-bordered table-hover" style=" font-size: 14px;background-color:#fff " id="">
                 <thead>
                 <tr>
                     <th><center>ID</center></th>
@@ -2574,78 +2598,29 @@ $cl="";
         }
 
 
-        if ($mode == "subj_edit") {
-            $v=($_POST['v']);
-            $sid=($_POST['id']);
-
-
-            $stmt = $dbConnection->prepare('update subj set name=:v where id=:sid');
-            $stmt->execute(array(':sid' => $sid,':v' => $v));
-
-
-
-            $stmt = $dbConnection->prepare('select id, name from subj');
-            $stmt->execute();
-            $res1 = $stmt->fetchAll();
-            ?>
-
-
-
-            <table class="table table-bordered table-hover" style=" font-size: 14px; " id="">
-                <thead>
-                <tr>
-                    <th><center>ID</center></th>
-                    <th><center><?=lang('TABLE_name');?></center></th>
-                    <th><center><?=lang('TABLE_action');?></center></th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php
-                foreach($res1 as $row) {
-
-
-                    ?>
-                    <tr id="tr_<?=$row['id'];?>">
-
-
-                        <td><small><center><?=$row['id'];?></center></small></td>
-                        <td><small><?=$row['name'];?></small></td>
-                        <td><small><center><button id="subj_del" type="button" class="btn btn-danger btn-xs" value="<?=$row['id'];?>">del</button></center></small></td>
-                    </tr>
-                <?php } ?>
-
-
-
-                </tbody>
-            </table>
-            <br>
-        <?
-
-
-        }
-
-
-
 
         if ($mode == "subj_add") {
             $t=($_POST['text']);
 
+            $stmt = $dbConnection->prepare('SELECT max(position) as position FROM subj');
+            $stmt->execute();
+            $row1 = $stmt->fetch(PDO::FETCH_ASSOC);
+            $pos= $row1['position']+1;
+
+            $stmt = $dbConnection->prepare('insert into subj (name,position) values (:t,:pos)');
+            $stmt->execute(array(':t' => $t, ':pos' => $pos));
 
 
-            $stmt = $dbConnection->prepare('insert into subj (name) values (:t)');
-            $stmt->execute(array(':t' => $t));
 
 
-
-
-            $stmt = $dbConnection->prepare('select id, name from subj');
+            $stmt = $dbConnection->prepare('select id, name from subj order by position asc');
             $stmt->execute();
             $res1 = $stmt->fetchAll();
             ?>
 
 
 
-            <table class="table table-bordered table-hover" style=" font-size: 14px; " id="">
+            <table class="table table-bordered table-hover" style=" font-size: 14px;background-color:#fff " id="">
                 <thead>
                 <tr>
                     <th><center>ID</center></th>
@@ -2659,11 +2634,11 @@ $cl="";
 
 
                     ?>
-                    <tr id="tr_<?=$row['id'];?>">
+                    <tr id="tr_<?=$row['id'];?>" style="cursor:move;">
 
 
                         <td><small><center><?=$row['id'];?></center></small></td>
-                        <td><small><?=$row['name'];?></small></td>
+                        <td><small><a href="#" data-pk="<?=$row['id']?>" data-url="actions.php" id="edit_subj" data-type="text"><?=$row['name'];?></a></small></td>
                         <td><small><center><button id="subj_del" type="button" class="btn btn-danger btn-xs" value="<?=$row['id'];?>">del</button></center></small></td>
                     </tr>
                 <?php } ?>
@@ -2695,7 +2670,7 @@ $cl="";
 
 
 
-            <table class="table table-bordered table-hover" style=" font-size: 14px; " id="">
+            <table class="table table-bordered table-hover" style=" font-size: 14px;background-color:#fff " id="">
                 <thead>
                 <tr>
                     <th><center>ID</center></th>
@@ -2712,7 +2687,7 @@ $cl="";
 
 
                         <td><small><center><?=$row['id'];?></center></small></td>
-                        <td><small><?=$row['name'];?></small></td>
+                        <td><small><a href="#" data-pk="<?=$row['id']?>" data-url="actions.php" id="edit_posada" data-type="text"><?=$row['name'];?></a></small></td>
                         <td><small><center><button id="posada_del" type="button" class="btn btn-danger btn-xs" value="<?=$row['id'];?>">del</button></center></small></td>
                     </tr>
                 <?php } ?>
@@ -2742,7 +2717,7 @@ $cl="";
 
 
 
-            <table class="table table-bordered table-hover" style=" font-size: 14px; " id="">
+            <table class="table table-bordered table-hover" style=" font-size: 14px;background-color:#fff " id="">
                 <thead>
                 <tr>
                     <th><center>ID</center></th>
@@ -2759,7 +2734,7 @@ $cl="";
 
 
                         <td><small><center><?=$row['id'];?></center></small></td>
-                        <td><small><?=$row['name'];?></small></td>
+                        <td><small><a href="#" data-pk="<?=$row['id']?>" data-url="actions.php" id="edit_posada" data-type="text"><?=$row['name'];?></a></small></td>
                         <td><small><center><button id="posada_del" type="button" class="btn btn-danger btn-xs" value="<?=$row['id'];?>">del</button></center></small></td>
                     </tr>
                 <?php } ?>
@@ -2774,7 +2749,16 @@ $cl="";
 
         }
 
+        if ($mode == "edit_posada") {
+         $v=($_POST['value']);
+         $pk=($_POST['pk']);
 
+
+
+         $stmt = $dbConnection->prepare('update posada set name=:v where id=:pk');
+         $stmt->execute(array(':v'=>$v, ':pk'=>$pk));
+
+         }
         if ($mode == "units_add") {
             $t=($_POST['text']);
 
@@ -2789,7 +2773,7 @@ $cl="";
 
 
 
-            <table class="table table-bordered table-hover" style=" font-size: 14px; " id="">
+            <table class="table table-bordered table-hover" style=" font-size: 14px;background-color:#fff " id="">
                 <thead>
                 <tr>
                     <th><center>ID</center></th>
@@ -2806,7 +2790,7 @@ $cl="";
 
 
                         <td><small><center><?=$row['id'];?></center></small></td>
-                        <td><small><?=$row['name'];?></small></td>
+                        <td><small><a href="#" data-pk="<?=$row['id']?>" data-url="actions.php" id="edit_units" data-type="text"><?=$row['name'];?></a></small></td>
                         <td><small><center><button id="units_del" type="button" class="btn btn-danger btn-xs" value="<?=$row['id'];?>">del</button></center></small></td>
                     </tr>
                 <?php } ?>
@@ -2837,7 +2821,7 @@ $cl="";
 
 
 
-            <table class="table table-bordered table-hover" style=" font-size: 14px; " id="">
+            <table class="table table-bordered table-hover" style=" font-size: 14px;background-color:#fff " id="">
                 <thead>
                 <tr>
                     <th><center>ID</center></th>
@@ -2854,7 +2838,7 @@ $cl="";
 
 
                         <td><small><center><?=$row['id'];?></center></small></td>
-                        <td><small><?=$row['name'];?></small></td>
+                        <td><small><a href="#" data-pk="<?=$row['id']?>" data-url="actions.php" id="edit_units" data-type="text"><?=$row['name'];?></a></small></td>
                         <td><small><center><button id="units_del" type="button" class="btn btn-danger btn-xs" value="<?=$row['id'];?>">del</button></center></small></td>
                     </tr>
                 <?php } ?>
@@ -2868,6 +2852,16 @@ $cl="";
 
 
         }
+        if ($mode == "edit_units") {
+         $v=($_POST['value']);
+         $pk=($_POST['pk']);
+
+
+
+         $stmt = $dbConnection->prepare('update units set name=:v where id=:pk');
+         $stmt->execute(array(':v'=>$v, ':pk'=>$pk));
+
+         }
         if ($mode == "send_zapit_add") {
             $pib=($_POST['pib']);
             $login=($_POST['login']);

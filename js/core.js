@@ -2316,12 +2316,30 @@ $('body').on('click', 'button#b_find', function(event) {
                 "&id="+ids,
             success: function(html) {
                 $("#content_units").html(html);
+                $('a#edit_units').each(function(i, e) {
+                                       $(e).editable({
+            inputclass: 'input-sm',
+            emptytext: 'пусто',
+            params: {
+            mode: 'edit_units'
+            }
+            });
+            });
 
             }
         });
         }
 	 });
     });
+    $('a#edit_units').each(function(i, e) {
+                           $(e).editable({
+inputclass: 'input-sm',
+emptytext: 'пусто',
+params: {
+mode: 'edit_units'
+}
+});
+});
 
 
 
@@ -2356,6 +2374,15 @@ $('body').on('click', 'button#b_find', function(event) {
             success: function(html) {
                 $("#content_units").html(html);
                 $("#units_text").val('');
+                $('a#edit_units').each(function(i, e) {
+                                       $(e).editable({
+            inputclass: 'input-sm',
+            emptytext: 'пусто',
+            params: {
+            mode: 'edit_units'
+            }
+            });
+            });
             }
         });
 
@@ -2374,6 +2401,44 @@ $('body').on('click', 'button#b_find', function(event) {
                 "&id="+ids,
             success: function(html) {
                 $("#content_subj").html(html);
+                $('a#edit_subj').each(function(i, e) {
+
+                                       $(e).editable({
+           inputclass: 'input-sm',
+           emptytext: 'пусто',
+           params: {
+           mode: 'edit_subj'
+ }
+ });
+
+ });
+ $("#content_subj table tbody").sortable({
+   placeholder: "sort-highlight",
+   forcePlaceholderSize: true,
+   opacity: .6,
+   revert: 250,
+   tolerance: "pointer",
+   helper: function(e, ui) {
+     ui.children().each(function() {
+       $(this).width($(this).width());
+     });
+     return ui;
+   },
+   zIndex: 999999,
+   update: function (event, ui) {
+
+     var id_m = $(this).sortable('serialize', {attribute: 'id'});
+
+     $.ajax({
+       url:  ACTIONPATH,
+       type: "POST",
+       dataType: 'json',
+       data:"mode=update_position_subj&" + id_m,
+       success: function(html){
+       }
+     });
+  }
+ });
 
             }
         });
@@ -2393,10 +2458,86 @@ $('body').on('click', 'button#b_find', function(event) {
             success: function(html) {
                 $("#content_subj").html(html);
                 $("#subj_text").val('');
+                $('a#edit_subj').each(function(i, e) {
+
+                                       $(e).editable({
+           inputclass: 'input-sm',
+           emptytext: 'пусто',
+           params: {
+           mode: 'edit_subj'
+ }
+ });
+
+ });
+ $("#content_subj table tbody").sortable({
+   placeholder: "sort-highlight",
+   forcePlaceholderSize: true,
+   opacity: .6,
+   revert: 250,
+   tolerance: "pointer",
+   helper: function(e, ui) {
+     ui.children().each(function() {
+       $(this).width($(this).width());
+     });
+     return ui;
+   },
+   zIndex: 999999,
+   update: function (event, ui) {
+
+     var id_m = $(this).sortable('serialize', {attribute: 'id'});
+
+     $.ajax({
+       url:  ACTIONPATH,
+       type: "POST",
+       dataType: 'json',
+       data:"mode=update_position_subj&" + id_m,
+       success: function(html){
+       }
+     });
+  }
+ });
             }
         });
 
     });
+    $("#content_subj table tbody").sortable({
+      placeholder: "sort-highlight",
+      forcePlaceholderSize: true,
+      opacity: .6,
+      revert: 250,
+      tolerance: "pointer",
+      helper: function(e, ui) {
+        ui.children().each(function() {
+          $(this).width($(this).width());
+        });
+        return ui;
+      },
+      zIndex: 999999,
+      update: function (event, ui) {
+
+        var id_m = $(this).sortable('serialize', {attribute: 'id'});
+
+        $.ajax({
+          url:  ACTIONPATH,
+          type: "POST",
+          dataType: 'json',
+          data:"mode=update_position_subj&" + id_m,
+          success: function(html){
+          }
+        });
+     }
+    });
+    $('a#edit_subj').each(function(i, e) {
+
+                           $(e).editable({
+inputclass: 'input-sm',
+emptytext: 'пусто',
+params: {
+mode: 'edit_subj'
+}
+});
+
+});
 
 $('body').on('click', 'button#files_del', function(event) {
  event.preventDefault();
@@ -2548,39 +2689,66 @@ $('body').on('click', 'button#files_del_upload', function(event) {
         });
   });
 
-    $('body').on('click', 'button#posada_add', function(event) {
-        event.preventDefault();
+  $('body').on('click', 'button#posada_add', function(event) {
+      event.preventDefault();
 
-        $.ajax({
-            type: "POST",
-            url: ACTIONPATH,
-            data: "mode=posada_add"+
-                "&text="+encodeURIComponent($("#posada_text").val()),
-            success: function(html) {
-                $("#content_posada").html(html);
-                $("#posada_text").val('');
-            }
-        });
+      $.ajax({
+          type: "POST",
+          url: ACTIONPATH,
+          data: "mode=posada_add"+
+              "&text="+encodeURIComponent($("#posada_text").val()),
+          success: function(html) {
+              $("#content_posada").html(html);
+              $("#posada_text").val('');
+              $('a#edit_posada').each(function(i, e) {
+                                     $(e).editable({
+       inputclass: 'input-sm',
+       emptytext: 'пусто',
+       params: {
+       mode: 'edit_posada'
+         }
+      });
+         });
+          }
+      });
 
-    });
-    $('body').on('click', 'button#posada_del', function(event) {
-        event.preventDefault();
-	var ids=$(this).attr('value');
-	bootbox.confirm($.i18n('JS_del'), function(result) {
-	 if (result == true) {
-        $.ajax({
-            type: "POST",
-            url: ACTIONPATH,
-            data: "mode=posada_del"+
-                "&id="+ids,
-            success: function(html) {
-                $("#content_posada").html(html);
+  });
+  $('body').on('click', 'button#posada_del', function(event) {
+      event.preventDefault();
+var ids=$(this).attr('value');
+bootbox.confirm($.i18n('JS_del'), function(result) {
+ if (result == true) {
+      $.ajax({
+          type: "POST",
+          url: ACTIONPATH,
+          data: "mode=posada_del"+
+              "&id="+ids,
+          success: function(html) {
+              $("#content_posada").html(html);
+              $('a#edit_posada').each(function(i, e) {
+                                     $(e).editable({
+       inputclass: 'input-sm',
+       emptytext: 'пусто',
+       params: {
+       mode: 'edit_posada'
+         }
+      });
+         });
 
-            }
-        });
-        }
-        });
-    });
+          }
+      });
+      }
+      });
+  });
+  $('a#edit_posada').each(function(i, e) {
+                         $(e).editable({
+inputclass: 'input-sm',
+emptytext: 'пусто',
+params: {
+mode: 'edit_posada'
+}
+});
+});
 
     $('body').on('click', 'button#editable_enable', function(event) {
         event.preventDefault();

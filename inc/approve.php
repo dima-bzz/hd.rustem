@@ -81,7 +81,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 
 
 
-                    <table class="table table-bordered table-hover" style=" font-size: 14px; " id="table_<?=$row['id'];?>">
+                    <table class="table table-bordered table-hover" style=" font-size: 14px;background-color:#fff; " id="table_<?=$row['id'];?>">
                         <thead>
                         <tr>
                             <th><center><?=lang('APPROVE_info');?></center></th>

@@ -38,7 +38,7 @@ if ($_SESSION['helpdesk_user_id']) {
 </div>
 <div class="col-md-9">
 <h4><center><?=lang('ALLSTATS_unit');?></center></h4>
-<table class="table table-bordered">
+<table class="table table-bordered" style="background-color:#fff;">
 <tbody>
                                 <tr>
                     <td style="width: 300px;"></td>
@@ -80,7 +80,7 @@ foreach ($ee as $key=>$value) {
 </table>
 
 <h4><center><?=lang('ALLSTATS_user');?></center></h4>
-<table class="table table-bordered table-hover">
+<table class="table table-bordered table-hover" style="background-color:#fff;">
                 <tbody>
                 <tr>
                     <td style="width: 200px;">	<strong><small><center><?=lang('ALLSTATS_user_fio');?>					</center></small></strong></td>

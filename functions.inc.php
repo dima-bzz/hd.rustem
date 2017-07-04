@@ -761,7 +761,7 @@ function dop_fields(){
               <select id="field_subj_select" class="form-control input-sm">
                 <option value=""><?=lang('CONF_subj_select');?></option>
                 <?php
-                $stmt = $dbConnection->prepare('SELECT name, id FROM subj order by id asc');
+                $stmt = $dbConnection->prepare('SELECT name, id FROM subj order by position asc');
                 $stmt->execute();
                 $res2 = $stmt->fetchAll();
                 foreach ($res2 as $row2) {

@@ -161,7 +161,7 @@ if (!isset($_SESSION['hd.rustem_sort_out'])) {
             <input type="hidden" value="<?php echo get_total_pages('out',$user_id); ?>" id="val_menu">
 
 
-            <table class="table table-bordered table-hover" style=" font-size: 14px; ">
+            <table class="table table-bordered table-hover" style=" font-size: 14px;background-color:#fff; ">
                 <thead>
                 <tr>
                     <th><center>#</center></th>
@@ -459,7 +459,7 @@ foreach ($ee as $key=>$value) { $vv[":val_" . $key]=$value;}
 
             ?>
             <center><small class="text-mutted"><em><?=lang('t_list_a_top')?></em></small></center>
-            <table class="table table-bordered table-hover" style=" font-size: 14px; ">
+            <table class="table table-bordered table-hover" style=" font-size: 14px;background-color:#fff; ">
             <thead>
             <tr>
                 <th><center>#</center></th>
@@ -967,7 +967,7 @@ $stmt->execute(array_merge($vv,$paramss));
 
 
 
-            <table class="table table-bordered table-hover" style=" font-size: 14px; ">
+            <table class="table table-bordered table-hover" style=" font-size: 14px;background-color:#fff; ">
             <thead>
             <tr>
                 <th><center><div id="sort_id" action="<?=$_SESSION['helpdesk_sort_id'];?>">#<?=$id_icon;?></div></center></th>
@@ -1381,7 +1381,7 @@ $res1 = $stmt->fetchAll();
             <input type="hidden" value="" id="total_tickets">
             <input type="hidden" value="" id="last_total_tickets">
 
-            <table class="table table-bordered table-hover" style=" font-size: 14px; ">
+            <table class="table table-bordered table-hover" style=" font-size: 14px;background-color:#fff; ">
                 <thead>
                 <tr>
                     <th><center>#</center></th>

@@ -31,14 +31,6 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) {
 <div class="row" >
 <div class="col-md-3">
 
-<?php if ($CONF['fix_subj'] == "false") { ?>
-<div class="alert alert-danger" role="alert">
-      <small>
-<?=lang('DEPS_off');?>
-      </small>
-      </div>
-<?php } ?>
-
       <div class="alert alert-info" role="alert">
       <small>
       <i class="fa fa-info-circle"></i>
@@ -65,7 +57,7 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) {
 
 
 
-<table class="table table-bordered table-hover" style=" font-size: 14px; " id="">
+<table class="table table-bordered table-hover" style="font-size: 14px;background-color:#fff" id="">
         <thead>
           <tr>
           	<th><center>ID</center></th>
