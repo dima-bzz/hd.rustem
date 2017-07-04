@@ -2964,6 +2964,7 @@ mode: 'edit_posada'
             $that.addClass('active');
           });
 //conf_edit_main
+$('body').on('click', 'button#conf_edit_main', function(event) {
 event.preventDefault();
 $.ajax({
 type: "POST",

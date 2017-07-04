@@ -121,7 +121,7 @@ CREATE TABLE IF NOT EXISTS `dop_fields` (
   `field_status` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
-/*!40000 ALTER TABLE `dop_field` ENABLE KEYS */;
+/*!40000 ALTER TABLE `dop_fields` ENABLE KEYS */;
 UNLOCK TABLES;
 -- --------------------------------------------------------
 
