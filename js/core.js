@@ -730,6 +730,17 @@ if ( $('select#mail_type').val() == "sendmail" ){
               "&subj_id=" + $("select#subj option[value='"+$(this).val()+"']").attr('valueid'),
               success: function(html){
                   $("#form_subj").html(html);
+                  $(".multi_field").select2({
+                      allowClear: true,
+                      width:'100%',
+                      maximumSelectionSize: 15,
+                      formatNoMatches:$.i18n('JS_not_found'),
+                      escapeMarkup: function(m) { return m; }
+                  });
+                  $(".chosen-select").chosen({
+                      no_results_text: $.i18n('JS_not_found'),
+                      allow_single_deselect: true,
+                  });
               }
           });
 
@@ -4174,7 +4185,7 @@ $("body").on("click", "a#select_init_user", function(event) {
                     event.preventDefault();
                     $that = $(this)
                     var hash = $that.closest('tr').attr('id');
-                    var name = $that.val();
+                    var name = $that.prop('checked');
                     $.post(ACTIONPATH, {
                       mode: 'change_field_checkbox',
                       hash: hash,

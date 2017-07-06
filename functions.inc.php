@@ -848,6 +848,7 @@ function form_subj($in){
                 if ($row['field_type'] == "select"){
                   ?>
                   <select data-placeholder="<?=$row['field_placeholder']?>" class="chosen-select form-control" id="<?=$row['field_hash'];?>" name="<?=$row['field_hash'];?>">
+                    <option value=""></option>
                     <?php
                     $val = explode(',',$row['field_value']);
                     foreach ($val as $key) {
