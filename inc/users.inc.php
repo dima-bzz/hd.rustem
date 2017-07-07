@@ -296,8 +296,8 @@ if ($_POST['menu'] == 'list' ) {
             <td><small><?php echo $row['login']; ?></small></td>
             <td><small><?php echo $priv; ?></small></td>
             <td><small><span data-toggle="tooltip" data-placement="right" title="<?=$unit;?>"><?=lang('LIST_pin')?> <?=count(get_unit_name_return($row['unit'])); ?> </span></small></td>
-	           <td><small class="text-danger"><center><?=get_user_status($row['id']);?></center></small></td>
-             <td><center><button class="btn btn-xs btn-warning" id="users_logout" value="<?php echo $row['id']; ?>">logout</button><center></td>
+	          <td><small class="text-danger"><center><?=get_user_status($row['id']);?></center></small></td>
+            <td><center><button class="btn btn-xs btn-warning" id="users_logout" value="<?php echo $row['id']; ?>">logout</button><center></td>
           </tr>
         <?php } ?>
        </tbody>
@@ -321,7 +321,7 @@ $row = mysql_fetch_assoc($sql);
 
 
 
-        $stmt = $dbConnection->prepare('SELECT fio, pass, login, status, priv, is_admin, unit,email,jabber,messages,lang,priv_add_client,priv_edit_client, jabber_noty, noty, show_noty, jabber_noty_show from users where id=:usid');
+        $stmt = $dbConnection->prepare('SELECT fio, pass, login, status, priv, is_admin, unit,email,jabber,messages,lang,priv_add_client,priv_edit_client, jabber_noty, noty, mail_noty_show, show_noty, jabber_noty_show from users where id=:usid');
 	$stmt->execute(array(':usid'=>$usid));
 	$res1 = $stmt->fetchAll();
 
@@ -342,6 +342,7 @@ $email=$row['email'];
 $jabber=$row['jabber'];
 $noty=$row['noty'];
 $jnoty = $row['jabber_noty_show'];
+$mnoty = $row['mail_noty_show'];
 $show_noty=$row['show_noty'];
 $messages=$row['messages'];
 $langu=$row['lang'];
@@ -566,7 +567,7 @@ if ($val== $row['value']) {$opt_sel="selected";}
   </div>
     </div>
     <div class="form-group">
-      <label for="jabber_active_profile" class="col-sm-2 control-label"><?=lang('P_noty_show');?></label>
+      <label for="show_active_profile" class="col-sm-2 control-label"><?=lang('P_noty_show');?></label>
       <div class="col-sm-10">
     <select class="form-control input-sm" data-placeholder="<?=lang('P_noty_show_p');?>" multiple id="show_noty_edit">
       <?php
@@ -582,6 +583,25 @@ if ($val== $row['value']) {$opt_sel="selected";}
     <option value="8" <?php if (in_array("8",$n)) {echo "selected";} ?>><?=lang('P_msg');?></option>
     <option value="9" <?php if (in_array("9",$n)) {echo "selected";} ?>><?=lang('P_subj');?></option>
     <option value="10" <?php if (in_array("10",$n)) {echo "selected";} ?>><?=lang('P_familiar');?></option>
+  </select>    </div>
+    </div>
+    <div class="form-group">
+      <label for="mail_active_profile" class="col-sm-2 control-label"><?=lang('P_mail_show');?></label>
+      <div class="col-sm-10">
+    <select class="form-control input-sm" data-placeholder="<?=lang('P_noty_show_p');?>" multiple id="mail_noty_edit">
+      <?php
+        $m = explode(",",$mnoty);
+       ?>
+    <option value="1" <?php if (in_array("1",$m)) {echo "selected";} ?>><?=lang('P_create');?></option>
+    <option value="2" <?php if (in_array("2",$m)) {echo "selected";} ?>><?=lang('P_refer');?></option>
+    <option value="3" <?php if (in_array("3",$m)) {echo "selected";} ?>><?=lang('P_comment');?></option>
+    <option value="4" <?php if (in_array("4",$m)) {echo "selected";} ?>><?=lang('P_lock');?></option>
+    <option value="5" <?php if (in_array("5",$m)) {echo "selected";} ?>><?=lang('P_unlock');?></option>
+    <option value="6" <?php if (in_array("6",$m)) {echo "selected";} ?>><?=lang('P_ok');?></option>
+    <option value="7" <?php if (in_array("7",$m)) {echo "selected";} ?>><?=lang('P_no_ok');?></option>
+    <option value="8" <?php if (in_array("8",$m)) {echo "selected";} ?>><?=lang('P_msg');?></option>
+    <option value="9" <?php if (in_array("9",$m)) {echo "selected";} ?>><?=lang('P_subj');?></option>
+    <option value="10" <?php if (in_array("10",$m)) {echo "selected";} ?>><?=lang('P_familiar');?></option>
   </select>    </div>
     </div>
     <div class="form-group">

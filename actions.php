@@ -2360,13 +2360,24 @@ update_val_by_key("file_size", $_POST['file_size']);
             else{
               $jnoty = "1";
             }
-            $noty=($_POST['show_noty_profile']);
+            if ($_POST['mail_noty_profile'] != "undefined"){
+              $mnoty = $_POST['mail_noty_profile'];
+            }
+            else{
+              $mnoty = "1";
+            }
+            if ($_POST['show_noty_profile'] != "undefined"){
+              $noty=($_POST['show_noty_profile']);
+            }
+            else{
+              $noty="1";
+            }
             $show_noty=($_POST['show_noty']);
 
 
 
-                $stmt = $dbConnection->prepare('update users set jabber_noty=:jabber_noty, noty=:noty, show_noty=:show_noty, jabber_noty_show=:jnoty where id=:id');
-                $stmt->execute(array(':id' => $id,':jabber_noty' => $jabber_noty,':noty'=>$noty, ':show_noty' => $show_noty, ':jnoty'=>$jnoty));
+                $stmt = $dbConnection->prepare('update users set jabber_noty=:jabber_noty, noty=:noty, show_noty=:show_noty, jabber_noty_show=:jnoty, mail_noty_show=:mnoty where id=:id');
+                $stmt->execute(array(':id' => $id,':jabber_noty' => $jabber_noty,':noty'=>$noty, ':show_noty' => $show_noty, ':jnoty'=>$jnoty, ':mnoty'=>$mnoty));
 
 
                 ?>
@@ -3555,6 +3566,7 @@ if ($mode == "edit_user") {
             $jabber_noty=($_POST['jabber_active_client']);
             $noty=($_POST['show_noty_edit']);
             $jnoty=($_POST['jabber_show_edit']);
+            $mnoty=($_POST['mail_noty_edit']);
             $show_noty=($_POST['show_noty']);
             $priv_add_client=$_POST['priv_add_client'];
             $priv_edit_client=$_POST['priv_edit_client'];
@@ -3568,17 +3580,17 @@ if ($mode == "edit_user") {
                 $p=md5($_POST['pass']);
 
 		 $stmt = $dbConnection->prepare('update users set fio=:fio, login=:login, pass=:pass, status=:status, priv=:priv, unit=:unit, email=:mail, jabber=:jabber, messages=:mess, lang=:lang,
-		 priv_add_client=:priv_add_client, priv_edit_client=:priv_edit_client, is_admin=:is_admin, jabber_noty=:jabber_noty, noty=:noty, show_noty=:show_noty, jabber_noty_show=:jnoty where id=:usid');
+		 priv_add_client=:priv_add_client, priv_edit_client=:priv_edit_client, is_admin=:is_admin, jabber_noty=:jabber_noty, noty=:noty, show_noty=:show_noty, jabber_noty_show=:jnoty, mail_noty_show=:mnoty where id=:usid');
 		 $stmt->execute(array( ':fio'=>$fio, ':login'=>$login, ':status'=>$status, ':priv'=>$priv, ':unit'=>$unit, ':mail'=>$mail, ':jabber'=>$jabber, ':mess'=>$mess, ':lang'=>$lang, ':usid'=>$usid,
-		 ':pass'=>$p, ':priv_add_client'=>$priv_add_client, ':priv_edit_client'=>$priv_edit_client,':is_admin'=>$admin, ':jabber_noty'=>$jabber_noty,':noty'=>$noty, ':show_noty'=>$show_noty, ':jnoty'=>$jnoty));
+		 ':pass'=>$p, ':priv_add_client'=>$priv_add_client, ':priv_edit_client'=>$priv_edit_client,':is_admin'=>$admin, ':jabber_noty'=>$jabber_noty,':noty'=>$noty, ':show_noty'=>$show_noty, ':jnoty'=>$jnoty, ':mnoty'=>$mnoty));
 
 
 		 $stmt = $dbConnection->prepare('update clients set status=:status where login=:login');
 		 $stmt->execute(array( ':login'=>$login, ':status'=>$status));
             }
             else { $p="";
-                $stmt = $dbConnection->prepare('update users set fio=:fio, login=:login, status=:status, priv=:priv, unit=:unit, email=:mail, jabber=:jabber, messages=:mess, lang=:lang, priv_add_client=:priv_add_client,priv_edit_client=:priv_edit_client, is_admin=:is_admin, jabber_noty=:jabber_noty, noty=:noty, show_noty=:show_noty, jabber_noty_show=:jnoty where id=:usid');
-                $stmt->execute(array(':fio'=>$fio, ':login'=>$login, ':status'=>$status, ':priv'=>$priv, ':unit'=>$unit, ':mail'=>$mail, ':jabber'=>$jabber, ':mess'=>$mess, ':lang'=>$lang, ':usid'=>$usid,':priv_add_client'=>$priv_add_client,':priv_edit_client'=>$priv_edit_client,':is_admin'=>$admin, ':jabber_noty'=>$jabber_noty,':noty'=>$noty, ':show_noty'=>$show_noty, ':jnoty'=>$jnoty));
+                $stmt = $dbConnection->prepare('update users set fio=:fio, login=:login, status=:status, priv=:priv, unit=:unit, email=:mail, jabber=:jabber, messages=:mess, lang=:lang, priv_add_client=:priv_add_client,priv_edit_client=:priv_edit_client, is_admin=:is_admin, jabber_noty=:jabber_noty, noty=:noty, show_noty=:show_noty, jabber_noty_show=:jnoty, mail_noty_show=:mnoty where id=:usid');
+                $stmt->execute(array(':fio'=>$fio, ':login'=>$login, ':status'=>$status, ':priv'=>$priv, ':unit'=>$unit, ':mail'=>$mail, ':jabber'=>$jabber, ':mess'=>$mess, ':lang'=>$lang, ':usid'=>$usid,':priv_add_client'=>$priv_add_client,':priv_edit_client'=>$priv_edit_client,':is_admin'=>$admin, ':jabber_noty'=>$jabber_noty,':noty'=>$noty, ':show_noty'=>$show_noty, ':jnoty'=>$jnoty, ':mnoty'=>$mnoty));
 
 		$stmt = $dbConnection->prepare('update clients set status=:status where login=:login');
 		$stmt->execute(array( ':login'=>$login, ':status'=>$status));

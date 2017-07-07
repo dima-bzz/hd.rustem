@@ -167,6 +167,12 @@ $("#show_noty_edit").select2({
     formatNoMatches:$.i18n('JS_not_found'),
     escapeMarkup: function(m) { return m; }
 });
+$("#mail_noty_edit").select2({
+    allowClear: true,
+    width:'element',
+    formatNoMatches:$.i18n('JS_not_found'),
+    escapeMarkup: function(m) { return m; }
+});
 $("#jabber_show_edit").select2({
     allowClear: true,
     width:'element',
@@ -174,6 +180,12 @@ $("#jabber_show_edit").select2({
     escapeMarkup: function(m) { return m; }
 });
 $("#show_noty_profile").select2({
+    allowClear: true,
+    width:'element',
+    formatNoMatches:$.i18n('JS_not_found'),
+    escapeMarkup: function(m) { return m; }
+});
+$("#mail_noty_profile").select2({
     allowClear: true,
     width:'element',
     formatNoMatches:$.i18n('JS_not_found'),
@@ -2885,6 +2897,7 @@ mode: 'edit_posada'
                 "&jabber_active_profile="+encodeURIComponent($("select#jabber_active_profile").val())+
                 "&jabber_show_profile="+encodeURIComponent($("select#jabber_show_profile").val())+
                 "&show_noty_profile="+encodeURIComponent($("select#show_noty_profile").val())+
+                "&mail_noty_profile="+encodeURIComponent($("select#mail_noty_profile").val())+
                 "&show_noty="+encodeURIComponent($("select#show_noty").val())+
                 "&id="+encodeURIComponent($("#edit_profile_main").attr('value')),
             success: function(html) {
@@ -3716,6 +3729,7 @@ $("body").on("click", "a#select_init_user", function(event) {
                 "&jabber_active_client="+encodeURIComponent($('select#jabber_active_client').val())+
                 "&jabber_show_edit="+encodeURIComponent($('select#jabber_show_edit').val())+
                 "&show_noty_edit="+encodeURIComponent($('select#show_noty_edit').val())+
+                "&mail_noty_edit="+encodeURIComponent($('select#mail_noty_edit').val())+
                 "&show_noty="+encodeURIComponent($('select#show_noty').val())+
                 "&mail="+encodeURIComponent($("#mail").val())+
                 "&jabber="+encodeURIComponent($("#jabber").val())+
