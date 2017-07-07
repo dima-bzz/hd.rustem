@@ -199,6 +199,10 @@
 "t_LIST_to":"Исполнитель",
 "t_LIST_status":"Статус",
 "t_LIST_action":"Действие",
+"t_LIST_reset_sort":"Сбросить сортировку",
+"t_LIST_sort":"Сортировка по полю:",
+"t_LIST_sort_asc":"возрастание",
+"t_LIST_sort_desc":"убывание",
 
 "stats_last_time":"Последний вход: ",
 "stats_last_time_never":"Никогда",

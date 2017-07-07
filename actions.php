@@ -1303,7 +1303,86 @@ else if ($pt == "out") {
 
 }
 
+if ($mode == "tb_sort"){
+  $pt=$_POST['pt'];
+  $sort_type=$_POST['st'];
 
+  if ($pt == "in") {
+
+if (!isset($_SESSION['hd.rustem_sort_in_o'])){
+  $_SESSION['hd.rustem_sort_in_o'] = 'asc';
+}
+else{
+  if ($sort_type == $_SESSION['hd.rustem_sort_tb_in']){
+  if ($_SESSION['hd.rustem_sort_in_o'] == 'desc'){
+    $_SESSION['hd.rustem_sort_in_o'] = 'asc';
+  }
+  else{
+    $_SESSION['hd.rustem_sort_in_o'] = 'desc';
+  }
+  }
+  else{
+    $_SESSION['hd.rustem_sort_in_o'] = 'asc';
+  }
+}
+  switch($sort_type) {
+   case 'subj': $_SESSION['hd.rustem_sort_tb_in']="subj"; break;
+   case 'id': $_SESSION['hd.rustem_sort_tb_in']="id"; break;
+   case 'prio': $_SESSION['hd.rustem_sort_tb_in']="prio"; break;
+   case 'client_id': $_SESSION['hd.rustem_sort_tb_in']="client_id"; break;
+   case 'date_create': $_SESSION['hd.rustem_sort_tb_in']="date_create"; break;
+   case 'user_init_id': $_SESSION['hd.rustem_sort_tb_in']="user_init_id"; break;
+
+  }
+
+
+
+   }
+   else if ($pt == "out") {
+
+ if (!isset($_SESSION['hd.rustem_sort_out_o'])){
+   $_SESSION['hd.rustem_sort_out_o'] = 'asc';
+ }
+ else{
+   if ($sort_type == $_SESSION['hd.rustem_sort_tb_out']){
+   if ($_SESSION['hd.rustem_sort_out_o'] == 'desc'){
+     $_SESSION['hd.rustem_sort_out_o'] = 'asc';
+   }
+   else{
+     $_SESSION['hd.rustem_sort_out_o'] = 'desc';
+   }
+   }
+   else{
+     $_SESSION['hd.rustem_sort_out_o'] = 'asc';
+   }
+ }
+   switch($sort_type) {
+    case 'subj': $_SESSION['hd.rustem_sort_tb_out']="subj"; break;
+    case 'id': $_SESSION['hd.rustem_sort_tb_out']="id"; break;
+    case 'prio': $_SESSION['hd.rustem_sort_tb_out']="prio"; break;
+    case 'client_id': $_SESSION['hd.rustem_sort_tb_out']="client_id"; break;
+    case 'date_create': $_SESSION['hd.rustem_sort_tb_out']="date_create"; break;
+    case 'user_init_id': $_SESSION['hd.rustem_sort_tb_out']="user_init_id"; break;
+
+   }
+
+
+
+    }
+}
+if ($mode == "reset_sort"){
+  $pt=$_POST['pt'];
+
+  if ($pt == "in") {
+  unset($_SESSION['hd.rustem_sort_tb_in']);
+  unset($_SESSION['hd.rustem_sort_in_o']);
+  }
+  else if ($pt == "out"){
+  unset($_SESSION['hd.rustem_sort_tb_out']);
+  unset($_SESSION['hd.rustem_sort_out_o']);
+  }
+
+}
 
         if ($mode == "last_news") {
 

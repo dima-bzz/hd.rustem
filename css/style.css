@@ -86,6 +86,12 @@ body {
   width: 14px;
 
 }
+.sorting{
+  opacity: 0.2;
+}
+.sorting-active{
+  opacity: 0.5;
+}
 .pointer-cursor {
 cursor: pointer;
 }

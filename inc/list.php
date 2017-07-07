@@ -115,7 +115,42 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                     <span class="label label-warning">&nbsp;</span>
                         - <?= lang('LIST_lock_t_i'); ?>
                     </small>
-
+                    <?php
+                    if (isset($_GET['in'])) {
+                    switch ($_SESSION['hd.rustem_sort_tb_in']) {
+                      case 'subj': $field = lang('t_LIST_subj'); break;
+                      case 'id': $field = 'ID'; break;
+                      case 'prio': $field = lang('t_LIST_prio'); break;
+                      case 'client_id': $field = lang('t_LIST_worker'); break;
+                      case 'date_create': $field = lang('t_LIST_create'); break;
+                      case 'user_init_id': $field = lang('t_LIST_init'); break;
+                    }
+                    switch ($_SESSION['hd.rustem_sort_in_o']) {
+                      case 'asc': $field_sort = '( '.lang('t_LIST_sort_asc').' <i class="fa fa-sort-amount-asc"></i> )'; break;
+                      case 'desc': $field_sort = '( '.lang('t_LIST_sort_desc').' <i class="fa fa-sort-amount-desc"></i> )'; break;
+                    }
+                    }
+                    if (isset($_GET['out'])) {
+                      switch ($_SESSION['hd.rustem_sort_tb_out']) {
+                        case 'subj': $field = lang('t_LIST_subj'); break;
+                        case 'id': $field = 'ID'; break;
+                        case 'prio': $field = lang('t_LIST_prio'); break;
+                        case 'client_id': $field = lang('t_LIST_worker'); break;
+                        case 'date_create': $field = lang('t_LIST_create'); break;
+                        case 'user_init_id': $field = lang('t_LIST_init'); break;
+                      }
+                      switch ($_SESSION['hd.rustem_sort_out_o']) {
+                        case 'asc': $field_sort = '( '.lang('t_LIST_sort_asc').' <i class="fa fa-sort-amount-asc"></i> )'; break;
+                        case 'desc': $field_sort = '( '.lang('t_LIST_sort_desc').' <i class="fa fa-sort-amount-desc"></i> )'; break;
+                      }
+                    }
+                    if ($field != ""){
+                     ?>
+                                        <br>
+                                        <a href="#" id="reset_sort"><span class="label label-default" data-toggle="tooltip" data-placement="top" title="<?=lang('t_LIST_reset_sort');?>"><?=lang('t_LIST_sort').' '.$field.' '.$field_sort?></span></a>
+                                        <?php
+                                      }
+                                         ?>
 
 
                 </div>
@@ -150,8 +185,6 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
       </span>
 
 		    </div>
-
-                    <!-- </form> -->
                 </div>
             </div>
         </div>

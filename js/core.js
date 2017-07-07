@@ -1779,6 +1779,43 @@ if (ispath('helper') ) {
 
 makemytime(true);
 
+$('body').on('click', 'a#tb_sort', function(event) {
+event.preventDefault();
+var tr_id=$(this).attr('value');
+var pt=$("#page_type").attr('value');
+$('#spinner').show();
+$.ajax({
+type: "POST",
+url: ACTIONPATH,
+data: "mode=tb_sort"+
+"&pt="+encodeURIComponent(pt)+
+"&st="+encodeURIComponent(tr_id),
+success: function() {
+
+window.location = MyHOSTNAME+"list?"+pt;
+
+
+}
+});
+});
+$('body').on('click', 'a#reset_sort', function(event) {
+event.preventDefault();
+var pt=$("#page_type").attr('value');
+$('#spinner').show();
+$.ajax({
+type: "POST",
+url: ACTIONPATH,
+data: "mode=reset_sort"+
+"&pt="+encodeURIComponent(pt),
+success: function() {
+
+window.location = MyHOSTNAME+"list?"+pt;
+
+
+}
+});
+});
+
  $('body').on('click', 'button#sort_list', function(event) {
  event.preventDefault();
  var pt=$("#page_type").attr('value');
