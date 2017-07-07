@@ -24,7 +24,7 @@ $usid=$_SESSION['helpdesk_user_id'];
 //    $sql = mysql_query($query) or die(mysql_error());
 
 
-	$stmt = $dbConnection->prepare('SELECT fio, pass, login, status, priv, unit,email, lang, jabber_noty, noty, show_noty, jabber_noty_show from users where id=:usid');
+	$stmt = $dbConnection->prepare('SELECT fio, pass, login, status, priv, unit,email, lang, jabber_noty, noty, show_noty, jabber_noty_show, mail_noty_show from users where id=:usid');
 	$stmt->execute(array(':usid'=>$usid));
 	$res1 = $stmt->fetchAll();
 
@@ -42,6 +42,7 @@ $pass=$row['pass'];
 $email=$row['email'];
 $noty = $row['noty'];
 $jnoty = $row['jabber_noty_show'];
+$mnoty = $row['mail_noty_show'];
 $show_noty = $row['show_noty'];
 $langu=$row['lang'];
 
@@ -185,6 +186,25 @@ else if ($langu == "ru") {$status_lang_ru="selected";}
           <option value="9" <?php if (in_array("9",$n)) {echo "selected";} ?>><?=lang('P_subj');?></option>
           <option value="10" <?php if (in_array("10",$n)) {echo "selected";} ?>><?=lang('P_familiar');?></option>
         </select>    </div>
+          </div>
+          <div class="form-group">
+            <label for="mail_noty_profile" class="col-sm-4 control-label"><?=lang('P_mail_show');?></label>
+            <div class="col-sm-8">
+          <select class="form-control input-sm" data-placeholder="<?=lang('P_noty_show_p');?>" multiple id="mail_noty_profile">
+            <?php
+              $m = explode(",",$mnoty);
+             ?>
+          <option value="1" <?php if (in_array("1",$m)) {echo "selected";} ?>><?=lang('P_create');?></option>
+          <option value="2" <?php if (in_array("2",$m)) {echo "selected";} ?>><?=lang('P_refer');?></option>
+          <option value="3" <?php if (in_array("3",$m)) {echo "selected";} ?>><?=lang('P_comment');?></option>
+          <option value="4" <?php if (in_array("4",$m)) {echo "selected";} ?>><?=lang('P_lock');?></option>
+          <option value="5" <?php if (in_array("5",$m)) {echo "selected";} ?>><?=lang('P_unlock');?></option>
+          <option value="6" <?php if (in_array("6",$m)) {echo "selected";} ?>><?=lang('P_ok');?></option>
+          <option value="7" <?php if (in_array("7",$m)) {echo "selected";} ?>><?=lang('P_no_ok');?></option>
+          <option value="8" <?php if (in_array("8",$m)) {echo "selected";} ?>><?=lang('P_msg');?></option>
+          <option value="9" <?php if (in_array("9",$m)) {echo "selected";} ?>><?=lang('P_subj');?></option>
+          <option value="10" <?php if (in_array("10",$m)) {echo "selected";} ?>><?=lang('P_familiar');?></option>
+          </select>    </div>
           </div>
           <div class="form-group">
             <label for="show_noty" class="col-sm-4 control-label"><?=lang('P_noty_show_site');?></label>

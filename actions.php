@@ -1796,7 +1796,93 @@ or user_init_id=:uid2) and UNIX_TIMESTAMP(last_update) > UNIX_TIMESTAMP(NOW())-5
 }
 
 }
+if ($mode == "send_mail_noty"){
+if ($CONF_MAIL['active'] == "true") {
+// $lu=($_POST['last_update']);
+$stmt = $dbConnection->prepare('SELECT id, priv, unit, email, fio from users where status=:n');
+$stmt->execute(array(':n'=>'1'));
+$res1 = $stmt->fetchAll();
+foreach($res1 as $row) {
+$priv_val = $row['priv'];
+$uid = $row['id'];
+$unit = $row['unit'];
+$email = $row['email'];
+$fio = $row['fio'];
+$u = return_users_array_unit($unit);
 
+if ($priv_val == "2") {
+
+    $stmt = $dbConnection->prepare('SELECT id, hash_name, last_update from tickets where UNIX_TIMESTAMP(last_update) > UNIX_TIMESTAMP(NOW())-5');
+    $stmt->execute();
+    $res1 = $stmt->fetchAll();
+    foreach($res1 as $rews) {
+
+        $at=get_last_action_ticket_mail($rews['id'],$uid);
+        $s=get_last_action_ticket_mail_subj($rews['id'],$uid);
+        $who_action=get_who_last_action_ticket($rews['id']);
+        if ($who_action <> $uid) {
+          if ($at <> NULL){
+            if (!is_null($email)) {
+            $to = $email;
+            $g = $at;
+            $subj = $s;
+            send_mail($to,$subj,$g);
+          }
+}
+        }
+
+}
+}
+if ($priv_val == "0") {
+    $stmt = $dbConnection->prepare('SELECT id, hash_name, last_update from tickets where (unit_id IN ('.$unit.') or user_init_id IN ('.$u.')) and UNIX_TIMESTAMP(last_update) > UNIX_TIMESTAMP(NOW())-5');
+    $stmt->execute();
+    $res1 = $stmt->fetchAll();
+    foreach($res1 as $rews) {
+
+        $at=get_last_action_ticket_mail($rews['id'],$uid);
+        $s=get_last_action_ticket_mail_subj($rews['id'],$uid);
+        $who_action=get_who_last_action_ticket($rews['id']);
+        if ($who_action <> $uid) {
+          if ($at <> NULL){
+            if (!is_null($email)) {
+              $to = $email;
+              $g = $at;
+              $subj = $s;
+              send_mail($to,$subj,$g);
+          }
+}
+        }
+
+}
+}
+if ($priv_val == "1") {
+  $stmt = $dbConnection->prepare('SELECT id, hash_name, last_update from tickets where (
+((user_to_id rlike :uid) or (user_to_id=:n and unit_id IN ('.$unit.')))
+or user_init_id=:uid2) and UNIX_TIMESTAMP(last_update) > UNIX_TIMESTAMP(NOW())-5');
+  $stmt->execute(array(':uid'=>'[[:<:]]'.$uid.'[[:>:]]', ':uid2'=>$uid, ':n'=>'0'));
+    $res1 = $stmt->fetchAll();
+    foreach($res1 as $rews) {
+
+        $at=get_last_action_ticket_mail($rews['id'],$uid);
+        $s=get_last_action_ticket_mail_subj($rews['id'],$uid);
+        $who_action=get_who_last_action_ticket($rews['id']);
+        if ($who_action <> $uid) {
+          if ($at <> NULL){
+            if (!is_null($email)) {
+              $to = $email;
+              $g = $at;
+              $subj = $s;
+              send_mail($to,$subj,$g);
+          }
+}
+        }
+
+}
+}
+}
+}
+
+}
 
         if ($mode == "list_ticket_update2") {
             $pm=($_POST['type']);

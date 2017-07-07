@@ -274,7 +274,7 @@ global $CONF, $CONF_MAIL, $dbConnection;
 
 
 
-        $stmt = $dbConnection->prepare('SELECT email, unit, login FROM users where status=:n');
+        $stmt = $dbConnection->prepare('SELECT email, unit, login, mail_noty_show FROM users where status=:n');
 	$stmt->execute(array(':n'=>'1'));
 	$res1 = $stmt->fetchAll();
         foreach($res1 as $qrow) {
@@ -288,6 +288,7 @@ global $CONF, $CONF_MAIL, $dbConnection;
 
 			    if ($val== $unit_id) {
 			    //echo $val."==".$unit_id."=".$qrow['email'];
+          if (in_array('1',explode(",",$qrow['mail_noty_show']))){
 				 if (!is_null($qrow['email'])) {
 				 //echo $qrow['email'];
                 $to      = $qrow['email'];
@@ -383,7 +384,7 @@ EOBODY;
 
 send_mail($to,$subject,$message);
 
-
+  }
 
             }
 
@@ -450,7 +451,7 @@ while ($qrow = mysql_fetch_array($qresult,MYSQL_ASSOC)) {
 */
         $cl_id = explode(',',$client_id);
         foreach ($cl_id as $clients_id) {
-        $stmt = $dbConnection->prepare('SELECT email, unit,login FROM users where status=:n and (priv=:n1 || priv=:n2) and id!=:id');
+        $stmt = $dbConnection->prepare('SELECT email, unit,login, mail_noty_show FROM users where status=:n and (priv=:n1 || priv=:n2) and id!=:id');
 
 	$stmt->execute(array(':n'=>'1',':n1'=>'0',':n2'=>'2', ':id' => $clients_id));
 	$res1 = $stmt->fetchAll();
@@ -464,6 +465,7 @@ while ($qrow = mysql_fetch_array($qresult,MYSQL_ASSOC)) {
           if($val != '100'){
 			    if ($val== $unit_id) {
 			    //echo $val."==".$unit_id."=".$qrow['email'];
+          if (in_array('1',explode(",",$qrow['mail_noty_show']))){
 				 if (!is_null($qrow['email'])) {
 				 //echo $qrow['login'];
                 $to      = $qrow['email'];
@@ -562,6 +564,7 @@ EOBODY;
 send_mail($to,$subject,$message);
             }
 }
+}
 			    }
         }
 
@@ -643,14 +646,14 @@ send_mail($to,$subject,$message);
         //while ($row = mysql_fetch_assoc($results)) {
         $cl_id = explode(',',$client_id);
         foreach ($cl_id as $clients_id) {
-        $stmt = $dbConnection->prepare('SELECT email from users where id=:client_id and status=:n');
+        $stmt = $dbConnection->prepare('SELECT email, mail_noty_show from users where id=:client_id and status=:n');
 	$stmt->execute(array(':n'=>'1',':client_id'=>$clients_id));
 	$res1 = $stmt->fetchAll();
         foreach($res1 as $row) {
 
 
 
-
+            if (in_array('1',explode(",",$row['mail_noty_show']))){
             if (!is_null($row['email'])) {
 
 
@@ -746,6 +749,7 @@ EOBODY;
 
 send_mail($to,$subject,$message);
 
+}
         }
       }
         }

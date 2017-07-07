@@ -393,6 +393,16 @@ function send_jabber(){
 // });
 //   }
 }
+function send_mail(){
+  $.ajax({
+      type: "POST",
+      url: ACTIONPATH,
+      data: "mode=send_mail_noty",
+      success: function(html){
+        makemytime(true);
+      }
+    });
+}
 function update_labels(){
   // var wt = var t = $('#work_timer > #f').attr('datetime');
   // var dt = var t = $('#deadline_timer > #f').attr('datetime');
@@ -3266,6 +3276,7 @@ console.log(height);
                     }
                   });
                   send_jabber();
+                  send_mail();
                 }
             });
 
@@ -3739,6 +3750,7 @@ $("body").on("click", "a#select_init_user", function(event) {
                              success: function(html){
                              //console.log(html);
                              send_jabber();
+                             send_mail();
                              $('#myModal').modal('hide');
                              //$(elem).removeClass().addClass('success', 1000);
 
@@ -3780,6 +3792,7 @@ $("body").on("click", "a#select_init_user", function(event) {
 
                     $(elem).removeClass().addClass('success', 1000);
                     send_jabber();
+                    send_mail();
                     if (ls != ''){
                     // window.location = MyHOSTNAME+"list?"+pt;
                     $("#spinner").fadeIn(300);
@@ -3814,6 +3827,7 @@ $("body").on("click", "a#select_init_user", function(event) {
 
                     $(elem).removeClass('success', 1000);
                     send_jabber();
+                    send_mail();
                     if (ls != ''){
                     // window.location = MyHOSTNAME+"list?"+pt;
                     $("#spinner").fadeIn(300);
@@ -3885,6 +3899,7 @@ $("body").on("click", "a#select_init_user", function(event) {
                 success: function(){
                     $(elem).removeClass().addClass('warning', 1000);
                     send_jabber();
+                    send_mail();
                     if (ls != ''){
                     // window.location = MyHOSTNAME+"list?"+pt;
                     $("#spinner").fadeIn(300);
@@ -3925,6 +3940,7 @@ $("body").on("click", "a#select_init_user", function(event) {
 
                     $(elem).removeClass('warning', 1000);
                     send_jabber();
+                    send_mail();
                     if (ls != ''){
                     // window.location = MyHOSTNAME+"list?"+pt;
                     $("#spinner").fadeIn(300);
@@ -3980,6 +3996,7 @@ $("body").on("click", "a#select_init_user", function(event) {
                     $("#msg").hide().html(html).fadeIn(500);
                     setTimeout(function() {$('#msg').children('.alert').fadeOut(500);}, 3000);
                     send_jabber();
+                    send_mail();
 
 
                 }
@@ -4005,6 +4022,7 @@ $("body").on("click", "a#select_init_user", function(event) {
                     $("#msg").hide().html(html).fadeIn(500);
                     setTimeout(function() {$('#msg').children('.alert').fadeOut(500);}, 3000);
                     send_jabber();
+                    send_mail();
 
 
                 }
@@ -4049,6 +4067,7 @@ $("body").on("click", "a#select_init_user", function(event) {
                     $("#msg").hide().html(html).fadeIn(500);
                     setTimeout(function() {$('#msg').children('.alert').fadeOut(500);}, 3000);
                     send_jabber();
+                    send_mail();
 
 
                 }
@@ -4084,6 +4103,7 @@ $("body").on("click", "a#select_init_user", function(event) {
                     $("#msg").hide().html(html).fadeIn(500);
                     setTimeout(function() {$('#msg').children('.alert').fadeOut(500);}, 3000);
                     send_jabber();
+                    send_mail();
 
 
                 }
@@ -4127,6 +4147,7 @@ $("body").on("click", "a#select_init_user", function(event) {
               $("#msg").hide().html(html).fadeIn(500);
               setTimeout(function() {$('#msg').children('.alert').fadeOut(500);}, 3000);
               send_jabber();
+              send_mail();
 
             }
         });
@@ -4288,6 +4309,7 @@ $("body").on("click", "a#select_init_user", function(event) {
                 success: function(html){
                   console.log(tou);
                         send_jabber();
+                        send_mail();
 
                         $("#ccc").hide().html(html).fadeIn(500);
                         window.location = MyHOSTNAME+"list?in";

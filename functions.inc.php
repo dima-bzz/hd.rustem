@@ -2109,6 +2109,139 @@ function get_last_action_ticket_jabber($ticket_id,$uid) {
     }
     return $red;
 }
+function get_last_action_ticket_mail($ticket_id,$uid) {
+    global $dbConnection;
+    global $CONF;
+
+    $stmt = $dbConnection->prepare('select date_op, msg, init_user_id, to_user_id, to_unit_id from ticket_log where ticket_id=:ticket_id order by date_op DESC limit 1');
+    $stmt->execute(array(':ticket_id' => $ticket_id));
+    $fio = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    $stmt = $dbConnection->prepare('select hash_name from tickets where id=:ticket_id limit 1');
+    $stmt->execute(array(':ticket_id' => $ticket_id));
+    $hash = $stmt->fetch(PDO::FETCH_ASSOC);
+    $h = $hash['hash_name'];
+
+    $stmt = $dbConnection->prepare('select mail_noty_show from users where id=:id');
+    $stmt->execute(array(':id' => $uid));
+    $notys = $stmt->fetch(PDO::FETCH_ASSOC);
+    $noty = explode(",",$notys['mail_noty_show']);
+
+    $r=$fio['msg'];
+    $uss=nameshort(name_of_user_ret($fio['init_user_id']));
+    $uss_to=nameshort(name_of_user_ret($fio['to_user_id']));
+    $unit_to=get_unit_name_return4news($fio['to_unit_id']);
+    switch ($r) {
+        case 'refer':
+          if (in_array('2',$noty)){
+          $red=''.lang('TICKET_name').' #'.$ticket_id.' - '.lang('TICKET_ACTION_refer').' '.$uss.' '.lang('TICKET_ACTION_refer_to').' '.$unit_to.' '.$uss_to.' <a href='.$CONF['hostname'].'ticket?'.$h.'>'.lang('MAIL_2link').'</a>';
+        }
+          break;
+          case 'comment':
+            if (in_array('3',$noty)){
+              $red=''.lang('TICKET_name').' #'.$ticket_id.' - '.lang('TICKET_ACTION_comment').' '.$uss.' '.$unit_to.' '.$uss_to.'&nbsp;&nbsp;<a href="'.$CONF['hostname'].'ticket?'.$h.'">'.lang('MAIL_2link').'</a>';
+            }
+            break;
+            case 'lock':
+              if (in_array('4',$noty)){
+              $red=''.lang('TICKET_name').' #'.$ticket_id.' - '.lang('TICKET_ACTION_lock').' '.$uss.' '.$unit_to.' '.$uss_to.'&nbsp;&nbsp;<a href='.$CONF['hostname'].'ticket?'.$h.'>'.lang('MAIL_2link').'</a>';
+            }
+              break;
+              case 'unlock':
+                if (in_array('5',$noty)){
+                  $red=''.lang('TICKET_name').' #'.$ticket_id.' - '.lang('TICKET_ACTION_unlock').' '.$uss.' '.$unit_to.' '.$uss_to.'&nbsp;&nbsp;<a href='.$CONF['hostname'].'ticket?'.$h.'>'.lang('MAIL_2link').'</a>';
+                }
+                break;
+                case 'ok':
+                  if (in_array('6',$noty)){
+                    $red=''.lang('TICKET_name').' #'.$ticket_id.' - '.lang('TICKET_ACTION_ok').' '.$uss.' '.$unit_to.' '.$uss_to.'&nbsp;&nbsp;<a href='.$CONF['hostname'].'ticket?'.$h.'>'.lang('MAIL_2link').'</a>';
+                  }
+                  break;
+                  case 'no_ok':
+                    if (in_array('7',$noty)){
+                    $red=''.lang('TICKET_name').' #'.$ticket_id.' - '.lang('TICKET_ACTION_nook').' '.$uss.' '.$unit_to.' '.$uss_to.'&nbsp;&nbsp;<a href='.$CONF['hostname'].'ticket?'.$h.'>'.lang('MAIL_2link').'</a>';
+                    }
+                    break;
+                    case 'edit_msg':
+                      if (in_array('8',$noty)){
+                      $red=''.lang('TICKET_name').' #'.$ticket_id.' - '.lang('TICKET_ACTION_edit').' '.$uss.' '.$unit_to.' '.$uss_to.'&nbsp;&nbsp;<a href='.$CONF['hostname'].'ticket?'.$h.'>'.lang('MAIL_2link').'</a>';
+                      }
+                      break;
+                      case 'edit_subj':
+                        if (in_array('9',$noty)){
+                          $red=''.lang('TICKET_name').' #'.$ticket_id.' - '.lang('TICKET_ACTION_edit').' '.$uss.' '.$unit_to.' '.$uss_to.'&nbsp;&nbsp;<a href='.$CONF['hostname'].'ticket?'.$h.'>'.lang('MAIL_2link').'</a>';
+                        }
+                        break;
+                        case 'familiar':
+                          if (in_array('10',$noty)){
+                            $red=''.lang('TICKET_name').' #'.$ticket_id.' - '.lang('TICKET_ACTION_familiar').' '.$uss.' '.$unit_to.' '.$uss_to.'&nbsp;&nbsp;<a href='.$CONF['hostname'].'ticket?'.$h.'>'.lang('MAIL_2link').'</a>';
+                          }
+                          break;
+    }
+    return $red;
+}
+function get_last_action_ticket_mail_subj($ticket_id,$uid) {
+    global $dbConnection;
+
+    $stmt = $dbConnection->prepare('select msg from ticket_log where ticket_id=:ticket_id order by date_op DESC limit 1');
+    $stmt->execute(array(':ticket_id' => $ticket_id));
+    $fio = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    $stmt = $dbConnection->prepare('select mail_noty_show from users where id=:id');
+    $stmt->execute(array(':id' => $uid));
+    $notys = $stmt->fetch(PDO::FETCH_ASSOC);
+    $noty = explode(",",$notys['mail_noty_show']);
+
+    $r=$fio['msg'];
+    switch ($r) {
+        case 'refer':
+          if (in_array('2',$noty)){
+          $red=''.lang('TICKET_name').' #'.$ticket_id.' ('.lang('TICKET_ACTION_MAIL_refer').')';
+        }
+          break;
+          case 'comment':
+            if (in_array('3',$noty)){
+              $red=''.lang('TICKET_name').' #'.$ticket_id.' ('.lang('TICKET_ACTION_MAIL_comment').')';
+            }
+            break;
+            case 'lock':
+              if (in_array('4',$noty)){
+              $red=''.lang('TICKET_name').' #'.$ticket_id.' ('.lang('TICKET_ACTION_MAIL_lock').')';
+            }
+              break;
+              case 'unlock':
+                if (in_array('5',$noty)){
+                  $red=''.lang('TICKET_name').' #'.$ticket_id.' ('.lang('TICKET_ACTION_MAIL_unlock').')';
+                }
+                break;
+                case 'ok':
+                  if (in_array('6',$noty)){
+                    $red=''.lang('TICKET_name').' #'.$ticket_id.' ('.lang('TICKET_ACTION_MAIL_ok').')';
+                  }
+                  break;
+                  case 'no_ok':
+                    if (in_array('7',$noty)){
+                    $red=''.lang('TICKET_name').' #'.$ticket_id.' ('.lang('TICKET_ACTION_MAIL_nook').')';
+                    }
+                    break;
+                    case 'edit_msg':
+                      if (in_array('8',$noty)){
+                      $red=''.lang('TICKET_name').' #'.$ticket_id.' ('.lang('TICKET_ACTION_MAIL_edit').')';
+                      }
+                      break;
+                      case 'edit_subj':
+                        if (in_array('9',$noty)){
+                          $red=''.lang('TICKET_name').' #'.$ticket_id.' ('.lang('TICKET_ACTION_MAIL_edit').')';
+                        }
+                        break;
+                        case 'familiar':
+                          if (in_array('10',$noty)){
+                            $red=''.lang('TICKET_name').' #'.$ticket_id.' ('.lang('TICKET_ACTION_MAIL_familiar').')';
+                          }
+                          break;
+    }
+    return $red;
+}
 
 function get_last_ticket($menu, $id) {
     global $dbConnection;

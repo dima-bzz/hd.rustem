@@ -399,6 +399,15 @@
 "TICKET_ACTION_arch":"заявка перенесена в архив",
 "TICKET_ACTION_familiar":"с заявкой ознакомился пользователь",
 
+"TICKET_ACTION_MAIL_refer":"переадресована",
+"TICKET_ACTION_MAIL_ok":"выполнена",
+"TICKET_ACTION_MAIL_nook":"не выполнена",
+"TICKET_ACTION_MAIL_lock":"взята в работу",
+"TICKET_ACTION_MAIL_unlock":"снята с обработки",
+"TICKET_ACTION_MAIL_edit":"изменена",
+"TICKET_ACTION_MAIL_comment":"прокомментирована",
+"TICKET_ACTION_MAIL_familiar":"ознакомились",
+
 
 "HELPER_title":"Центр знаний",
 "HELPER_back":"назад",
@@ -456,6 +465,7 @@
 "P_bottomCenter":"Снизу, поцентру страницы",
 "P_noty_show_site":"Расположение уведомление на сайте",
 "P_jabber_show":"Какие уведомления показывать в jabber",
+"P_mail_show":"Какие уведомления отсылать на почту",
 
 "JS_not_found":"Не найдено...",
 "JS_ticket":"Заявка",

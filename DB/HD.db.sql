@@ -428,6 +428,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `last_time` datetime NOT NULL,
   `jabber_noty` int(11) NOT NULL DEFAULT '0',
   `jabber_noty_show` varchar(128) DEFAULT '1',
+  `mail_noty_show` varchar(128) DEFAULT '1',
   `show_noty` varchar(128) DEFAULT 'bottomRight',
   `noty` varchar(128) DEFAULT '1,2,3,4,5,6,7,8,9,10',
   `us_kill` tinyint(1) NOT NULL DEFAULT '1',
