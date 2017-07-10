@@ -2134,47 +2134,191 @@ function get_last_action_ticket_mail($ticket_id,$uid) {
     switch ($r) {
         case 'refer':
           if (in_array('2',$noty)){
-          $red=''.lang('TICKET_name').' #'.$ticket_id.' - '.lang('TICKET_ACTION_refer').' '.$uss.' '.lang('TICKET_ACTION_refer_to').' '.$unit_to.' '.$uss_to.' <a href='.$CONF['hostname'].'ticket?'.$h.'>'.lang('MAIL_2link').'</a>';
+          // $red=''.lang('TICKET_name').' #'.$ticket_id.' - '.lang('TICKET_ACTION_refer').' '.$uss.' '.lang('TICKET_ACTION_refer_to').' '.$unit_to.' '.$uss_to.' <a href='.$CONF['hostname'].'ticket?'.$h.'>'.lang('MAIL_2link').'</a>';
+          $red = '<div style="background: #FAFCFF; border: 1px solid gray; border-radius: 6px; font-family: Arial,Helvetica,sans-serif; font-size: 12px; margin: 9px 17px 13px 17px; padding: 11px;">
+          <p style="font-family: Arial, Helvetica, sans-serif; font-size:18px; text-align:center;">'.lang('TICKET_name').' '.lang('TICKET_ACTION_refer').' '.$uss.' '.lang('TICKET_ACTION_refer_to').' '.$unit_to.' '.$uss_to.'</p>
+          <table width="100%" cellpadding="3" cellspacing="0">
+            <tbody>
+              <tr id="tr_">
+                <td width="15%" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
+              font-size: 12px;">'.lang('MAIL_code').':</td>
+                <td width="36%" align="center" valign="middle" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
+              font-size: 19px;"><b>#'.$ticket_id.'</b></td>
+                <td width="49%" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
+              font-size: 12px;"><p style="font-family: Arial, Helvetica, sans-serif; font-size:11px; text-align:center;"> <a href="'.$CONF['hostname'].'ticket?'.$h.'">'.lang('MAIL_2link').'</a></p></td>
+              </tr>
+            </tbody>
+          </table>
+          </center>
+          </div>';
         }
           break;
           case 'comment':
             if (in_array('3',$noty)){
-              $red=''.lang('TICKET_name').' #'.$ticket_id.' - '.lang('TICKET_ACTION_comment').' '.$uss.' '.$unit_to.' '.$uss_to.'&nbsp;&nbsp;<a href="'.$CONF['hostname'].'ticket?'.$h.'">'.lang('MAIL_2link').'</a>';
+              // $red=''.lang('TICKET_name').' #'.$ticket_id.' - '.lang('TICKET_ACTION_comment').' '.$uss.' '.$unit_to.' '.$uss_to.'&nbsp;&nbsp;<a href="'.$CONF['hostname'].'ticket?'.$h.'">'.lang('MAIL_2link').'</a>';
+              $red = '<div style="background: #FAFCFF; border: 1px solid gray; border-radius: 6px; font-family: Arial,Helvetica,sans-serif; font-size: 12px; margin: 9px 17px 13px 17px; padding: 11px;">
+              <p style="font-family: Arial, Helvetica, sans-serif; font-size:18px; text-align:center;">'.lang('TICKET_name').' '.lang('TICKET_ACTION_comment').' '.$uss.'</p>
+              <table width="100%" cellpadding="3" cellspacing="0">
+                <tbody>
+                  <tr id="tr_">
+                    <td width="15%" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
+                  font-size: 12px;">'.lang('MAIL_code').':</td>
+                    <td width="36%" align="center" valign="middle" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
+                  font-size: 19px;"><b>#'.$ticket_id.'</b></td>
+                    <td width="49%" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
+                  font-size: 12px;"><p style="font-family: Arial, Helvetica, sans-serif; font-size:11px; text-align:center;"> <a href="'.$CONF['hostname'].'ticket?'.$h.'">'.lang('MAIL_2link').'</a></p></td>
+                  </tr>
+                </tbody>
+              </table>
+              </center>
+              </div>';
             }
             break;
             case 'lock':
               if (in_array('4',$noty)){
-              $red=''.lang('TICKET_name').' #'.$ticket_id.' - '.lang('TICKET_ACTION_lock').' '.$uss.' '.$unit_to.' '.$uss_to.'&nbsp;&nbsp;<a href='.$CONF['hostname'].'ticket?'.$h.'>'.lang('MAIL_2link').'</a>';
+              // $red=''.lang('TICKET_name').' #'.$ticket_id.' - '.lang('TICKET_ACTION_lock').' '.$uss.' '.$unit_to.' '.$uss_to.'&nbsp;&nbsp;<a href='.$CONF['hostname'].'ticket?'.$h.'>'.lang('MAIL_2link').'</a>';
+              $red = '<div style="background: #FAFCFF; border: 1px solid gray; border-radius: 6px; font-family: Arial,Helvetica,sans-serif; font-size: 12px; margin: 9px 17px 13px 17px; padding: 11px;">
+              <p style="font-family: Arial, Helvetica, sans-serif; font-size:18px; text-align:center;">'.lang('TICKET_name').' '.lang('TICKET_ACTION_lock').' '.$uss.'</p>
+              <table width="100%" cellpadding="3" cellspacing="0">
+                <tbody>
+                  <tr id="tr_">
+                    <td width="15%" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
+                  font-size: 12px;">'.lang('MAIL_code').':</td>
+                    <td width="36%" align="center" valign="middle" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
+                  font-size: 19px;"><b>#'.$ticket_id.'</b></td>
+                    <td width="49%" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
+                  font-size: 12px;"><p style="font-family: Arial, Helvetica, sans-serif; font-size:11px; text-align:center;"> <a href="'.$CONF['hostname'].'ticket?'.$h.'">'.lang('MAIL_2link').'</a></p></td>
+                  </tr>
+                </tbody>
+              </table>
+              </center>
+              </div>';
             }
               break;
               case 'unlock':
                 if (in_array('5',$noty)){
-                  $red=''.lang('TICKET_name').' #'.$ticket_id.' - '.lang('TICKET_ACTION_unlock').' '.$uss.' '.$unit_to.' '.$uss_to.'&nbsp;&nbsp;<a href='.$CONF['hostname'].'ticket?'.$h.'>'.lang('MAIL_2link').'</a>';
+                  // $red=''.lang('TICKET_name').' #'.$ticket_id.' - '.lang('TICKET_ACTION_unlock').' '.$uss.' '.$unit_to.' '.$uss_to.'&nbsp;&nbsp;<a href='.$CONF['hostname'].'ticket?'.$h.'>'.lang('MAIL_2link').'</a>';
+                  $red = '<div style="background: #FAFCFF; border: 1px solid gray; border-radius: 6px; font-family: Arial,Helvetica,sans-serif; font-size: 12px; margin: 9px 17px 13px 17px; padding: 11px;">
+                  <p style="font-family: Arial, Helvetica, sans-serif; font-size:18px; text-align:center;">'.lang('TICKET_name').' '.lang('TICKET_ACTION_unlock').' '.$uss.'</p>
+                  <table width="100%" cellpadding="3" cellspacing="0">
+                    <tbody>
+                      <tr id="tr_">
+                        <td width="15%" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
+                      font-size: 12px;">'.lang('MAIL_code').':</td>
+                        <td width="36%" align="center" valign="middle" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
+                      font-size: 19px;"><b>#'.$ticket_id.'</b></td>
+                        <td width="49%" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
+                      font-size: 12px;"><p style="font-family: Arial, Helvetica, sans-serif; font-size:11px; text-align:center;"> <a href="'.$CONF['hostname'].'ticket?'.$h.'">'.lang('MAIL_2link').'</a></p></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  </center>
+                  </div>';
                 }
                 break;
                 case 'ok':
                   if (in_array('6',$noty)){
-                    $red=''.lang('TICKET_name').' #'.$ticket_id.' - '.lang('TICKET_ACTION_ok').' '.$uss.' '.$unit_to.' '.$uss_to.'&nbsp;&nbsp;<a href='.$CONF['hostname'].'ticket?'.$h.'>'.lang('MAIL_2link').'</a>';
+                    // $red=''.lang('TICKET_name').' #'.$ticket_id.' - '.lang('TICKET_ACTION_ok').' '.$uss.' '.$unit_to.' '.$uss_to.'&nbsp;&nbsp;<a href='.$CONF['hostname'].'ticket?'.$h.'>'.lang('MAIL_2link').'</a>';
+                    $red = '<div style="background: #FAFCFF; border: 1px solid gray; border-radius: 6px; font-family: Arial,Helvetica,sans-serif; font-size: 12px; margin: 9px 17px 13px 17px; padding: 11px;">
+                    <p style="font-family: Arial, Helvetica, sans-serif; font-size:18px; text-align:center;">'.lang('TICKET_name').' '.lang('TICKET_ACTION_ok').' '.$uss.'</p>
+                    <table width="100%" cellpadding="3" cellspacing="0">
+                      <tbody>
+                        <tr id="tr_">
+                          <td width="15%" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
+                        font-size: 12px;">'.lang('MAIL_code').':</td>
+                          <td width="36%" align="center" valign="middle" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
+                        font-size: 19px;"><b>#'.$ticket_id.'</b></td>
+                          <td width="49%" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
+                        font-size: 12px;"><p style="font-family: Arial, Helvetica, sans-serif; font-size:11px; text-align:center;"> <a href="'.$CONF['hostname'].'ticket?'.$h.'">'.lang('MAIL_2link').'</a></p></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    </center>
+                    </div>';
                   }
                   break;
                   case 'no_ok':
                     if (in_array('7',$noty)){
-                    $red=''.lang('TICKET_name').' #'.$ticket_id.' - '.lang('TICKET_ACTION_nook').' '.$uss.' '.$unit_to.' '.$uss_to.'&nbsp;&nbsp;<a href='.$CONF['hostname'].'ticket?'.$h.'>'.lang('MAIL_2link').'</a>';
+                    // $red=''.lang('TICKET_name').' #'.$ticket_id.' - '.lang('TICKET_ACTION_nook').' '.$uss.' '.$unit_to.' '.$uss_to.'&nbsp;&nbsp;<a href='.$CONF['hostname'].'ticket?'.$h.'>'.lang('MAIL_2link').'</a>';
+                    $red = '<div style="background: #FAFCFF; border: 1px solid gray; border-radius: 6px; font-family: Arial,Helvetica,sans-serif; font-size: 12px; margin: 9px 17px 13px 17px; padding: 11px;">
+                    <p style="font-family: Arial, Helvetica, sans-serif; font-size:18px; text-align:center;">'.lang('TICKET_name').' '.lang('TICKET_ACTION_nook').' '.$uss.'</p>
+                    <table width="100%" cellpadding="3" cellspacing="0">
+                      <tbody>
+                        <tr id="tr_">
+                          <td width="15%" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
+                        font-size: 12px;">'.lang('MAIL_code').':</td>
+                          <td width="36%" align="center" valign="middle" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
+                        font-size: 19px;"><b>#'.$ticket_id.'</b></td>
+                          <td width="49%" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
+                        font-size: 12px;"><p style="font-family: Arial, Helvetica, sans-serif; font-size:11px; text-align:center;"> <a href="'.$CONF['hostname'].'ticket?'.$h.'">'.lang('MAIL_2link').'</a></p></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    </center>
+                    </div>';
                     }
                     break;
                     case 'edit_msg':
                       if (in_array('8',$noty)){
-                      $red=''.lang('TICKET_name').' #'.$ticket_id.' - '.lang('TICKET_ACTION_edit').' '.$uss.' '.$unit_to.' '.$uss_to.'&nbsp;&nbsp;<a href='.$CONF['hostname'].'ticket?'.$h.'>'.lang('MAIL_2link').'</a>';
+                      // $red=''.lang('TICKET_name').' #'.$ticket_id.' - '.lang('TICKET_ACTION_edit').' '.$uss.' '.$unit_to.' '.$uss_to.'&nbsp;&nbsp;<a href='.$CONF['hostname'].'ticket?'.$h.'>'.lang('MAIL_2link').'</a>';
+                      $red = '<div style="background: #FAFCFF; border: 1px solid gray; border-radius: 6px; font-family: Arial,Helvetica,sans-serif; font-size: 12px; margin: 9px 17px 13px 17px; padding: 11px;">
+                      <p style="font-family: Arial, Helvetica, sans-serif; font-size:18px; text-align:center;">'.lang('TICKET_name').' '.lang('TICKET_ACTION_edit').' '.$uss.'</p>
+                      <table width="100%" cellpadding="3" cellspacing="0">
+                        <tbody>
+                          <tr id="tr_">
+                            <td width="15%" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
+                          font-size: 12px;">'.lang('MAIL_code').':</td>
+                            <td width="36%" align="center" valign="middle" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
+                          font-size: 19px;"><b>#'.$ticket_id.'</b></td>
+                            <td width="49%" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
+                          font-size: 12px;"><p style="font-family: Arial, Helvetica, sans-serif; font-size:11px; text-align:center;"> <a href="'.$CONF['hostname'].'ticket?'.$h.'">'.lang('MAIL_2link').'</a></p></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      </center>
+                      </div>';
                       }
                       break;
                       case 'edit_subj':
                         if (in_array('9',$noty)){
-                          $red=''.lang('TICKET_name').' #'.$ticket_id.' - '.lang('TICKET_ACTION_edit').' '.$uss.' '.$unit_to.' '.$uss_to.'&nbsp;&nbsp;<a href='.$CONF['hostname'].'ticket?'.$h.'>'.lang('MAIL_2link').'</a>';
+                          // $red=''.lang('TICKET_name').' #'.$ticket_id.' - '.lang('TICKET_ACTION_edit').' '.$uss.' '.$unit_to.' '.$uss_to.'&nbsp;&nbsp;<a href='.$CONF['hostname'].'ticket?'.$h.'>'.lang('MAIL_2link').'</a>';
+                          $red = '<div style="background: #FAFCFF; border: 1px solid gray; border-radius: 6px; font-family: Arial,Helvetica,sans-serif; font-size: 12px; margin: 9px 17px 13px 17px; padding: 11px;">
+                          <p style="font-family: Arial, Helvetica, sans-serif; font-size:18px; text-align:center;">'.lang('TICKET_name').' '.lang('TICKET_ACTION_edit').' '.$uss.'</p>
+                          <table width="100%" cellpadding="3" cellspacing="0">
+                            <tbody>
+                              <tr id="tr_">
+                                <td width="15%" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
+                              font-size: 12px;">'.lang('MAIL_code').':</td>
+                                <td width="36%" align="center" valign="middle" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
+                              font-size: 19px;"><b>#'.$ticket_id.'</b></td>
+                                <td width="49%" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
+                              font-size: 12px;"><p style="font-family: Arial, Helvetica, sans-serif; font-size:11px; text-align:center;"> <a href="'.$CONF['hostname'].'ticket?'.$h.'">'.lang('MAIL_2link').'</a></p></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          </center>
+                          </div>';
                         }
                         break;
                         case 'familiar':
                           if (in_array('10',$noty)){
-                            $red=''.lang('TICKET_name').' #'.$ticket_id.' - '.lang('TICKET_ACTION_familiar').' '.$uss.' '.$unit_to.' '.$uss_to.'&nbsp;&nbsp;<a href='.$CONF['hostname'].'ticket?'.$h.'>'.lang('MAIL_2link').'</a>';
+                            // $red=''.lang('TICKET_name').' #'.$ticket_id.' - '.lang('TICKET_ACTION_familiar').' '.$uss.' '.$unit_to.' '.$uss_to.'&nbsp;&nbsp;<a href='.$CONF['hostname'].'ticket?'.$h.'>'.lang('MAIL_2link').'</a>';
+                            $red = '<div style="background: #FAFCFF; border: 1px solid gray; border-radius: 6px; font-family: Arial,Helvetica,sans-serif; font-size: 12px; margin: 9px 17px 13px 17px; padding: 11px;">
+                            <p style="font-family: Arial, Helvetica, sans-serif; font-size:18px; text-align:center;">'.lang('TICKET_name').' '.lang('TICKET_ACTION_familiar').' '.$uss.'</p>
+                            <table width="100%" cellpadding="3" cellspacing="0">
+                              <tbody>
+                                <tr id="tr_">
+                                  <td width="15%" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
+                                font-size: 12px;">'.lang('MAIL_code').':</td>
+                                  <td width="36%" align="center" valign="middle" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
+                                font-size: 19px;"><b>#'.$ticket_id.'</b></td>
+                                  <td width="49%" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
+                                font-size: 12px;"><p style="font-family: Arial, Helvetica, sans-serif; font-size:11px; text-align:center;"> <a href="'.$CONF['hostname'].'ticket?'.$h.'">'.lang('MAIL_2link').'</a></p></td>
+                                </tr>
+                              </tbody>
+                            </table>
+                            </center>
+                            </div>';
                           }
                           break;
     }
