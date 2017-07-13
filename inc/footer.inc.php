@@ -37,8 +37,8 @@
 <script src="<?=$CONF['hostname']?>js/moment-with-locales.js"></script>
 <script src="<?=$CONF['hostname']?>js/humanize-duration.js"></script>
 <script src="<?=$CONF['hostname']?>js/bootstrap-datetimepicker.min.js"></script>
-<script type='text/javascript' src="<?=$CONF['hostname']?>js/jquery.i18n.js"></script>
-<script type='text/javascript' src="<?=$CONF['hostname']?>js/jquery.i18n.messagestore.js"></script>
+<script src="<?=$CONF['hostname']?>js/jquery.i18n.js"></script>
+<script src="<?=$CONF['hostname']?>js/jquery.i18n.messagestore.js"></script>
 
 
 <!-- FOR UPLOADER -->
