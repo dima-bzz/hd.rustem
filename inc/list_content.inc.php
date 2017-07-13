@@ -207,7 +207,7 @@ if (!isset($_SESSION['hd.rustem_sort_out'])) {
 
             <table class="table table-bordered table-hover" style=" font-size: 14px;background-color:#fff; ">
                 <thead>
-                <tr>
+                <tr style="white-space: nowrap;">
                     <th><center><a href="#" style="color: hsl(0, 0%, 20%);" value="id" id="tb_sort">#<?=$id_icon;?></a></center></th>
                     <th><center><a href="#" style="color: hsl(0, 0%, 20%);" value="prio" id="tb_sort"><i class="fa fa-info-circle" data-toggle="tooltip" data-placement="bottom" title="<?=lang('t_LIST_prio');?>"></i><?=$prio_icon;?></a></center></th>
                     <th><center><a href="#" style="color: hsl(0, 0%, 20%);" value="subj" id="tb_sort"><?=lang('t_LIST_subj');?><?=$subj_icon;?></a></center></th>
@@ -1081,7 +1081,7 @@ $stmt->execute(array_merge($vv,$paramss));
 
             <table class="table table-bordered table-hover" style=" font-size: 14px;background-color:#fff; ">
             <thead>
-            <tr>
+            <tr style="white-space: nowrap;">
                 <th><center><div id="sort_id" action="<?=$_SESSION['helpdesk_sort_id'];?>"><a href="#" style="color: hsl(0, 0%, 20%);" value="id" id="tb_sort">#<?=$id_icon;?></a></div></center></th>
                 <th><center><div id="sort_prio" action="<?=$_SESSION['helpdesk_sort_prio'];?>"><a href="#" style="color: hsl(0, 0%, 20%);" value="prio" id="tb_sort"><i class="fa fa-info-circle" data-toggle="tooltip" data-placement="bottom" title="<?=lang('t_LIST_prio');?>"></i><?=$prio_icon;?></a></div></center></th>
                 <th><center><div id="sort_subj" action="<?=$_SESSION['helpdesk_sort_subj'];?>"><a href="#" style="color: hsl(0, 0%, 20%);" value="subj" id="tb_sort"><?=lang('t_LIST_subj');?><?=$subj_icon;?></a></div></center></th>
