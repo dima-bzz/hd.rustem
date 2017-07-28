@@ -134,7 +134,7 @@ if (isset($_GET['ok'])) {
       <div class="form-group">
     <label for="mess" class="col-sm-2 control-label"><?=lang('MAIL_msg');?></label>
         <div class="col-sm-10">
-        <textarea placeholder="<?=lang('');?>" class="form-control input-sm animated" name="mess" id="mess" rows="3"></textarea>
+        <textarea placeholder="<?=lang('DASHBOARD_msg');?>" class="form-control input-sm animated" name="mess" id="mess" rows="3"></textarea>
 
 
         </div>

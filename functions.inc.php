@@ -3000,7 +3000,7 @@ function get_dashboard_msg(){
     $stmt = $dbConnection->prepare('SELECT messages from users where id=:mid');
     $stmt->execute(array(':mid' => $mid));
 
-    $max = $stmt->fetch(PDO::FETCH_ASSOC);
+    $res1 = $stmt->fetch(PDO::FETCH_ASSOC);
     // $res1 = $stmt->fetchAll();
 
 
