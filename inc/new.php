@@ -773,7 +773,7 @@ if ($CONF['fix_subj'] == "false") {
         </td>
         <td>
 <p class="name">
-<span class="label label-success" style="font-size:98%;"><i class="fa fa-check"></i> ok</span>
+<span class="label label-success" style="font-size:88%;"><i class="fa fa-check"></i> ok</span>
 <button id="files_del_upload" type="button" class="btn btn-danger btn-xs" value={%=file.name.replace(/\..*/, '')%} title="<?=lang('FILES_del');?>"><i class="fa fa-trash-o"></i> </button>
 </p>
         </td>

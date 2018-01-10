@@ -1147,7 +1147,7 @@ $lo3="yes";
             </td>
             <td>
     <p class="name">
-    <span class="label label-success" style="font-size:90%;"><i class="fa fa-check"></i> ok</span>
+    <span class="label label-success" style="font-size:88%;"><i class="fa fa-check"></i> ok</span>
     <button id="files_del_upload_comment" type="button" class="btn btn-danger btn-xs" value={%=file.name.replace(/\..*/, '')%} title="<?=lang('FILES_del');?>"><i class="fa fa-trash-o"></i> </button>
     </p>
             </td>
