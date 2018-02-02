@@ -125,9 +125,11 @@ include_once("head.inc.php");
 <script src='<?=$CONF['hostname']?>js/jquery.md5.js'></script>
 <script>
     $(document).ready(function() {
-        $('form[name=auth]').submit(function(){
-          $("input[name=password]").val($.md5($("input[name=password]").val()));
-          })
+      // $('form[name=auth]').submit(function(){
+        $("input[name=password]").focusout(function(){
+          $(this).val($.md5($(this).val()));
+        })
+      // })
         $("#main_login").hide().fadeIn(500);
         $('body').on('click', 'a#show_activate_form', function(event) {
             event.preventDefault();
