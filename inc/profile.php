@@ -24,7 +24,7 @@ $usid=$_SESSION['helpdesk_user_id'];
 //    $sql = mysql_query($query) or die(mysql_error());
 
 
-	$stmt = $dbConnection->prepare('SELECT fio, pass, login, status, priv, unit,email, lang, jabber_noty, noty, show_noty, jabber_noty_show, mail_noty_show from users where id=:usid');
+	$stmt = $dbConnection->prepare('SELECT fio, pass, login, status, priv, unit,email,push, lang, jabber_noty, push_noty, noty, show_noty, jabber_noty_show, push_noty_show, mail_noty_show from users where id=:usid');
 	$stmt->execute(array(':usid'=>$usid));
 	$res1 = $stmt->fetchAll();
 
@@ -36,12 +36,15 @@ $usid=$_SESSION['helpdesk_user_id'];
         //$row = mysql_fetch_assoc($sql);
 foreach($res1 as $row) {
 $jabber_noty=$row['jabber_noty'];
+$push_noty=$row['push_noty'];
 $fio=$row['fio'];
 $login=$row['login'];
 $pass=$row['pass'];
 $email=$row['email'];
+$push=$row['push'];
 $noty = $row['noty'];
 $jnoty = $row['jabber_noty_show'];
+$pushnoty = $row['push_noty_show'];
 $mnoty = $row['mail_noty_show'];
 $show_noty = $row['show_noty'];
 $langu=$row['lang'];
@@ -98,6 +101,21 @@ else if ($langu == "ru") {$status_lang_ru="selected";}
     <p class="help-block"><small><?=lang('P_mail_desc');?></small></p>
         </div>
   </div>
+  <?php
+  if ($CONF_PUSH['active'] == "true"){
+    if ($CONF_PUSH['api'] != ""){
+   ?>
+  <div class="form-group">
+<label for="mail" class="col-sm-4 control-label"><?=lang('P_push');?></label>
+    <div class="col-sm-8">
+<input autocomplete="off" name="push" type="text" class="form-control input-sm" id="push" placeholder="<?=lang('P_push');?>" value="<?=$push;?>">
+<p class="help-block"><small><?=lang('P_push_desc');?></small></p>
+    </div>
+</div>
+<?php
+}
+}
+ ?>
 
 
           <div class="form-group">
@@ -167,7 +185,40 @@ else if ($langu == "ru") {$status_lang_ru="selected";}
           <?php
         }
       }
-           ?>
+      if ($CONF_PUSH['active'] == "true"){
+        if ($CONF_PUSH['api'] != ""){
+       ?>
+      <div class="form-group">
+        <label for="push_active_profile" class="col-sm-4 control-label"><?=lang('CONF_push_status');?></label>
+        <div class="col-sm-8">
+      <select class="chosen-select_no_search form-control input-sm" id="push_active_profile">
+      <option value="1" <?php if ($push_noty == "1") {echo "selected";} ?>><?=lang('CONF_true');?></option>
+      <option value="0" <?php if ($push_noty == "0") {echo "selected";} ?>><?=lang('CONF_false');?></option>
+    </select>    </div>
+      </div>
+      <div class="form-group">
+        <label for="push_show_profile" class="col-sm-4 control-label"><?=lang('P_push_show');?></label>
+        <div class="col-sm-8">
+      <select class="form-control input-sm" data-placeholder="<?=lang('P_noty_show_p');?>" multiple id="push_show_profile">
+        <?php
+          $ph = explode(",",$pushnoty);
+         ?>
+      <option value="1" <?php if (in_array("1",$ph)) {echo "selected";} ?>><?=lang('P_create');?></option>
+      <option value="2" <?php if (in_array("2",$ph)) {echo "selected";} ?>><?=lang('P_refer');?></option>
+      <option value="3" <?php if (in_array("3",$ph)) {echo "selected";} ?>><?=lang('P_comment');?></option>
+      <option value="4" <?php if (in_array("4",$ph)) {echo "selected";} ?>><?=lang('P_lock');?></option>
+      <option value="5" <?php if (in_array("5",$ph)) {echo "selected";} ?>><?=lang('P_unlock');?></option>
+      <option value="6" <?php if (in_array("6",$ph)) {echo "selected";} ?>><?=lang('P_ok');?></option>
+      <option value="7" <?php if (in_array("7",$ph)) {echo "selected";} ?>><?=lang('P_no_ok');?></option>
+      <option value="8" <?php if (in_array("8",$ph)) {echo "selected";} ?>><?=lang('P_msg');?></option>
+      <option value="9" <?php if (in_array("9",$ph)) {echo "selected";} ?>><?=lang('P_subj');?></option>
+      <option value="10" <?php if (in_array("10",$ph)) {echo "selected";} ?>><?=lang('P_familiar');?></option>
+    </select>    </div>
+      </div>
+      <?php
+    }
+  }
+       ?>
           <div class="form-group">
             <label for="show_noty_profile" class="col-sm-4 control-label"><?=lang('P_noty_show');?></label>
             <div class="col-sm-8">
@@ -232,18 +283,30 @@ else if ($langu == "ru") {$status_lang_ru="selected";}
 
       </div>
         </form>
+        <div class="btn-group pull-right">
         <?php
-        if ($CONF_JABBER['active'] == "true"){
-          if (($CONF_JABBER['server'] != "") && ($CONF_JABBER['port'] != "") && ($CONF_JABBER['login'] != "") && ($CONF_JABBER['pass'] != "")){
+        if ($CONF_PUSH['active'] == "true"){
+          if ($CONF_PUSH['api'] != ""){
          ?>
-        <button type="submit" id="conf_test_jabber_profile" class="btn btn-default btn-sm pull-right"> test jabber</button>
+        <button type="submit" id="conf_test_push_profile" class="btn btn-default btn-sm">test pushbullet</button>
         <?php
       }
     }
          ?>
+         <?php
+         if ($CONF_JABBER['active'] == "true"){
+           if (($CONF_JABBER['server'] != "") && ($CONF_JABBER['port'] != "") && ($CONF_JABBER['login'] != "") && ($CONF_JABBER['pass'] != "")){
+          ?>
+         <button type="submit" id="conf_test_jabber_profile" class="btn btn-default btn-sm">test jabber</button>
+         <?php
+       }
+     }
+          ?>
+       </div>
       </div>
       </div>
       <div id="conf_test_jabber_res_profile"></div>
+      <div id="conf_test_push_res_profile"></div>
       <div id="noty_res"></div>
 
       <div class="panel panel-danger">
