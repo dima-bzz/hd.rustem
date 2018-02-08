@@ -48,7 +48,10 @@ $CONF_JABBER = array (
 'login'	=> get_conf_param('jabber_login'),
 'pass'	=> get_conf_param('jabber_pass'),
 );
-
+$CONF_PUSH = array (
+'active'	=> get_conf_param('push_active'),
+'api'	=> get_conf_param('push_api'),
+);
 
 if ($CONF_HD['debug_mode'] == false) {
 error_reporting(E_ALL ^ E_NOTICE);
@@ -59,13 +62,14 @@ date_default_timezone_set(get_conf_param('time_zone'));
 
 include_once('inc/mail.inc.php');
 include_once('inc/jabber.inc.php');
+include_once('inc/pushbullet.inc.php');
 
 $forhostname=substr($CONF['hostname'], -1);
 if ($forhostname == "/") {$CONF['hostname']=$CONF['hostname'];}
 else if ($forhostname <> "/") {$CONF['hostname']=$CONF['hostname']."/";}
 
 function get_version(){
-  $v = '2.20.4';
+  $v = '2.21.0';
   return $v;
 }
 
@@ -161,12 +165,26 @@ function validate_exist_mail($str) {
 
     return $r;
 }
+function validate_exist_push($str) {
+    global $dbConnection;
+    $uid=$_SESSION['helpdesk_user_id'];
 
+    $stmt = $dbConnection->prepare('SELECT count(push) as n from users where push=:str and id != :uid');
+    $stmt->execute(array(':str' => $str,':uid' => $uid));
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($row['n'] > 0) {$r=false;}
+    else if ($row['n'] == 0) {$r=true;}
+
+    return $r;
+}
 function validate_email($str)
 {
     return preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/',$str);
 }
-
+function validate_push($str)
+{
+    return preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/',$str);
+}
 function validate_alphanumeric_underscore($str)
 {
     return preg_match('/^[a-zA-Z0-9_\.-]+$/',$str);
@@ -2055,6 +2073,71 @@ function get_last_action_ticket_jabber($ticket_id,$uid) {
     $stmt->execute(array(':id' => $uid));
     $notys = $stmt->fetch(PDO::FETCH_ASSOC);
     $noty = explode(",",$notys['jabber_noty_show']);
+
+    $r=$fio['msg'];
+    $uss=nameshort(name_of_user_ret($fio['init_user_id']));
+    $uss_to=nameshort(name_of_user_ret($fio['to_user_id']));
+    $unit_to=get_unit_name_return4news($fio['to_unit_id']);
+    switch ($r) {
+        case 'refer':
+          if (in_array('2',$noty)){
+          $red=''.lang('TICKET_name').' #'.$ticket_id.' - '.lang('TICKET_ACTION_refer').' '.$uss.' '.lang('TICKET_ACTION_refer_to').' '.$unit_to.' '.$uss_to;
+        }
+          break;
+          case 'comment':
+            if (in_array('3',$noty)){
+              $red=''.lang('TICKET_name').' #'.$ticket_id.' - '.lang('TICKET_ACTION_comment').' '.$uss;
+            }
+            break;
+            case 'lock':
+              if (in_array('4',$noty)){
+              $red=''.lang('TICKET_name').' #'.$ticket_id.' - '.lang('TICKET_ACTION_lock').' '.$uss;
+            }
+              break;
+              case 'unlock':
+                if (in_array('5',$noty)){
+                  $red=''.lang('TICKET_name').' #'.$ticket_id.' - '.lang('TICKET_ACTION_unlock').' '.$uss;
+                }
+                break;
+                case 'ok':
+                  if (in_array('6',$noty)){
+                    $red=''.lang('TICKET_name').' #'.$ticket_id.' - '.lang('TICKET_ACTION_ok').' '.$uss;
+                  }
+                  break;
+                  case 'no_ok':
+                    if (in_array('7',$noty)){
+                    $red=''.lang('TICKET_name').' #'.$ticket_id.' - '.lang('TICKET_ACTION_nook').' '.$uss;
+                    }
+                    break;
+                    case 'edit_msg':
+                      if (in_array('8',$noty)){
+                      $red=''.lang('TICKET_name').' #'.$ticket_id.' - '.lang('TICKET_ACTION_edit').' '.$uss;
+                      }
+                      break;
+                      case 'edit_subj':
+                        if (in_array('9',$noty)){
+                          $red=''.lang('TICKET_name').' #'.$ticket_id.' - '.lang('TICKET_ACTION_edit').' '.$uss;
+                        }
+                        break;
+                        case 'familiar':
+                          if (in_array('10',$noty)){
+                            $red=''.lang('TICKET_name').' #'.$ticket_id.' - '.lang('TICKET_ACTION_familiar').' '.$uss;
+                          }
+                          break;
+    }
+    return $red;
+}
+function get_last_action_ticket_push($ticket_id,$uid) {
+    global $dbConnection;
+
+    $stmt = $dbConnection->prepare('select date_op, msg, init_user_id, to_user_id, to_unit_id from ticket_log where ticket_id=:ticket_id order by date_op DESC limit 1');
+    $stmt->execute(array(':ticket_id' => $ticket_id));
+    $fio = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    $stmt = $dbConnection->prepare('select push_noty_show from users where id=:id');
+    $stmt->execute(array(':id' => $uid));
+    $notys = $stmt->fetch(PDO::FETCH_ASSOC);
+    $noty = explode(",",$notys['push_noty_show']);
 
     $r=$fio['msg'];
     $uss=nameshort(name_of_user_ret($fio['init_user_id']));

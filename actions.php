@@ -1796,6 +1796,90 @@ or user_init_id=:uid2) and UNIX_TIMESTAMP(last_update) > UNIX_TIMESTAMP(NOW())-5
 }
 
 }
+if ($mode == "send_push_noty"){
+if ($CONF_PUSH['active'] == "true") {
+// $lu=($_POST['last_update']);
+$stmt = $dbConnection->prepare('SELECT id, priv, unit, push, fio from users where status=:n and push_noty=:n2');
+$stmt->execute(array(':n'=>'1',':n2'=>'1'));
+$res1 = $stmt->fetchAll();
+foreach($res1 as $row) {
+$priv_val = $row['priv'];
+$uid = $row['id'];
+$unit = $row['unit'];
+$push = $row['push'];
+$fio = $row['fio'];
+$u = return_users_array_unit($unit);
+
+if ($priv_val == "2") {
+
+    $stmt = $dbConnection->prepare('SELECT id, hash_name, last_update from tickets where UNIX_TIMESTAMP(last_update) > UNIX_TIMESTAMP(NOW())-5');
+    $stmt->execute();
+    $res1 = $stmt->fetchAll();
+    foreach($res1 as $rews) {
+
+        $at=get_last_action_ticket_push($rews['id'],$uid);
+        $who_action=get_who_last_action_ticket($rews['id']);
+        if ($who_action <> $uid) {
+          if ($at <> NULL){
+            if (!is_null($push)) {
+            $to = $push;
+            $title = lang('PUSH_name');
+            $msg = $at;
+            send_push($to,$title,$msg);
+          }
+}
+        }
+
+}
+}
+if ($priv_val == "0") {
+    $stmt = $dbConnection->prepare('SELECT id, hash_name, last_update from tickets where (unit_id IN ('.$unit.') or user_init_id IN ('.$u.')) and UNIX_TIMESTAMP(last_update) > UNIX_TIMESTAMP(NOW())-5');
+    $stmt->execute();
+    $res1 = $stmt->fetchAll();
+    foreach($res1 as $rews) {
+
+        $at=get_last_action_ticket_push($rews['id'],$uid);
+        $who_action=get_who_last_action_ticket($rews['id']);
+        if ($who_action <> $uid) {
+          if ($at <> NULL){
+            if (!is_null($push)) {
+            $to = $push;
+            $title = lang('PUSH_name');
+            $msg = $at;
+            send_push($to,$title,$msg);
+          }
+}
+        }
+
+}
+}
+if ($priv_val == "1") {
+  $stmt = $dbConnection->prepare('SELECT id, hash_name, last_update from tickets where (
+((user_to_id rlike :uid) or (user_to_id=:n and unit_id IN ('.$unit.')))
+or user_init_id=:uid2) and UNIX_TIMESTAMP(last_update) > UNIX_TIMESTAMP(NOW())-5');
+  $stmt->execute(array(':uid'=>'[[:<:]]'.$uid.'[[:>:]]', ':uid2'=>$uid, ':n'=>'0'));
+    $res1 = $stmt->fetchAll();
+    foreach($res1 as $rews) {
+
+        $at=get_last_action_ticket_push($rews['id'],$uid);
+        $who_action=get_who_last_action_ticket($rews['id']);
+        if ($who_action <> $uid) {
+          if ($at <> NULL){
+            if (!is_null($push)) {
+            $to = $push;
+            $title = lang('PUSH_name');
+            $msg = $at;
+            send_push($to,$title,$msg);
+          }
+}
+        }
+
+}
+}
+}
+}
+
+}
 if ($mode == "send_mail_noty"){
 if ($CONF_MAIL['active'] == "true") {
 // $lu=($_POST['last_update']);
@@ -2278,6 +2362,16 @@ update_val_by_key("jabber_pass", $_POST['jabber_pass']);
 </div>
 <?php
 }
+if ($mode == "conf_edit_push") {
+update_val_by_key("push_active", $_POST['push_active']);
+update_val_by_key("push_api", $_POST['push_api']);
+
+?>
+<div class="alert alert-success">
+<?=lang('PROFILE_msg_ok');?>
+</div>
+<?php
+}
 if ($mode == "conf_edit_main") {
 update_val_by_key("name_of_firm", $_POST['name_of_firm']);
 update_val_by_key("title_header", $_POST['title_header']);
@@ -2311,6 +2405,7 @@ update_val_by_key("file_size", $_POST['file_size']);
         if ($mode == "edit_profile_main") {
             $l=($_POST['login']);
             $m=($_POST['mail']);
+            $p=($_POST['push']);
             $id=($_POST['id']);
             $langu=($_POST['lang']);
 
@@ -2323,10 +2418,14 @@ update_val_by_key("file_size", $_POST['file_size']);
             if (!validate_email($m)) {$ec=1;$em2=lang('PROFILE_msg_email_validate');}
             if (!validate_exist_mail($m)) {$ec=1;$em3=lang('PROFILE_msg_email_duplicate');}
             }
+            if ($p != ""){
+            if (!validate_push($p)) {$ec=1;$em2=lang('PROFILE_msg_push_validate');}
+            if (!validate_exist_push($p)) {$ec=1;$em3=lang('PROFILE_msg_push_duplicate');}
+            }
 
             if ($ec == 0) {
-                $stmt = $dbConnection->prepare('update users set login=:l, email=:m, lang=:langu where id=:id');
-                $stmt->execute(array(':id' => $id,':l' => $l,':m' => $m,':langu' => $langu));
+              $stmt = $dbConnection->prepare('update users set login=:l, email=:m, push=:p, lang=:langu where id=:id');
+              $stmt->execute(array(':id' => $id,':l' => $l,':m' => $m,':p' => $p,':langu' => $langu));
 
 
                 ?>
@@ -2360,6 +2459,18 @@ update_val_by_key("file_size", $_POST['file_size']);
             else{
               $jnoty = "1";
             }
+            if ($_POST['push_active_profile'] != "undefined"){
+              $push_noty = $_POST['push_active_profile'];
+            }
+            else{
+              $push_noty = "0";
+            }
+            if ($_POST['push_show_profile'] != "undefined"){
+              $pushnoty = $_POST['push_show_profile'];
+            }
+            else{
+              $pushnoty = "1";
+            }
             if ($_POST['mail_noty_profile'] != "undefined"){
               $mnoty = $_POST['mail_noty_profile'];
             }
@@ -2376,8 +2487,8 @@ update_val_by_key("file_size", $_POST['file_size']);
 
 
 
-                $stmt = $dbConnection->prepare('update users set jabber_noty=:jabber_noty, noty=:noty, show_noty=:show_noty, jabber_noty_show=:jnoty, mail_noty_show=:mnoty where id=:id');
-                $stmt->execute(array(':id' => $id,':jabber_noty' => $jabber_noty,':noty'=>$noty, ':show_noty' => $show_noty, ':jnoty'=>$jnoty, ':mnoty'=>$mnoty));
+            $stmt = $dbConnection->prepare('update users set jabber_noty=:jabber_noty, push_noty=:push_noty, noty=:noty, show_noty=:show_noty, jabber_noty_show=:jnoty, push_noty_show=:pushnoty, mail_noty_show=:mnoty where id=:id');
+            $stmt->execute(array(':id' => $id,':jabber_noty' => $jabber_noty,':push_noty' => $push_noty,':noty'=>$noty, ':show_noty' => $show_noty, ':jnoty'=>$jnoty, ':pushnoty'=>$pushnoty, ':mnoty'=>$mnoty));
 
 
                 ?>
@@ -3561,11 +3672,14 @@ if ($mode == "edit_user") {
             $usid=($_POST['idu']);
             $mail=($_POST['mail']);
             $jabber=($_POST['jabber']);
+            $push=($_POST['push']);
             $mess=($_POST['mess']);
             $lang=($_POST['lang']);
             $jabber_noty=($_POST['jabber_active_client']);
+            $push_noty=($_POST['push_active_client']);
             $noty=($_POST['show_noty_edit']);
             $jnoty=($_POST['jabber_show_edit']);
+            $pushnoty=($_POST['push_show_edit']);
             $mnoty=($_POST['mail_noty_edit']);
             $show_noty=($_POST['show_noty']);
             $priv_add_client=$_POST['priv_add_client'];
@@ -3579,18 +3693,18 @@ if ($mode == "edit_user") {
             if (strlen($_POST['pass'])>1) {
                 $p=md5($_POST['pass']);
 
-		 $stmt = $dbConnection->prepare('update users set fio=:fio, login=:login, pass=:pass, status=:status, priv=:priv, unit=:unit, email=:mail, jabber=:jabber, messages=:mess, lang=:lang,
-		 priv_add_client=:priv_add_client, priv_edit_client=:priv_edit_client, is_admin=:is_admin, jabber_noty=:jabber_noty, noty=:noty, show_noty=:show_noty, jabber_noty_show=:jnoty, mail_noty_show=:mnoty where id=:usid');
-		 $stmt->execute(array( ':fio'=>$fio, ':login'=>$login, ':status'=>$status, ':priv'=>$priv, ':unit'=>$unit, ':mail'=>$mail, ':jabber'=>$jabber, ':mess'=>$mess, ':lang'=>$lang, ':usid'=>$usid,
-		 ':pass'=>$p, ':priv_add_client'=>$priv_add_client, ':priv_edit_client'=>$priv_edit_client,':is_admin'=>$admin, ':jabber_noty'=>$jabber_noty,':noty'=>$noty, ':show_noty'=>$show_noty, ':jnoty'=>$jnoty, ':mnoty'=>$mnoty));
+		 $stmt = $dbConnection->prepare('update users set fio=:fio, login=:login, pass=:pass, status=:status, priv=:priv, unit=:unit, email=:mail, jabber=:jabber, push=:push, messages=:mess, lang=:lang,
+		 priv_add_client=:priv_add_client, priv_edit_client=:priv_edit_client, is_admin=:is_admin, jabber_noty=:jabber_noty, push_noty=:push_noty, noty=:noty, show_noty=:show_noty, jabber_noty_show=:jnoty, push_noty_show=:pushnoty, mail_noty_show=:mnoty where id=:usid');
+		 $stmt->execute(array( ':fio'=>$fio, ':login'=>$login, ':status'=>$status, ':priv'=>$priv, ':unit'=>$unit, ':mail'=>$mail, ':jabber'=>$jabber, ':push'=>$push, ':mess'=>$mess, ':lang'=>$lang, ':usid'=>$usid,
+		 ':pass'=>$p, ':priv_add_client'=>$priv_add_client, ':priv_edit_client'=>$priv_edit_client,':is_admin'=>$admin, ':jabber_noty'=>$jabber_noty, ':push_noty'=>$push_noty, ':noty'=>$noty, ':show_noty'=>$show_noty, ':jnoty'=>$jnoty, ':pushnoty'=>$pushnoty, ':mnoty'=>$mnoty));
 
 
 		 $stmt = $dbConnection->prepare('update clients set status=:status where login=:login');
 		 $stmt->execute(array( ':login'=>$login, ':status'=>$status));
             }
             else { $p="";
-                $stmt = $dbConnection->prepare('update users set fio=:fio, login=:login, status=:status, priv=:priv, unit=:unit, email=:mail, jabber=:jabber, messages=:mess, lang=:lang, priv_add_client=:priv_add_client,priv_edit_client=:priv_edit_client, is_admin=:is_admin, jabber_noty=:jabber_noty, noty=:noty, show_noty=:show_noty, jabber_noty_show=:jnoty, mail_noty_show=:mnoty where id=:usid');
-                $stmt->execute(array(':fio'=>$fio, ':login'=>$login, ':status'=>$status, ':priv'=>$priv, ':unit'=>$unit, ':mail'=>$mail, ':jabber'=>$jabber, ':mess'=>$mess, ':lang'=>$lang, ':usid'=>$usid,':priv_add_client'=>$priv_add_client,':priv_edit_client'=>$priv_edit_client,':is_admin'=>$admin, ':jabber_noty'=>$jabber_noty,':noty'=>$noty, ':show_noty'=>$show_noty, ':jnoty'=>$jnoty, ':mnoty'=>$mnoty));
+                $stmt = $dbConnection->prepare('update users set fio=:fio, login=:login, status=:status, priv=:priv, unit=:unit, email=:mail, jabber=:jabber, push=:push, messages=:mess, lang=:lang, priv_add_client=:priv_add_client,priv_edit_client=:priv_edit_client, is_admin=:is_admin, jabber_noty=:jabber_noty, push_noty=:push_noty, noty=:noty, show_noty=:show_noty, jabber_noty_show=:jnoty, push_noty_show=:pushnoty, mail_noty_show=:mnoty where id=:usid');
+                $stmt->execute(array(':fio'=>$fio, ':login'=>$login, ':status'=>$status, ':priv'=>$priv, ':unit'=>$unit, ':mail'=>$mail, ':jabber'=>$jabber, ':push'=>$push, ':mess'=>$mess, ':lang'=>$lang, ':usid'=>$usid,':priv_add_client'=>$priv_add_client,':priv_edit_client'=>$priv_edit_client,':is_admin'=>$admin, ':jabber_noty'=>$jabber_noty, ':push_noty'=>$push_noty, ':noty'=>$noty, ':show_noty'=>$show_noty, ':jnoty'=>$jnoty, ':pushnoty'=>$pushnoty, ':mnoty'=>$mnoty));
 
 		$stmt = $dbConnection->prepare('update clients set status=:status where login=:login');
 		$stmt->execute(array( ':login'=>$login, ':status'=>$status));
@@ -3609,9 +3723,11 @@ if ($mode == "edit_user") {
             $priv=($_POST['priv']);
             $mail=($_POST['mail']);
             $jabber=($_POST['jabber']);
+            $push=($_POST['push']);
             $mess=($_POST['mess']);
             $lang=($_POST['lang']);
             $jabber_noty=($_POST['jabber_active_client']);
+            $push_noty=($_POST['push_active_client']);
             $hidden=array();
             $hidden = ($_POST['unit']);
             //print_r($hidden);
@@ -3626,9 +3742,9 @@ if ($mode == "edit_user") {
             if ($admin == "true") {$admin=8;} else {$admin=0;}
 
 
-            $stmt = $dbConnection->prepare('INSERT INTO users (fio, login, pass, status, priv, unit, email, jabber, messages, lang, priv_add_client, priv_edit_client, is_admin, jabber_noty)
-values (:fio, :login, :pass, :one, :priv, :unit, :mail, :jabber, :mess, :lang, :priv_add_client, :priv_edit_client, :is_admin, :jabber_noty)');
-            $stmt->execute(array(':fio'=>$fio, ':login'=>$login, ':pass'=>$pass, ':one'=>'1', ':priv'=>$priv, ':unit'=>$unit, ':mail'=>$mail, ':jabber'=>$jabber, ':mess'=>$mess, ':lang'=>$lang,':priv_add_client'=>$priv_add_client,':priv_edit_client'=>$priv_edit_client,':is_admin'=>$admin, ':jabber_noty'=>$jabber_noty));
+            $stmt = $dbConnection->prepare('INSERT INTO users (fio, login, pass, status, priv, unit, email, jabber, push, messages, lang, priv_add_client, priv_edit_client, is_admin, jabber_noty, push_noty)
+values (:fio, :login, :pass, :one, :priv, :unit, :mail, :jabber, :push, :mess, :lang, :priv_add_client, :priv_edit_client, :is_admin, :jabber_noty, :push_noty)');
+            $stmt->execute(array(':fio'=>$fio, ':login'=>$login, ':pass'=>$pass, ':one'=>'1', ':priv'=>$priv, ':unit'=>$unit, ':mail'=>$mail, ':jabber'=>$jabber, ':push'=>$push, ':mess'=>$mess, ':lang'=>$lang,':priv_add_client'=>$priv_add_client,':priv_edit_client'=>$priv_edit_client,':is_admin'=>$admin, ':jabber_noty'=>$jabber_noty, ':push_noty'=>$push_noty));
             if ($user_add_client == 'true'){
               $stmt = $dbConnection->prepare('insert into clients
   	    (fio, login, email,status)
@@ -3880,6 +3996,40 @@ values (:comment, now(), :user_comment, :tid_comment)');
           <?php
         }
         }
+        if ($mode == "conf_test_push") {
+          $id=$_SESSION['helpdesk_user_id'];
+          if ($_POST['push_active'] == "true"){
+            if ($_POST['push_api'] != ""){
+          $stmt = $dbConnection->prepare("SELECT push FROM users WHERE id = :id");
+          $stmt->execute(array(':id' => $id));
+          $push = $stmt->fetch(PDO::FETCH_ASSOC);
+
+          $to = $push['push'];
+          $title = lang('Perf_push_title');
+          $msg = lang('Perf_push_msg');
+          send_push($to,$title,$msg);
+          ?>
+          <div class="alert alert-success">
+          <?=lang('Perf_push_sent');?>
+          </div>
+          <?php
+        }
+        else {
+          ?>
+          <div class="alert alert-danger">
+          <?=lang('Perf_push_sent_error');?>
+          </div>
+          <?php
+        }
+        }
+        else {
+          ?>
+          <div class="alert alert-danger">
+          <?=lang('Perf_push_sent_shut');?>
+          </div>
+          <?php
+        }
+        }
 
         if ($mode == "conf_test_jabber_profile") {
           $id=$_SESSION['helpdesk_user_id'];
@@ -3904,6 +4054,31 @@ values (:comment, now(), :user_comment, :tid_comment)');
           </div>
           <?php
         }
+      }
+      if ($mode == "conf_test_push_profile") {
+        $id=$_SESSION['helpdesk_user_id'];
+        if ($_POST['push_active'] == "1"){
+        $stmt = $dbConnection->prepare("SELECT push FROM users WHERE id = :id");
+        $stmt->execute(array(':id' => $id));
+        $push = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $to = $push['push'];
+        $title = lang('Perf_push_title');
+        $msg = lang('Perf_push_msg');
+        send_push($to,$title,$msg);
+        ?>
+        <div class="alert alert-success">
+        <?=lang('Perf_push_sent');?>
+        </div>
+        <?php
+      }
+      else{
+        ?>
+        <div class="alert alert-danger">
+        <?=lang('Perf_push_sent_shut');?>
+        </div>
+        <?php
+      }
       }
       if ($mode == "make_logout_user"){
         $user_id = $_POST['userid'];
@@ -4336,6 +4511,17 @@ if ($CONF_JABBER['active'] == "true") {
 
                 }
             }
+if ($CONF_PUSH['active'] == "true") {
+                if ($user_to_id == "0") {
+                      send_push_to('new_all',$max_id_res_ticket);
+                  }
+
+                  else if ($user_to_id <> "0") {
+                      send_push_to('new_user',$max_id_res_ticket);
+                      send_push_to('new_coord',$max_id_res_ticket);
+
+                  }
+            }
                 echo($hashname);
             }
             if ($type == "edit") {
@@ -4427,6 +4613,17 @@ if ($CONF_JABBER['active'] == "true") {
 
                 }
               }
+if ($CONF_PUSH['active'] == "true") {
+              if ($user_to_id == "0") {
+                  send_push_to('new_all',$max_id_res_ticket);
+              }
+
+              else if ($user_to_id <> "0") {
+                  send_push_to('new_user',$max_id_res_ticket);
+                  send_push_to('new_coord',$max_id_res_ticket);
+
+              }
+          }
                 echo($hashname);
             }
 

@@ -264,7 +264,9 @@ VALUES
   (24, 'jabber_port', '5222'),
   (25, 'jabber_login', 'server_login_jabber'),
   (26, 'jabber_pass', 'server_jabber_password'),
-  (27, 'time_zone', 'Europe/Moscow');
+  (27, 'time_zone', 'Europe/Moscow'),
+  (28, 'push_active', 'false'),
+  (29, 'push_api', 'pushbullet_api');
 
 UNLOCK TABLES;
 -- --------------------------------------------------------
@@ -421,6 +423,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `is_admin` int(4) NOT NULL DEFAULT '0',
   `email` varchar(128) DEFAULT NULL,
   `jabber` varchar(128) DEFAULT NULL,
+  `push` varchar(128) DEFAULT NULL,
   `messages` varchar(2048) DEFAULT NULL,
   `lang` varchar(11) DEFAULT NULL,
   `priv_add_client` int(11) NOT NULL DEFAULT '0',
@@ -432,6 +435,8 @@ CREATE TABLE IF NOT EXISTS `users` (
   `show_noty` varchar(128) DEFAULT 'bottomRight',
   `noty` varchar(128) DEFAULT '1,2,3,4,5,6,7,8,9,10',
   `us_kill` tinyint(1) NOT NULL DEFAULT '1',
+  `push_noty` int(11) NOT NULL DEFAULT '0',
+  `push_noty_show` varchar(128) DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
 

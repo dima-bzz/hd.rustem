@@ -179,6 +179,12 @@ $("#jabber_show_edit").select2({
     formatNoMatches:$.i18n('JS_not_found'),
     escapeMarkup: function(m) { return m; }
 });
+$("#push_show_edit").select2({
+    allowClear: true,
+    width:'element',
+    formatNoMatches:$.i18n('JS_not_found'),
+    escapeMarkup: function(m) { return m; }
+});
 $("#show_noty_profile").select2({
     allowClear: true,
     width:'element',
@@ -192,6 +198,12 @@ $("#mail_noty_profile").select2({
     escapeMarkup: function(m) { return m; }
 });
 $("#jabber_show_profile").select2({
+    allowClear: true,
+    width:'element',
+    formatNoMatches:$.i18n('JS_not_found'),
+    escapeMarkup: function(m) { return m; }
+});
+$("#push_show_profile").select2({
     allowClear: true,
     width:'element',
     formatNoMatches:$.i18n('JS_not_found'),
@@ -404,6 +416,16 @@ function send_jabber(){
 // }
 // });
 //   }
+}
+function send_push(){
+  $.ajax({
+      type: "POST",
+      url: ACTIONPATH,
+      data: "mode=send_push_noty",
+      success: function(html){
+        makemytime(true);
+      }
+    });
 }
 function send_mail(){
   $.ajax({
@@ -2876,6 +2898,7 @@ mode: 'edit_posada'
             data: "mode=edit_profile_main"+
                 "&login="+encodeURIComponent($("#login").val())+
                 "&mail="+encodeURIComponent($("#mail").val())+
+                "&push="+encodeURIComponent($("#push").val())+
                 "&lang="+encodeURIComponent($("select#lang").val())+
                 "&id="+encodeURIComponent($("#edit_profile_main").attr('value')),
             success: function(html) {
@@ -2896,6 +2919,8 @@ mode: 'edit_posada'
             data: "mode=edit_profile_noty"+
                 "&jabber_active_profile="+encodeURIComponent($("select#jabber_active_profile").val())+
                 "&jabber_show_profile="+encodeURIComponent($("select#jabber_show_profile").val())+
+                "&push_active_profile="+encodeURIComponent($("select#push_active_profile").val())+
+                "&push_show_profile="+encodeURIComponent($("select#push_show_profile").val())+
                 "&show_noty_profile="+encodeURIComponent($("select#show_noty_profile").val())+
                 "&mail_noty_profile="+encodeURIComponent($("select#mail_noty_profile").val())+
                 "&show_noty="+encodeURIComponent($("select#show_noty").val())+
@@ -3117,7 +3142,21 @@ setTimeout(function() {$('#conf_edit_jabber_res').children('.alert').fadeOut(500
 }
 });
 });
+$('body').on('click', 'button#conf_edit_push', function(event) {
+event.preventDefault();
+$.ajax({
+type: "POST",
+url: ACTIONPATH,
+data: "mode=conf_edit_push"+
+ "&push_active="+encodeURIComponent($("#push_active").val())+
+ "&push_api="+encodeURIComponent($("#push_api").val()),
 
+success: function(html) {
+$("#conf_edit_push_res").hide().html(html).fadeIn(500);
+setTimeout(function() {$('#conf_edit_push_res').children('.alert').fadeOut(500);}, 3000);
+}
+});
+});
 
 $('body').on('click', 'button#conf_test_jabber', function(event) {
  event.preventDefault();
@@ -3133,6 +3172,20 @@ $('body').on('click', 'button#conf_test_jabber', function(event) {
  success: function(html) {
    $("#conf_test_jabber_res").hide().html(html).fadeIn(500);
    setTimeout(function() {$('#conf_test_jabber_res').children('.alert').fadeOut(500);}, 3000);
+ }
+ });
+ });
+ $('body').on('click', 'button#conf_test_push', function(event) {
+ event.preventDefault();
+ $.ajax({
+ type: "POST",
+ url: ACTIONPATH,
+ data: "mode=conf_test_push"+
+ "&push_active="+encodeURIComponent($("#push_active").val())+
+ "&push_api="+encodeURIComponent($("#push_api").val()),
+ success: function(html) {
+   $("#conf_test_push_res").hide().html(html).fadeIn(500);
+   setTimeout(function() {$('#conf_test_push_res').children('.alert').fadeOut(500);}, 3000);
  }
  });
  });
@@ -3152,7 +3205,21 @@ $('body').on('click', 'button#conf_test_jabber', function(event) {
   }
   });
   });
+  $('body').on('click', 'button#conf_test_push_profile', function(event) {
+   event.preventDefault();
 
+   $.ajax({
+   type: "POST",
+   url: ACTIONPATH,
+   data: "mode=conf_test_push_profile"+
+   "&push_active="+encodeURIComponent($("select#push_active_profile").val()),
+
+   success: function(html) {
+     $("#conf_test_push_res_profile").hide().html(html).fadeIn(500);
+     setTimeout(function() {$('#conf_test_push_res_profile').children('.alert').fadeOut(500);}, 3000);
+   }
+   });
+   });
 
 
 $('body').on('click', 'button#conf_test_mail', function(event) {
@@ -3289,6 +3356,7 @@ console.log(height);
                     }
                   });
                   send_jabber();
+                  send_push();
                   send_mail();
                 }
             });
@@ -3478,11 +3546,13 @@ $("body").on("click", "a#select_init_user", function(event) {
                 "&mess="+encodeURIComponent($("textarea#mess").val())+
                 "&lang="+encodeURIComponent($('select#lang').val())+
                 "&jabber_active_client="+encodeURIComponent($('select#jabber_active_client').val())+
+                "&push_active_client="+encodeURIComponent($('select#push_active_client').val())+
                 "&priv_add_client="+encodeURIComponent($("#priv_add_client").prop('checked'))+
                 "&priv_edit_client="+encodeURIComponent($("#priv_edit_client").prop('checked'))+
                 "&user_add_client="+encodeURIComponent($("#user_add_client").prop('checked'))+
                 "&admin_client="+encodeURIComponent($("#admin_client").prop('checked'))+
                 "&jabber="+encodeURIComponent($("#jabber").val()) +
+                "&push="+encodeURIComponent($("#push").val()) +
                 "&mail="+encodeURIComponent($("#mail").val()),
             success: function(html) {
 
@@ -3728,11 +3798,14 @@ $("body").on("click", "a#select_init_user", function(event) {
                 "&lang="+encodeURIComponent($('select#lang').val())+
                 "&jabber_active_client="+encodeURIComponent($('select#jabber_active_client').val())+
                 "&jabber_show_edit="+encodeURIComponent($('select#jabber_show_edit').val())+
+                "&push_active_client="+encodeURIComponent($('select#push_active_client').val())+
+                "&push_show_edit="+encodeURIComponent($('select#push_show_edit').val())+
                 "&show_noty_edit="+encodeURIComponent($('select#show_noty_edit').val())+
                 "&mail_noty_edit="+encodeURIComponent($('select#mail_noty_edit').val())+
                 "&show_noty="+encodeURIComponent($('select#show_noty').val())+
                 "&mail="+encodeURIComponent($("#mail").val())+
                 "&jabber="+encodeURIComponent($("#jabber").val())+
+                "&push="+encodeURIComponent($("#push").val())+
                 "&priv_add_client="+encodeURIComponent($("#priv_add_client").prop('checked'))+
                 "&priv_edit_client="+encodeURIComponent($("#priv_edit_client").prop('checked'))+
                 "&admin_client="+encodeURIComponent($("#admin_client").prop('checked'))+
@@ -3764,6 +3837,7 @@ $("body").on("click", "a#select_init_user", function(event) {
                              success: function(html){
                              //console.log(html);
                              send_jabber();
+                             send_push();
                              send_mail();
                              $('#myModal').modal('hide');
                              //$(elem).removeClass().addClass('success', 1000);
@@ -3806,6 +3880,7 @@ $("body").on("click", "a#select_init_user", function(event) {
 
                     $(elem).removeClass().addClass('success', 1000);
                     send_jabber();
+                    send_push();
                     send_mail();
                     if (ls != ''){
                     // window.location = MyHOSTNAME+"list?"+pt;
@@ -3841,6 +3916,7 @@ $("body").on("click", "a#select_init_user", function(event) {
 
                     $(elem).removeClass('success', 1000);
                     send_jabber();
+                    send_push();
                     send_mail();
                     if (ls != ''){
                     // window.location = MyHOSTNAME+"list?"+pt;
@@ -3913,6 +3989,7 @@ $("body").on("click", "a#select_init_user", function(event) {
                 success: function(){
                     $(elem).removeClass().addClass('warning', 1000);
                     send_jabber();
+                    send_push();
                     send_mail();
                     if (ls != ''){
                     // window.location = MyHOSTNAME+"list?"+pt;
@@ -3954,6 +4031,7 @@ $("body").on("click", "a#select_init_user", function(event) {
 
                     $(elem).removeClass('warning', 1000);
                     send_jabber();
+                    send_push();
                     send_mail();
                     if (ls != ''){
                     // window.location = MyHOSTNAME+"list?"+pt;
@@ -4010,6 +4088,7 @@ $("body").on("click", "a#select_init_user", function(event) {
                     $("#msg").hide().html(html).fadeIn(500);
                     setTimeout(function() {$('#msg').children('.alert').fadeOut(500);}, 3000);
                     send_jabber();
+                    send_push();
                     send_mail();
 
 
@@ -4036,6 +4115,7 @@ $("body").on("click", "a#select_init_user", function(event) {
                     $("#msg").hide().html(html).fadeIn(500);
                     setTimeout(function() {$('#msg').children('.alert').fadeOut(500);}, 3000);
                     send_jabber();
+                    send_push();
                     send_mail();
 
 
@@ -4081,6 +4161,7 @@ $("body").on("click", "a#select_init_user", function(event) {
                     $("#msg").hide().html(html).fadeIn(500);
                     setTimeout(function() {$('#msg').children('.alert').fadeOut(500);}, 3000);
                     send_jabber();
+                    send_push();
                     send_mail();
 
 
@@ -4117,6 +4198,7 @@ $("body").on("click", "a#select_init_user", function(event) {
                     $("#msg").hide().html(html).fadeIn(500);
                     setTimeout(function() {$('#msg').children('.alert').fadeOut(500);}, 3000);
                     send_jabber();
+                    send_push();
                     send_mail();
 
 
@@ -4161,6 +4243,7 @@ $("body").on("click", "a#select_init_user", function(event) {
               $("#msg").hide().html(html).fadeIn(500);
               setTimeout(function() {$('#msg').children('.alert').fadeOut(500);}, 3000);
               send_jabber();
+              send_push();
               send_mail();
 
             }
@@ -4323,6 +4406,7 @@ $("body").on("click", "a#select_init_user", function(event) {
                 success: function(html){
                   console.log(tou);
                         send_jabber();
+                        send_push();
                         send_mail();
 
                         $("#ccc").hide().html(html).fadeIn(500);

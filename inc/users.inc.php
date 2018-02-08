@@ -69,7 +69,20 @@ if (isset($_GET['ok'])) {
 <option value="1"><?=lang('CONF_true');?></option>
 </select>    </div>
 </div>
-
+<div class="form-group">
+<label for="push" class="col-sm-2 control-label"><?=lang('USERS_push');?></label>
+    <div class="col-sm-10">
+<input autocomplete="off" name="push" type="text" class="form-control input-sm" id="push" placeholder="<?=lang('USERS_push');?>">
+    </div>
+</div>
+<div class="form-group">
+<label for="push_active_client" class="col-sm-2 control-label"><?=lang('CONF_push_status');?></label>
+<div class="col-sm-10">
+<select class="chosen-select_no_search form-control input-sm" id="jabber_push_client">
+<option value="0"><?=lang('CONF_false');?></option>
+<option value="1"><?=lang('CONF_true');?></option>
+</select>    </div>
+</div>
 
       <div class="form-group">
     <label for="lang" class="col-sm-2 control-label"><?=lang('SYSTEM_lang');?></label>
@@ -321,7 +334,7 @@ $row = mysql_fetch_assoc($sql);
 
 
 
-        $stmt = $dbConnection->prepare('SELECT fio, pass, login, status, priv, is_admin, unit,email,jabber,messages,lang,priv_add_client,priv_edit_client, jabber_noty, noty, mail_noty_show, show_noty, jabber_noty_show from users where id=:usid');
+        $stmt = $dbConnection->prepare('SELECT fio, pass, login, status, priv, is_admin, unit,email,jabber,push,messages,lang,priv_add_client,priv_edit_client, jabber_noty,push_noty, noty, mail_noty_show, show_noty, jabber_noty_show, push_noty_show from users where id=:usid');
 	$stmt->execute(array(':usid'=>$usid));
 	$res1 = $stmt->fetchAll();
 
@@ -340,14 +353,17 @@ $priv=$row['priv'];
 $unit=$row['unit'];
 $email=$row['email'];
 $jabber=$row['jabber'];
+$push=$row['push'];
 $noty=$row['noty'];
 $jnoty = $row['jabber_noty_show'];
+$pushnoty = $row['push_noty_show'];
 $mnoty = $row['mail_noty_show'];
 $show_noty=$row['show_noty'];
 $messages=$row['messages'];
 $langu=$row['lang'];
 $priv_edit_admin_client=$row['is_admin'];
 $jabber_noty = $row['jabber_noty'];
+$push_noty = $row['push_noty'];
 
             if ($priv_add_client == "1") {$priv_add_client="checked";} else {$priv_add_client="";}
             if ($priv_edit_client == "1") {$priv_edit_client="checked";} else {$priv_edit_client="";}
@@ -442,6 +458,39 @@ if (isset($_GET['ok'])) {
 <option value="8" <?php if (in_array("8",$jn)) {echo "selected";} ?>><?=lang('P_msg');?></option>
 <option value="9" <?php if (in_array("9",$jn)) {echo "selected";} ?>><?=lang('P_subj');?></option>
 <option value="10" <?php if (in_array("10",$jn)) {echo "selected";} ?>><?=lang('P_familiar');?></option>
+</select>    </div>
+</div>
+<div class="form-group">
+<label for="push" class="col-sm-2 control-label"><?=lang('USERS_push');?></label>
+  <div class="col-sm-10">
+<input autocomplete="off" name="push" type="text" class="form-control input-sm" id="push" placeholder="<?=lang('USERS_push');?>" value="<?=$push;?>">
+  </div>
+</div>
+<div class="form-group">
+<label for="push_active_client" class="col-sm-2 control-label"><?=lang('CONF_push_status');?></label>
+<div class="col-sm-10">
+<select class="chosen-select_no_search form-control input-sm" id="push_active_client">
+<option value="1" <?php if ($push_noty == "1") {echo "selected";} ?>><?=lang('CONF_true');?></option>
+<option value="0" <?php if ($push_noty == "0") {echo "selected";} ?>><?=lang('CONF_false');?></option>
+</select>    </div>
+</div>
+<div class="form-group">
+<label for="push_show_profile" class="col-sm-2 control-label"><?=lang('P_push_show');?></label>
+<div class="col-sm-10">
+<select class="form-control input-sm" data-placeholder="<?=lang('P_noty_show_p');?>" multiple id="push_show_edit">
+<?php
+  $ph = explode(",",$pushnoty);
+ ?>
+<option value="1" <?php if (in_array("1",$ph)) {echo "selected";} ?>><?=lang('P_create');?></option>
+<option value="2" <?php if (in_array("2",$ph)) {echo "selected";} ?>><?=lang('P_refer');?></option>
+<option value="3" <?php if (in_array("3",$ph)) {echo "selected";} ?>><?=lang('P_comment');?></option>
+<option value="4" <?php if (in_array("4",$ph)) {echo "selected";} ?>><?=lang('P_lock');?></option>
+<option value="5" <?php if (in_array("5",$ph)) {echo "selected";} ?>><?=lang('P_unlock');?></option>
+<option value="6" <?php if (in_array("6",$ph)) {echo "selected";} ?>><?=lang('P_ok');?></option>
+<option value="7" <?php if (in_array("7",$ph)) {echo "selected";} ?>><?=lang('P_no_ok');?></option>
+<option value="8" <?php if (in_array("8",$ph)) {echo "selected";} ?>><?=lang('P_msg');?></option>
+<option value="9" <?php if (in_array("9",$ph)) {echo "selected";} ?>><?=lang('P_subj');?></option>
+<option value="10" <?php if (in_array("10",$ph)) {echo "selected";} ?>><?=lang('P_familiar');?></option>
 </select>    </div>
 </div>
         <div class="form-group">
