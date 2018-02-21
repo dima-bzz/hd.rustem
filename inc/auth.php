@@ -129,6 +129,13 @@ include_once("head.inc.php");
         $("input[name=password]").focusout(function(){
           $(this).val($.md5($(this).val()));
         })
+        $("input[name=password]").keydown(function (e) {
+            if (e.keyCode == 13) {
+                $(this).val($.md5($(this).val()));
+                $('form[name=auth]').submit();
+                return false;
+            }
+        });
       // })
         $("#main_login").hide().fadeIn(500);
         $('body').on('click', 'a#show_activate_form', function(event) {
