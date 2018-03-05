@@ -430,7 +430,7 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) {
           <pre><small class="pull-left">5 0 * * * /usr/bin/php5 -f <?=realpath(dirname(dirname(__FILE__)))."/sys/4cron.php"?> > <?=realpath(dirname(dirname(__FILE__)))."/4cron.log"?> 2>&1</small></pre>
         </p>
           <p class="help-block"><small><?=lang('CONF_ticket_update');?></small><br>
-          <pre><small>5 0 * * * /usr/bin/php5 -f <?=realpath(dirname(dirname(__FILE__)))."/sys/4cron_live_ticket.php"?> > <?=realpath(dirname(dirname(__FILE__)))."/4cron.log"?> 2>&1</small></pre>
+          <pre><small>*/1 * * * * /usr/bin/php5 -f <?=realpath(dirname(dirname(__FILE__)))."/sys/4cron_live_ticket.php"?> > <?=realpath(dirname(dirname(__FILE__)))."/4cron.log"?> 2>&1</small></pre>
         </p>
         <p class="help-block"><small><?=lang('CONF_mysql_backup');?></small><br>
         <pre><small>0 2 * * 2,3,4,5 root <?=realpath(dirname(dirname(__FILE__)))."/sys/mysql_backup"?> > <?=realpath(dirname(dirname(__FILE__)))."/4cron.log"?> 2>&1</small></pre>
