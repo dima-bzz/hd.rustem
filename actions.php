@@ -626,7 +626,8 @@ $r['p']=$row['id'];
                             <option value="0"><?=lang('HELP_all');?></option>
                             <?php
 
-                            $stmt = $dbConnection->prepare('select id, name, status from deps where id!=:n');
+                            $stmt = $dbConnection->prepare('SELECT name as label, id as value FROM deps where id !=:n AND status=:s');
+                            $stmt->execute(array(':n' => '0',':s' => '1'));
                             $result = $stmt->fetchAll();
                             foreach($result as $row) {
 
