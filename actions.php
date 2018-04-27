@@ -4469,12 +4469,12 @@ $client_posada	Должность клиента
                   $field_name = $row['field_name'];
                   if (is_array($field_value)){
                     if (!empty($field_value)){
-                      $field_value_end = implode(',',$field_value);
+                      $field_value_end = trim(implode(',',$field_value));
                   }
 
                   }
                   else{
-                    $field_value_end = $field_value;
+                    $field_value_end = trim($field_value);
                   }
                   if ($field_value_end != ""){
                   $stmt = $dbConnection->prepare('INSERT INTO tickets_fields (ticket_hash, field_name, field_value) values (:hashname, :field_name, :field_value)');
@@ -4568,12 +4568,12 @@ if ($CONF_PUSH['active'] == "true") {
                   $field_name = $row['field_name'];
                   if (is_array($field_value)){
                     if (!empty($field_value)){
-                      $field_value_end = implode(',',$field_value);
+                      $field_value_end = trim(implode(',',$field_value));
                   }
 
                   }
                   else{
-                    $field_value_end = $field_value;
+                    $field_value_end = trim($field_value);
                   }
                   if ($field_value_end != ""){
                   $stmt = $dbConnection->prepare('INSERT INTO tickets_fields (ticket_hash, field_name, field_value) values (:hashname, :field_name, :field_value)');
