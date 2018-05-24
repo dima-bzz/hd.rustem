@@ -62,7 +62,7 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) {
       Coding by
       Y.Snisar (c) 2014<br>
       <a class="alert-link" href="https://github.com/rustem-art/hd.rustem"><i class="fa fa-github"></i> Rustem-Art on github</a><br>
-      <i class="fa fa-envelope"></i> info&#64rustem&#46com&#46ua<br>
+      <i class="fa fa-envelope"></i> info&#64;rustem&#46;com&#46;ua<br>
       <i class="fa fa-skype"></i> rustem_ck (only for $)
       </ul>
       </small>
