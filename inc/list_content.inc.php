@@ -435,10 +435,10 @@ foreach ($ee as $key=>$value) { $vv[":val_" . $key]=$value;}
             $stmt = $dbConnection->prepare('SELECT
 			    a.id, a.user_init_id, a.user_to_id, a.date_create, a.subj, a.msg, a.client_id, a.unit_id, a.status, a.hash_name, a.is_read, a.lock_by, a.ok_by, a.prio, a.last_update,a.deadline_t,a.ok_date, a.arch, b.comment_text, b.t_id
                             from tickets as a LEFT JOIN  comments as b ON a.id = b.t_id LEFT JOIN users as c ON a.user_to_id = c.id
-			    where ((a.unit_id IN ('.$in_query.') and a.arch=:n) or (a.user_init_id=:user_id)) and (a.id=:z or a.subj like :z1 or a.msg like :z2 or b.comment_text like :z3 or c.fio like :z4)group by a.id limit 10');
+			    where (a.unit_id IN ('.$in_query.') or a.user_init_id=:user_id) and (a.id=:z or a.subj like :z1 or a.msg like :z2 or b.comment_text like :z3 or c.fio like :z4) group by a.id limit 10');
 
 
-            $paramss=array(':n'=>'0',':user_id'=>$user_id,':z'=>$z,':z1'=>'%'.$z.'%',':z2'=>'%'.$z.'%',':z3'=>'%'.$z.'%',':z4'=>'%'.$z.'%');
+            $paramss=array(':user_id'=>$user_id,':z'=>$z,':z1'=>'%'.$z.'%',':z2'=>'%'.$z.'%',':z3'=>'%'.$z.'%',':z4'=>'%'.$z.'%');
             $stmt->execute(array_merge($vv,$paramss));
             $res1 = $stmt->fetchAll();
 
@@ -472,7 +472,7 @@ foreach ($ee as $key=>$value) { $vv[":val_" . $key]=$value;}
 
             $stmt = $dbConnection->prepare('SELECT
 			    a.id, a.user_init_id, a.user_to_id, a.date_create, a.subj, a.msg, a.client_id, a.unit_id, a.status, a.hash_name, a.is_read, a.lock_by, a.ok_by, a.prio, a.last_update,a.deadline_t,a.ok_date, a.arch, b.comment_text, b.t_id
-			    from tickets as a LEFT JOIN  comments as b ON a.id = b.t_id INNER JOIN users as c ON a.user_to_id = c.id
+			    from tickets as a LEFT JOIN  comments as b ON a.id = b.t_id LEFT JOIN users as c ON a.user_to_id = c.id
 			    where a.id=:z or a.subj like :z1 or a.msg like :z2 or b.comment_text like :z3 or c.fio like :z4
 			    group by a.id limit 10');
 
