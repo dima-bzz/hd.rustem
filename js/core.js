@@ -285,20 +285,36 @@ $( "#ap" ).fadeOut(500);
 $( "#ap2" ).empty().removeAttr( 'style' );
 }
 
-if (item.approve_ticket !== '0'){
-  if ((item.approve_ticket == $( "#ap_ticket" ).html()) && ($( "#ap_ticket" ).html() != '')){
-$( "#ap_ticket" ).html( item.approve_ticket ).fadeIn(500);
-$( "#ap_ticket" ).html( item.approve_ticket )
+if (item.new_tickets !== '0'){
+  if ((item.new_tickets == $( "#ap_ticket" ).html()) && ($( "#ap_ticket" ).html() != '')){
+$( "#ap_ticket" ).html( item.new_tickets ).fadeIn(500);
+$( "#ap_ticket" ).html( item.new_tickets )
 
 }
 else{
-$( "#ap_ticket" ).hide().empty().html( item.approve_ticket ).fadeIn(500);
-$( "#ap_ticket2" ).empty().html( item.approve_ticket );
+$( "#ap_ticket" ).hide().empty().html( item.new_tickets ).fadeIn(500);
+$( "#ap_ticket2" ).empty().html( item.new_tickets );
 }
 }
 else {
 $( "#ap_ticket" ).fadeOut(500);
 $( "#ap_ticket2" ).empty().removeAttr( 'style' );
+}
+
+if (item.approve_tickets !== '0'){
+  if ((item.approve_tickets == $( "#ap_tickets" ).html()) && ($( "#ap_tickets" ).html() != '')){
+$( "#ap_tickets" ).html( item.approve_tickets ).fadeIn(500);
+$( "#ap_tickets" ).html( item.approve_tickets )
+
+}
+else{
+$( "#ap_tickets" ).hide().empty().html( item.approve_tickets ).fadeIn(500);
+$( "#ap_tickets2" ).empty().html( item.approve_tickets );
+}
+}
+else {
+$( "#ap_tickets" ).fadeOut(500);
+$( "#ap_tickets2" ).empty().removeAttr( 'style' );
 }
 
 if (item.online_users !== '0'){
@@ -342,6 +358,22 @@ else{
   else {
   $( "#ap" ).fadeOut(500);
   $( "#ap2" ).empty().removeAttr( 'style' );
+  }
+
+  if (item.approve_tickets !== '0'){
+    if ((item.approve_tickets == $( "#ap_tickets" ).html()) && ($( "#ap_tickets" ).html() != '')){
+  $( "#ap_tickets" ).html( item.approve ).fadeIn(500);
+  $( "#ap_tickets" ).html( item.approve )
+
+  }
+  else{
+  $( "#ap_tickets" ).hide().empty().html( item.approve ).fadeIn(500);
+  $( "#ap_ticket2" ).empty().html( item.approve );
+  }
+  }
+  else {
+  $( "#ap_tickets" ).fadeOut(500);
+  $( "#ap_ticket2" ).empty().removeAttr( 'style' );
   }
 }
 })
@@ -1561,6 +1593,12 @@ console.log(height);
         },5000);
     }
     if (ispath('approve') ) {
+    //if (def_filename == "clients.php") {
+        setInterval(function(){
+            check_update();
+        },5000);
+    }
+    if (ispath('approval') ) {
     //if (def_filename == "clients.php") {
         setInterval(function(){
             check_update();
@@ -2849,7 +2887,7 @@ mode: 'edit_posada'
     });
 
 
-    $('body').on('click', 'button#action_aprove_yes', function(event) {
+    $('body').on('click', 'button#action_approve_yes', function(event) {
         event.preventDefault();
         var table_id = $(this).attr('value');
         var elem = "#table_" + table_id;
@@ -2857,7 +2895,7 @@ mode: 'edit_posada'
         $.ajax({
             type: "POST",
             url: ACTIONPATH,
-            data: "mode=aprove_yes"+
+            data: "mode=approve_yes"+
                 "&id="+encodeURIComponent(table_id),
             success: function() {
                 $(elem).fadeOut(500);
@@ -2867,7 +2905,45 @@ mode: 'edit_posada'
 
     });
 
-    $('body').on('click', 'button#action_aprove_no', function(event) {
+    $('body').on('click', 'button#action_t_approve_yes', function(event) {
+     event.preventDefault();
+     var id = $(this).attr('value');
+     var elem = "#tr_" + id;
+
+     $.ajax({
+         type: "POST",
+         url: ACTIONPATH,
+         data: "mode=approve_t_yes"+
+             "&id="+encodeURIComponent(id),
+         success: function(html) {
+          // $(elem).fadeOut(500);
+          $("#content_approved_tickets").hide().empty().html( html ).fadeIn(500);
+             check_approve('update');
+         }
+     });
+
+ });
+
+ $('body').on('click', 'button#action_t_approve_no', function(event) {
+  event.preventDefault();
+  var id = $(this).attr('value');
+  var elem = "#tr_" + id;
+
+  $.ajax({
+      type: "POST",
+      url: ACTIONPATH,
+      data: "mode=approve_t_no"+
+          "&id="+encodeURIComponent(id),
+      success: function(html) {
+          // $(elem).fadeOut(500);
+          $("#content_approved_tickets").hide().empty().html( html ).fadeIn(500);
+          check_approve('update');
+      }
+  });
+
+});
+
+    $('body').on('click', 'button#action_approve_no', function(event) {
         event.preventDefault();
         var table_id = $(this).attr('value');
         var elem = "#table_" + table_id;
@@ -2875,7 +2951,7 @@ mode: 'edit_posada'
         $.ajax({
             type: "POST",
             url: ACTIONPATH,
-            data: "mode=aprove_no"+
+            data: "mode=approve_no"+
                 "&id="+encodeURIComponent(table_id),
             success: function() {
                 $(elem).fadeOut(500);
@@ -3090,6 +3166,7 @@ data: "mode=conf_edit_ticket"+
 "&fix_subj="+encodeURIComponent($("#fix_subj").val())+
 "&file_uploads="+encodeURIComponent($("#file_uploads").val())+
 "&file_types="+encodeURIComponent($("#file_types").val())+
+"&approve_tickets="+encodeURIComponent($("#approve_tickets").val())+
 "&file_size="+encodeURIComponent($("#file_size").val()*1024*1024),
 success: function(html) {
 $("#conf_edit_ticket_res").hide().html(html).fadeIn(500);
@@ -3867,7 +3944,7 @@ $("body").on("click", "a#select_init_user", function(event) {
         var ls=$("#list_sort").attr('value');
         var oo=$("#curent_page").attr('value');
 
-        if (status_ll == "ok") {
+        if ((status_ll == "ok") ||  (status_ll == "ok_wait")) {
             $(this).attr("status", "unok");
             $(this).html('<i class=\"fa fa-check-circle-o\"></i>');
             $.ajax({
@@ -3877,8 +3954,12 @@ $("body").on("click", "a#select_init_user", function(event) {
                     "&tid="+tr_id+
                     "&user="+encodeURIComponent(us),
                 success: function(){
-
+                    if (status_ll == "ok"){
                     $(elem).removeClass().addClass('success', 1000);
+                    }
+                    if (status_ll == "ok_wait"){
+                    $(elem).removeClass().addClass('info', 1000);
+                    }
                     send_jabber();
                     send_push();
                     send_mail();
@@ -3914,7 +3995,7 @@ $("body").on("click", "a#select_init_user", function(event) {
                     "&user="+encodeURIComponent(us),
                 success: function(){
 
-                    $(elem).removeClass('success', 1000);
+                    $(elem).removeClass('success', 1000).removeClass('info', 1000);
                     send_jabber();
                     send_push();
                     send_mail();
@@ -4263,7 +4344,7 @@ $("body").on("click", "a#select_init_user", function(event) {
         });
         $('body').on('change', '#field_name', function(event) {
             event.preventDefault();
-            $that = $(this)
+            $that = $(this);
             var hash = $that.closest('tr').attr('id');
             var name = $that.val();
             $.post(ACTIONPATH, {
@@ -4274,7 +4355,7 @@ $("body").on("click", "a#select_init_user", function(event) {
           });
           $('body').on('change', '#field_placeholder', function(event) {
               event.preventDefault();
-              $that = $(this)
+              $that = $(this);
               var hash = $that.closest('tr').attr('id');
               var name = $that.val();
               $.post(ACTIONPATH, {
@@ -4285,7 +4366,7 @@ $("body").on("click", "a#select_init_user", function(event) {
             });
             $('body').on('change', '#field_value', function(event) {
                 event.preventDefault();
-                $that = $(this)
+                $that = $(this);
                 var hash = $that.closest('tr').attr('id');
                 var name = $that.val();
                 $.post(ACTIONPATH, {
@@ -4296,7 +4377,7 @@ $("body").on("click", "a#select_init_user", function(event) {
               });
               $('body').on('change', '#field_select', function(event) {
                   event.preventDefault();
-                  $that = $(this)
+                  $that = $(this);
                   var hash = $that.closest('tr').attr('id');
                   var name = $that.val();
 
@@ -4327,7 +4408,7 @@ $("body").on("click", "a#select_init_user", function(event) {
                 });
                 $('body').on('change', '#field_subj_select', function(event) {
                     event.preventDefault();
-                    $that = $(this)
+                    $that = $(this);
                     var hash = $that.closest('tr').attr('id');
                     var name = $that.val();
                     $.post(ACTIONPATH, {
@@ -4338,7 +4419,7 @@ $("body").on("click", "a#select_init_user", function(event) {
                   });
                 $('body').on('change', '#field_checkbox', function(event) {
                     event.preventDefault();
-                    $that = $(this)
+                    $that = $(this);
                     var hash = $that.closest('tr').attr('id');
                     var name = $that.prop('checked');
                     $.post(ACTIONPATH, {
@@ -4349,7 +4430,7 @@ $("body").on("click", "a#select_init_user", function(event) {
                   });
                   $('body').on('click', 'button#del_field', function(event) {
                       event.preventDefault();
-                      $that = $(this)
+                      $that = $(this);
                       var hash = $that.closest('tr').attr('id');
                       bootbox.confirm($.i18n('JS_del'), function(result){
                         if (result == true){

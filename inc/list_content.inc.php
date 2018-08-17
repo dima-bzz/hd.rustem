@@ -59,14 +59,14 @@ if (isset($_POST['menu'])) {
 if ($ps == 0) {
 if (isset($_SESSION['hd.rustem_sort_out'])) {
     if ($_SESSION['hd.rustem_sort_out'] == "ok"){
-	$stmt = $dbConnection->prepare('SELECT id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio, deadline_t, ok_date from tickets where user_init_id IN ('.$in_query2.') and arch=:n and status=:s '.$sort.' limit :start_pos, :perpage');
+	$stmt = $dbConnection->prepare('SELECT id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio, deadline_t, ok_date, approve_tickets from tickets where user_init_id IN ('.$in_query2.') and arch=:n and status=:s and approve_tickets=:a '.$sort.' limit :start_pos, :perpage');
         // $stmt->execute(array(':s'=>'1', ':n'=>'0',':start_pos'=>$start_pos,':perpage'=>$perpage));
-        $paramss=array(':s'=>'1', ':n'=>'0',':start_pos'=>$start_pos,':perpage'=>$perpage);
+        $paramss=array(':s'=>'1', ':n'=>'0', ':a'=>'1',':start_pos'=>$start_pos,':perpage'=>$perpage);
         $stmt->execute(array_merge($vv2,$paramss));
     }
 
     else if ($_SESSION['hd.rustem_sort_out'] == "free"){
-	$stmt = $dbConnection->prepare('SELECT id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio, deadline_t, ok_date from tickets where user_init_id IN ('.$in_query2.') and arch=:n and lock_by=:lb and status=:s '.$sort.' limit :start_pos, :perpage');
+	$stmt = $dbConnection->prepare('SELECT id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio, deadline_t, ok_date, approve_tickets from tickets where user_init_id IN ('.$in_query2.') and arch=:n and lock_by=:lb and status=:s '.$sort.' limit :start_pos, :perpage');
         // $stmt->execute(array(':lb'=>'0',':s'=>'0', ':n'=>'0',':start_pos'=>$start_pos,':perpage'=>$perpage));
         $paramss=array(':lb'=>'0',':s'=>'0', ':n'=>'0',':start_pos'=>$start_pos,':perpage'=>$perpage);
         $stmt->execute(array_merge($vv2,$paramss));
@@ -74,28 +74,34 @@ if (isset($_SESSION['hd.rustem_sort_out'])) {
 
 
     else if ($_SESSION['hd.rustem_sort_out'] == "ilock"){
-	$stmt = $dbConnection->prepare('SELECT id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio, deadline_t, ok_date from tickets where user_init_id IN ('.$in_query2.') and arch=:n and lock_by=:lb and status=0 '.$sort.' limit :start_pos, :perpage');
+	$stmt = $dbConnection->prepare('SELECT id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio, deadline_t, ok_date, approve_tickets from tickets where user_init_id IN ('.$in_query2.') and arch=:n and lock_by=:lb and status=0 '.$sort.' limit :start_pos, :perpage');
         // $stmt->execute(array(':lb'=>$user_id, ':n'=>'0',':start_pos'=>$start_pos,':perpage'=>$perpage));
         $paramss=array(':lb'=>$user_id, ':n'=>'0',':start_pos'=>$start_pos,':perpage'=>$perpage);
         $stmt->execute(array_merge($vv2,$paramss));
     }
 
     else if ($_SESSION['hd.rustem_sort_out'] == "lock"){
-	$stmt = $dbConnection->prepare('SELECT id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio, deadline_t, ok_date from tickets where user_init_id IN ('.$in_query2.') and arch=:n and (lock_by<>:lb and lock_by<>0) and (status=0) '.$sort.' limit :start_pos, :perpage');
+	$stmt = $dbConnection->prepare('SELECT id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio, deadline_t, ok_date, approve_tickets from tickets where user_init_id IN ('.$in_query2.') and arch=:n and (lock_by<>:lb and lock_by<>0) and (status=0) '.$sort.' limit :start_pos, :perpage');
         // $stmt->execute(array(':lb'=>$user_id, ':n'=>'0',':start_pos'=>$start_pos,':perpage'=>$perpage));
         $paramss=array(':lb'=>$user_id, ':n'=>'0',':start_pos'=>$start_pos,':perpage'=>$perpage);
+        $stmt->execute(array_merge($vv2,$paramss));
+    }
+    else if ($_SESSION['hd.rustem_sort_out'] == "approved"){
+	$stmt = $dbConnection->prepare('SELECT id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio, deadline_t, ok_date, approve_tickets from tickets where user_init_id IN ('.$in_query2.') and arch=:n and status=:n2 and approve_tickets=:n3  '.$sort.' limit :start_pos, :perpage');
+        // $stmt->execute(array(':lb'=>$user_id, ':n'=>'0',':start_pos'=>$start_pos,':perpage'=>$perpage));
+        $paramss=array(':n'=>'0', ':n2'=>'1', ':n3'=>'0',':start_pos'=>$start_pos,':perpage'=>$perpage);
         $stmt->execute(array_merge($vv2,$paramss));
     }
 }
 if (!isset($_SESSION['hd.rustem_sort_out'])) {
 if (!isset($_SESSION['hd.rustem_sort_tb_out'])){
-	$stmt = $dbConnection->prepare('SELECT id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio, deadline_t, ok_date from tickets where user_init_id IN ('.$in_query2.') and arch=:n order by id desc limit :start_pos, :perpage');
+	$stmt = $dbConnection->prepare('SELECT id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio, deadline_t, ok_date, approve_tickets from tickets where user_init_id IN ('.$in_query2.') and arch=:n order by id desc limit :start_pos, :perpage');
         // $stmt->execute(array(':n'=>'0',':start_pos'=>$start_pos,':perpage'=>$perpage));
         $paramss=array(':n'=>'0',':start_pos'=>$start_pos,':perpage'=>$perpage);
         $stmt->execute(array_merge($vv2,$paramss));
         }
         else{
-          $stmt = $dbConnection->prepare('SELECT id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio, deadline_t, ok_date from tickets where user_init_id IN ('.$in_query2.') and arch=:n '.$sort.' limit :start_pos, :perpage');
+          $stmt = $dbConnection->prepare('SELECT id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio, deadline_t, ok_date, approve_tickets from tickets where user_init_id IN ('.$in_query2.') and arch=:n '.$sort.' limit :start_pos, :perpage');
                 // $stmt->execute(array(':n'=>'0',':start_pos'=>$start_pos,':perpage'=>$perpage));
                 $paramss=array(':n'=>'0',':start_pos'=>$start_pos,':perpage'=>$perpage);
                 $stmt->execute(array_merge($vv2,$paramss));
@@ -105,33 +111,38 @@ if (!isset($_SESSION['hd.rustem_sort_tb_out'])){
 else if ($ps == 1) {
 if (isset($_SESSION['hd.rustem_sort_out'])) {
     if ($_SESSION['hd.rustem_sort_out'] == "ok"){
-	$stmt = $dbConnection->prepare('SELECT id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio, deadline_t, ok_date from tickets where user_init_id=:user_id and arch=:n and status=:s '.$sort.' limit :start_pos, :perpage');
-        $stmt->execute(array(':user_id'=>$user_id,':s'=>'1', ':n'=>'0',':start_pos'=>$start_pos,':perpage'=>$perpage));
+	$stmt = $dbConnection->prepare('SELECT id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio, deadline_t, ok_date, approve_tickets from tickets where user_init_id=:user_id and arch=:n and status=:s and approve_tickets=:a '.$sort.' limit :start_pos, :perpage');
+        $stmt->execute(array(':user_id'=>$user_id,':s'=>'1', ':n'=>'0', ':a'=>'1',':start_pos'=>$start_pos,':perpage'=>$perpage));
     }
 
     else if ($_SESSION['hd.rustem_sort_out'] == "free"){
-	$stmt = $dbConnection->prepare('SELECT id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio, deadline_t, ok_date from tickets where user_init_id=:user_id and arch=:n and lock_by=:lb and status=:s '.$sort.' limit :start_pos, :perpage');
+	$stmt = $dbConnection->prepare('SELECT id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio, deadline_t, ok_date, approve_tickets from tickets where user_init_id=:user_id and arch=:n and lock_by=:lb and status=:s '.$sort.' limit :start_pos, :perpage');
         $stmt->execute(array(':user_id'=>$user_id,':lb'=>'0',':s'=>'0', ':n'=>'0',':start_pos'=>$start_pos,':perpage'=>$perpage));
     }
 
 
     else if ($_SESSION['hd.rustem_sort_out'] == "ilock"){
-	$stmt = $dbConnection->prepare('SELECT id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio, deadline_t, ok_date from tickets where user_init_id=:user_id and arch=:n and lock_by=:lb and status=0 '.$sort.' limit :start_pos, :perpage');
+	$stmt = $dbConnection->prepare('SELECT id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio, deadline_t, ok_date, approve_tickets from tickets where user_init_id=:user_id and arch=:n and lock_by=:lb and status=0 '.$sort.' limit :start_pos, :perpage');
         $stmt->execute(array(':user_id'=>$user_id,':lb'=>$user_id, ':n'=>'0',':start_pos'=>$start_pos,':perpage'=>$perpage));
     }
 
     else if ($_SESSION['hd.rustem_sort_out'] == "lock"){
-	$stmt = $dbConnection->prepare('SELECT id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio, deadline_t, ok_date from tickets where user_init_id=:user_id and arch=:n and (lock_by<>:lb and lock_by<>0) and (status=0) '.$sort.' limit :start_pos, :perpage');
+	$stmt = $dbConnection->prepare('SELECT id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio, deadline_t, ok_date, approve_tickets from tickets where user_init_id=:user_id and arch=:n and (lock_by<>:lb and lock_by<>0) and (status=0) '.$sort.' limit :start_pos, :perpage');
         $stmt->execute(array(':user_id'=>$user_id,':lb'=>$user_id, ':n'=>'0',':start_pos'=>$start_pos,':perpage'=>$perpage));
+    }
+
+    else if ($_SESSION['hd.rustem_sort_out'] == "approved"){
+	$stmt = $dbConnection->prepare('SELECT id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio, deadline_t, ok_date, approve_tickets from tickets where user_init_id=:user_id and arch=:n and status=:n2 and approve_tickets=:n3 '.$sort.' limit :start_pos, :perpage');
+        $stmt->execute(array(':user_id'=>$user_id, ':n'=>'0', ':n2'=>'1', ':n3'=>'0', ':start_pos'=>$start_pos,':perpage'=>$perpage));
     }
 }
 if (!isset($_SESSION['hd.rustem_sort_out'])) {
 if (!isset($_SESSION['hd.rustem_sort_tb_out'])){
-	$stmt = $dbConnection->prepare('SELECT id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio, deadline_t, ok_date from tickets where user_init_id=:user_id and arch=:n order by id desc limit :start_pos, :perpage');
+	$stmt = $dbConnection->prepare('SELECT id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio, deadline_t, ok_date, approve_tickets from tickets where user_init_id=:user_id and arch=:n order by id desc limit :start_pos, :perpage');
         $stmt->execute(array(':user_id'=>$user_id,':n'=>'0',':start_pos'=>$start_pos,':perpage'=>$perpage));
       }
       else{
-        $stmt = $dbConnection->prepare('SELECT id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio, deadline_t, ok_date from tickets where user_init_id=:user_id and arch=:n '.$sort.' desc limit :start_pos, :perpage');
+        $stmt = $dbConnection->prepare('SELECT id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio, deadline_t, ok_date, approve_tickets from tickets where user_init_id=:user_id and arch=:n '.$sort.' desc limit :start_pos, :perpage');
               $stmt->execute(array(':user_id'=>$user_id,':n'=>'0',':start_pos'=>$start_pos,':perpage'=>$perpage));
       }
     }
@@ -139,33 +150,38 @@ if (!isset($_SESSION['hd.rustem_sort_tb_out'])){
 else if ($ps == 2) {
 if (isset($_SESSION['hd.rustem_sort_out'])) {
     if ($_SESSION['hd.rustem_sort_out'] == "ok"){
-	$stmt = $dbConnection->prepare('SELECT id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio, deadline_t, ok_date from tickets where user_init_id=:user_id and arch=:n and status=:s '.$sort.' limit :start_pos, :perpage');
-        $stmt->execute(array(':user_id'=>$user_id,':s'=>'1', ':n'=>'0',':start_pos'=>$start_pos,':perpage'=>$perpage));
+	$stmt = $dbConnection->prepare('SELECT id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio, deadline_t, ok_date, approve_tickets from tickets where user_init_id=:user_id and arch=:n and status=:s and approve_tickets=:a '.$sort.' limit :start_pos, :perpage');
+        $stmt->execute(array(':user_id'=>$user_id,':s'=>'1', ':n'=>'0', ':a'=>'1',':start_pos'=>$start_pos,':perpage'=>$perpage));
     }
 
     else if ($_SESSION['hd.rustem_sort_out'] == "free"){
-	$stmt = $dbConnection->prepare('SELECT id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio, deadline_t, ok_date from tickets where user_init_id=:user_id and arch=:n and lock_by=:lb and status=:s '.$sort.' limit :start_pos, :perpage');
+	$stmt = $dbConnection->prepare('SELECT id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio, deadline_t, ok_date, approve_tickets from tickets where user_init_id=:user_id and arch=:n and lock_by=:lb and status=:s '.$sort.' limit :start_pos, :perpage');
         $stmt->execute(array(':user_id'=>$user_id,':lb'=>'0',':s'=>'0', ':n'=>'0',':start_pos'=>$start_pos,':perpage'=>$perpage));
     }
 
 
     else if ($_SESSION['hd.rustem_sort_out'] == "ilock"){
-	$stmt = $dbConnection->prepare('SELECT id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio, deadline_t, ok_date from tickets where user_init_id=:user_id and arch=:n and lock_by=:lb and status=0 '.$sort.' limit :start_pos, :perpage');
+	$stmt = $dbConnection->prepare('SELECT id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio, deadline_t, ok_date, approve_tickets from tickets where user_init_id=:user_id and arch=:n and lock_by=:lb and status=0 '.$sort.' limit :start_pos, :perpage');
         $stmt->execute(array(':user_id'=>$user_id, ':lb'=>$user_id, ':n'=>'0',':start_pos'=>$start_pos,':perpage'=>$perpage));
     }
 
     else if ($_SESSION['hd.rustem_sort_out'] == "lock"){
-	$stmt = $dbConnection->prepare('SELECT id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio, deadline_t, ok_date from tickets where user_init_id=:user_id and arch=:n and (lock_by<>:lb and lock_by<>0) and (status=0) '.$sort.' limit :start_pos, :perpage');
+	$stmt = $dbConnection->prepare('SELECT id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio, deadline_t, ok_date, approve_tickets from tickets where user_init_id=:user_id and arch=:n and (lock_by<>:lb and lock_by<>0) and (status=0) '.$sort.' limit :start_pos, :perpage');
         $stmt->execute(array(':user_id'=>$user_id,':lb'=>$user_id, ':n'=>'0',':start_pos'=>$start_pos,':perpage'=>$perpage));
+    }
+
+    else if ($_SESSION['hd.rustem_sort_out'] == "approved"){
+	$stmt = $dbConnection->prepare('SELECT id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio, deadline_t, ok_date, approve_tickets from tickets where user_init_id=:user_id and arch=:n and status=:n2 and approve_tickets=:n3 '.$sort.' limit :start_pos, :perpage');
+        $stmt->execute(array(':user_id'=>$user_id, ':n'=>'0', ':n2'=>'1', ':n3'=>'0', ':start_pos'=>$start_pos,':perpage'=>$perpage));
     }
 }
 if (!isset($_SESSION['hd.rustem_sort_out'])) {
   if (!isset($_SESSION['hd.rustem_sort_tb_out'])){
-	$stmt = $dbConnection->prepare('SELECT id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio, deadline_t, ok_date from tickets where user_init_id=:user_id and arch=:n order by id desc limit :start_pos, :perpage');
+	$stmt = $dbConnection->prepare('SELECT id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio, deadline_t, ok_date, approve_tickets from tickets where user_init_id=:user_id and arch=:n order by id desc limit :start_pos, :perpage');
         $stmt->execute(array(':user_id'=>$user_id,':n'=>'0',':start_pos'=>$start_pos,':perpage'=>$perpage));
       }
       else{
-        $stmt = $dbConnection->prepare('SELECT id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio, deadline_t, ok_date from tickets where user_init_id=:user_id and arch=:n '.$sort.' limit :start_pos, :perpage');
+        $stmt = $dbConnection->prepare('SELECT id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio, deadline_t, ok_date, approve_tickets from tickets where user_init_id=:user_id and arch=:n '.$sort.' limit :start_pos, :perpage');
               $stmt->execute(array(':user_id'=>$user_id,':n'=>'0',':start_pos'=>$start_pos,':perpage'=>$perpage));
       }
     }
@@ -238,6 +254,52 @@ if (!isset($_SESSION['hd.rustem_sort_out'])) {
 ////////////////////////////Раскрашивает и подписывает кнопки/////////////////////////////////////////////////////////////////
 if ($row['is_read'] == "0") { $style="bold_for_new"; }
 if ($row['is_read'] <> "0") { $style=""; }
+                if(get_conf_param('approve_tickets') == 'true'){
+                  if (($row['status'] == "1") && ($row['approve_tickets'] == "1")) {
+                      $ob_text="<i class=\"fa fa-check-circle-o\"></i>";
+                      $ob_status="unok";
+                      $ob_tooltip=lang('t_list_a_nook');
+                      $style="success";
+
+                      if ($lb <> "0") {
+                          $lb_text="<i class=\"fa fa-lock\"></i>";
+                          $lb_status="unlock";
+        //$lock_st="";
+                          $lb_tooltip=lang('t_list_a_unlock');
+                      }
+                      if ($lb == "0") {
+                          $lb_text="<i class=\"fa fa-unlock\"></i>";
+                          $lb_status="lock";
+        //$lock_st="disabled=\"disabled\"";
+                          $lb_tooltip=lang('t_list_a_lock');
+                      }
+
+
+                  }
+
+                  if (($row['status'] == "1") && ($row['approve_tickets'] == "0")) {
+                      $ob_text="<i class=\"fa exclamation-circle\"></i>";
+                      $ob_status="unok";
+                      $ob_tooltip=lang('t_list_a_nook');
+                      $style="info";
+
+                      if ($lb <> "0") {
+                          $lb_text="<i class=\"fa fa-lock\"></i>";
+                          $lb_status="unlock";
+        //$lock_st="";
+                          $lb_tooltip=lang('t_list_a_unlock');
+                      }
+                      if ($lb == "0") {
+                          $lb_text="<i class=\"fa fa-unlock\"></i>";
+                          $lb_status="lock";
+        //$lock_st="disabled=\"disabled\"";
+                          $lb_tooltip=lang('t_list_a_lock');
+                      }
+
+
+                  }
+
+                }else{
                     if ($row['status'] == "1") {
                         $ob_text="<i class=\"fa fa-check-circle-o\"></i>";
                         $ob_status="unok";
@@ -259,6 +321,7 @@ if ($row['is_read'] <> "0") { $style=""; }
 
 
                     }
+                  }
 
                     if ($row['status'] == "0") {
                         $ob_text="<i class=\"fa fa-circle-o\"></i>";
@@ -300,9 +363,18 @@ if ($row['is_read'] <> "0") { $style=""; }
 
 
 ////////////////////////////Показывает labels//////////////////////////////////////////////////////////////
+              if (get_conf_param('approve_tickets') == 'true'){
+                if (($row['status'] == 1) && ($row['approve_tickets'] == 1)) {$st=  "<span class=\"label label-success\"><i class=\"fa fa-check-circle\"></i> ".lang('t_list_a_oko')." ".nameshort(name_of_user_ret($ob))."</span>";
+                    $t_ago=get_date_ok($row['date_create'], $row['id']);
+                  }
+                if (($row['status'] == 1) && ($row['approve_tickets'] == 0)) {$st=  "<span class=\"label label-info\"><i class=\"fa fa-exclamation-circle\"></i> ".lang('t_list_a_oko_wait')."</span>";
+                    $t_ago=get_date_ok_wait($row['date_create'], $row['id']);
+                }
+              }else{
                 if ($row['status'] == 1) {$st=  "<span class=\"label label-success\"><i class=\"fa fa-check-circle\"></i> ".lang('t_list_a_oko')." ".nameshort(name_of_user_ret($ob))."</span>";
                     $t_ago=get_date_ok($row['date_create'], $row['id']);
-                }
+              }
+            }
                 if ($row['status'] == 0) {
                     $t_ago=$row['date_create'];
                     if ($lb <> 0) {
@@ -433,7 +505,7 @@ foreach ($ee as $key=>$value) { $vv[":val_" . $key]=$value;}
 
 
             $stmt = $dbConnection->prepare('SELECT
-			    a.id, a.user_init_id, a.user_to_id, a.date_create, a.subj, a.msg, a.client_id, a.unit_id, a.status, a.hash_name, a.is_read, a.lock_by, a.ok_by, a.prio, a.last_update,a.deadline_t,a.ok_date, a.arch, b.comment_text, b.t_id
+			    a.id, a.user_init_id, a.user_to_id, a.date_create, a.subj, a.msg, a.client_id, a.unit_id, a.status, a.hash_name, a.is_read, a.lock_by, a.ok_by, a.prio, a.last_update,a.deadline_t,a.ok_date, a.arch, b.comment_text, b.t_id, a.approve_tickets
                             from tickets as a LEFT JOIN  comments as b ON a.id = b.t_id LEFT JOIN users as c ON a.user_to_id = c.id
 			    where (a.unit_id IN ('.$in_query.') or a.user_init_id=:user_id) and (a.id=:z or a.subj like :z1 or a.msg like :z2 or b.comment_text like :z3 or c.fio like :z4) group by a.id limit 10');
 
@@ -443,15 +515,13 @@ foreach ($ee as $key=>$value) { $vv[":val_" . $key]=$value;}
             $res1 = $stmt->fetchAll();
 
 
-
-
         }
         else if ($priv_val == 1) {
 
 
 
             $stmt = $dbConnection->prepare('SELECT
-			    a.id, a.user_init_id, a.user_to_id, a.date_create, a.subj, a.msg, a.client_id, a.unit_id, a.status, a.hash_name, a.is_read, a.lock_by, a.ok_by, a.prio, a.last_update,a.deadline_t,a.ok_date, a.arch, b.comment_text, b.t_id
+			    a.id, a.user_init_id, a.user_to_id, a.date_create, a.subj, a.msg, a.client_id, a.unit_id, a.status, a.hash_name, a.is_read, a.lock_by, a.ok_by, a.prio, a.last_update,a.deadline_t,a.ok_date, a.arch, b.comment_text, b.t_id, a.approve_tickets
                             from tickets as a LEFT JOIN  comments as b ON a.id = b.t_id LEFT JOIN users as c ON a.user_to_id = c.id
 			    where (((a.user_to_id rlike :user_id) or
 			    (a.user_to_id=:n and a.unit_id IN ('.$in_query.') )) or a.user_init_id rlike :user_id2) and (a.id=:z or a.subj like :z1 or a.msg like :z2 or b.comment_text like :z3 or c.fio like :z4)
@@ -471,8 +541,8 @@ foreach ($ee as $key=>$value) { $vv[":val_" . $key]=$value;}
         else if ($priv_val == 2) {
 
             $stmt = $dbConnection->prepare('SELECT
-			    a.id, a.user_init_id, a.user_to_id, a.date_create, a.subj, a.msg, a.client_id, a.unit_id, a.status, a.hash_name, a.is_read, a.lock_by, a.ok_by, a.prio, a.last_update,a.deadline_t,a.ok_date, a.arch, b.comment_text, b.t_id
-			    from tickets as a LEFT JOIN  comments as b ON a.id = b.t_id LEFT JOIN users as c ON a.user_to_id = c.id
+			    a.id, a.user_init_id, a.user_to_id, a.date_create, a.subj, a.msg, a.client_id, a.unit_id, a.status, a.hash_name, a.is_read, a.lock_by, a.ok_by, a.prio, a.last_update,a.deadline_t,a.ok_date, a.arch, b.comment_text, b.t_id, a.approve_tickets
+			    from tickets as a LEFT JOIN  comments as b ON a.id = b.t_id INNER JOIN users as c ON a.user_to_id = c.id
 			    where a.id=:z or a.subj like :z1 or a.msg like :z2 or b.comment_text like :z3 or c.fio like :z4
 			    group by a.id limit 10');
 
@@ -537,6 +607,46 @@ foreach ($ee as $key=>$value) { $vv[":val_" . $key]=$value;}
 ////////////////////////////Раскрашивает и подписывает кнопки/////////////////////////////////////////////////////////////////
 if ($row['is_read'] == "0") { $style="bold_for_new"; }
 if ($row['is_read'] <> "0") { $style=""; }
+                if (get_conf_param('approve_tickets') == 'true'){
+                  if (($row['status'] == "1") && ($row['approve_tickets'] == "1")) {
+                      $ob_text="<i class=\"fa fa-check-circle-o\"></i>";
+                      $ob_status="unok";
+                      $ob_tooltip=lang('t_list_a_nook');
+                      $style="success";
+
+                      if ($lb <> "0") {
+                          $lb_text="<i class=\"fa fa-lock\"></i>";
+                          $lb_status="unlock";
+                          $lb_tooltip=lang('t_list_a_unlock');
+                      }
+                      if ($lb == "0") {
+                          $lb_text="<i class=\"fa fa-unlock\"></i>";
+                          $lb_status="lock";
+                          $lb_tooltip=lang('t_list_a_lock');
+                      }
+
+
+                  }
+                  if (($row['status'] == "1") && ($row['approve_tickets'] == "0")) {
+                      $ob_text="<i class=\"fa fa-check-circle-o\"></i>";
+                      $ob_status="unok";
+                      $ob_tooltip=lang('t_list_a_nook');
+                      $style="info";
+
+                      if ($lb <> "0") {
+                          $lb_text="<i class=\"fa fa-lock\"></i>";
+                          $lb_status="unlock";
+                          $lb_tooltip=lang('t_list_a_unlock');
+                      }
+                      if ($lb == "0") {
+                          $lb_text="<i class=\"fa fa-unlock\"></i>";
+                          $lb_status="lock";
+                          $lb_tooltip=lang('t_list_a_lock');
+                      }
+
+
+                  }
+                }else{
                     if ($row['status'] == "1") {
                         $ob_text="<i class=\"fa fa-check-circle-o\"></i>";
                         $ob_status="unok";
@@ -556,6 +666,7 @@ if ($row['is_read'] <> "0") { $style=""; }
 
 
                     }
+                  }
 
                     if ($row['status'] == "0") {
                         $ob_text="<i class=\"fa fa-circle-o\"></i>";
@@ -645,20 +756,49 @@ if ($row['is_read'] <> "0") { $style=""; }
 
 
 ////////////////////////////Показывает labels//////////////////////////////////////////////////////////////
-                if ($row['status'] == 1) {$st=  "<span class=\"label label-success\"><i class=\"fa fa-check-circle\"></i> ".lang('t_list_a_oko')." ".nameshort(name_of_user_ret($ob))."</span>";
-                    $t_ago=get_date_ok($row['date_create'], $row['id']);
-                }
-                if ($row['status'] == 0) {
-                    $t_ago=$row['date_create'];
-                    if ($lb <> 0) {
+                //   if (get_conf_param('approve_tickets') == 'true'){
+                //     if (($row['status'] == 1) && ($row['approve_tickets'] == 1)) {$st=  "<span class=\"label label-success\"><i class=\"fa fa-check-circle\"></i> ".lang('t_list_a_oko')." ".nameshort(name_of_user_ret($ob))."</span>";
+                //         $t_ago=get_date_ok($row['date_create'], $row['id']);
+                //       }
+                //     if (($row['status'] == 1) && ($row['approve_tickets'] == 0)) {$st=  "<span class=\"label label-info\"><i class=\"fa fa-exclamation-circle\"></i> ".lang('t_list_a_oko_wait')."</span>";
+                //         $t_ago=get_date_ok_wait($row['date_create'], $row['id']);
+                //     }
+                //   }else{
+                //     if ($row['status'] == 1) {$st=  "<span class=\"label label-success\"><i class=\"fa fa-check-circle\"></i> ".lang('t_list_a_oko')." ".nameshort(name_of_user_ret($ob))."</span>";
+                //         $t_ago=get_date_ok($row['date_create'], $row['id']);
+                //   }
+                // }
+                //   if ($row['status'] == 0) {
+                //       $t_ago=$row['date_create'];
+                //       if ($lb <> 0) {
+                //
+                //           if ($lb == $user_id) {$st=  "<span class=\"label label-warning\"><i class=\"fa fa-gavel\"></i> ".lang('t_list_a_lock_i')."</span>";}
+                //
+                //           if ($lb <> $user_id) {$st=  "<span class=\"label label-default\"><i class=\"fa fa-gavel\"></i> ".lang('t_list_a_lock_u')." ".nameshort(name_of_user_ret($lb))."</span>";}
+                //
+                //       }
+                //       if ($lb == 0) {$st=  "<span class=\"label label-primary\"><i class=\"fa fa-clock-o\"></i> ".lang('t_list_a_hold')."</span>";}
+                //   }
+                if ($arch == "1") {$st=  "<span class=\"label label-default\">".lang('t_list_a_arch')." </span>";}
+                if ($arch == "0") {
+                  if (get_conf_param('approve_tickets') == 'true'){
+                      if (($row['status'] == 1) && ($row['approve_tickets'] == 1)) {$st=  "<span class=\"label label-success\"><i class=\"fa fa-check-circle\"></i> ".lang('t_list_a_oko')." ".nameshort(name_of_user_ret($ob))."</span>";}
+                      if (($row['status'] == 1) && ($row['approve_tickets'] == 0)) {$st=  "<span class=\"label label-info\"><i class=\"fa fa-exclamation-circle\"></i> ".lang('t_list_a_oko_wait')."</span>";}
+                    }else{
+                      if ($row['status'] == 1) {$st=  "<span class=\"label label-success\"><i class=\"fa fa-check-circle\"></i> ".lang('t_list_a_oko')." ".nameshort(name_of_user_ret($ob))."</span>";}
+                  }
+                    // if ($row['status'] == 1) {$st=  "<span class=\"label label-success\"><i class=\"fa fa-check-circle\"></i> ".lang('t_list_a_oko')." ".nameshort(name_of_user_ret($ob))."</span>";}
+                    if ($row['status'] == 0) {
+                        if ($lb <> 0) {
+                          if ($lb == $user_id) {$st=  "<span class=\"label label-warning\"><i class=\"fa fa-gavel\"></i> ".lang('t_list_a_lock_i')."</span>";}
 
-                        if ($lb == $user_id) {$st=  "<span class=\"label label-warning\"><i class=\"fa fa-gavel\"></i> ".lang('t_list_a_lock_i')."</span>";}
-
-                        if ($lb <> $user_id) {$st=  "<span class=\"label label-default\"><i class=\"fa fa-gavel\"></i> ".lang('t_list_a_lock_u')." ".nameshort(name_of_user_ret($lb))."</span>";}
-
+                          if ($lb <> $user_id) {$st=  "<span class=\"label label-default\"><i class=\"fa fa-gavel\"></i> ".lang('t_list_a_lock_u')." ".nameshort(name_of_user_ret($lb))."</span>";}
+                        }
+                        if ($lb == 0) {$st=  "<span class=\"label label-primary\"><i class=\"fa fa-clock-o\"></i> ".lang('t_list_a_hold')."</span>";}
                     }
-                    if ($lb == 0) {$st=  "<span class=\"label label-primary\"><i class=\"fa fa-clock-o\"></i> ".lang('t_list_a_hold')."</span>";}
                 }
+                // if ($row['status'] == 1) {$t_ago=get_date_ok($row['date_create'], $row['id']);}
+                // if ($row['status'] == 0) {$t_ago=$row['date_create'];}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -698,19 +838,6 @@ else if ($priv_val == 2) {
 $lock_st=""; $muclass="";
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-                if ($arch == "1") {$st=  "<span class=\"label label-default\">".lang('t_list_a_arch')." </span>";}
-                if ($arch == "0") {
-                    if ($row['status'] == 1) {$st=  "<span class=\"label label-success\"><i class=\"fa fa-check-circle\"></i> ".lang('t_list_a_oko')." ".nameshort(name_of_user_ret($ob))."</span>";}
-                    if ($row['status'] == 0) {
-                        if ($lb <> 0) {$st=  "<span class=\"label label-warning\"><i class=\"fa fa-gavel\"></i> ".lang('t_list_a_lock_u')." ".nameshort(name_of_user_ret($lb))."</span>";}
-                        if ($lb == 0) {$st=  "<span class=\"label label-primary\"><i class=\"fa fa-clock-o\"></i> ".lang('t_list_a_hold')."</span>";}
-                    }
-                }
-                if ($row['status'] == 1) {$t_ago=get_date_ok($row['date_create'], $row['id']);}
-                if ($row['status'] == 0) {$t_ago=$row['date_create'];}
-
-
 
                 ?>
                 <tr id="tr_<?php echo $row['id']; ?>" class="<?=$style?>">
@@ -828,15 +955,15 @@ if (!isset($_SESSION['hd.rustem_sort_in'])) {}
 if (isset($_SESSION['hd.rustem_sort_in'])) {
 
     if ($_SESSION['hd.rustem_sort_in'] == "ok"){$stmt = $dbConnection->prepare('SELECT
-			    id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update, deadline_t, ok_date
+			    id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update, deadline_t, ok_date, approve_tickets
 			    from tickets
-			    where unit_id IN (' . $in_query . ')  and arch=:n and status=:s '.$sort.'
+			    where unit_id IN (' . $in_query . ')  and arch=:n and status=:s and approve_tickets=:a '.$sort.'
 			    limit :start_pos, :perpage');
-            $paramss=array(':n'=>'0',':s'=>'1',':start_pos'=>$start_pos,':perpage'=>$perpage);
+            $paramss=array(':n'=>'0',':s'=>'1',':a'=>'1',':start_pos'=>$start_pos,':perpage'=>$perpage);
             $stmt->execute(array_merge($vv,$paramss));}
 
         	else if ($_SESSION['hd.rustem_sort_in'] == "free"){$stmt = $dbConnection->prepare('SELECT
-			    id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update, deadline_t, ok_date
+			    id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update, deadline_t, ok_date, approve_tickets
 			    from tickets
 			    where unit_id IN (' . $in_query . ')  and arch=:n and status=:s and lock_by=:lb '.$sort.'
 			    limit :start_pos, :perpage');
@@ -844,7 +971,7 @@ if (isset($_SESSION['hd.rustem_sort_in'])) {
             $stmt->execute(array_merge($vv,$paramss));}
 
     else if ($_SESSION['hd.rustem_sort_in'] == "ilock"){$stmt = $dbConnection->prepare('SELECT
-			    id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update, deadline_t, ok_date
+			    id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update, deadline_t, ok_date, approve_tickets
 			    from tickets
 			    where unit_id IN (' . $in_query . ')  and arch=:n and lock_by=:lb and status=0 '.$sort.'
 			    limit :start_pos, :perpage');
@@ -854,19 +981,27 @@ if (isset($_SESSION['hd.rustem_sort_in'])) {
 
 
     else if ($_SESSION['hd.rustem_sort_in'] == "lock"){$stmt = $dbConnection->prepare('SELECT
-			    id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update, deadline_t, ok_date
+			    id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update, deadline_t, ok_date, approve_tickets
 			    from tickets
 			    where unit_id IN (' . $in_query . ')  and arch=:n and (lock_by<>:lb and lock_by<>0) and (status=0) '.$sort.'
 			    limit :start_pos, :perpage');
 
             $paramss=array(':n'=>'0',':lb'=>$user_id,':start_pos'=>$start_pos,':perpage'=>$perpage);
             $stmt->execute(array_merge($vv,$paramss));}
+
+    else if ($_SESSION['hd.rustem_sort_in'] == "approved"){$stmt = $dbConnection->prepare('SELECT
+			    id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update, deadline_t, ok_date, approve_tickets
+			    from tickets
+			    where unit_id IN (' . $in_query . ')  and arch=:n and status=:s and approve_tickets=:a '.$sort.'
+			    limit :start_pos, :perpage');
+            $paramss=array(':n'=>'0',':s'=>'1', ':a'=>'0',':start_pos'=>$start_pos,':perpage'=>$perpage);
+            $stmt->execute(array_merge($vv,$paramss));}
 }
 
 if (!isset($_SESSION['hd.rustem_sort_in'])) {
   if (!isset($_SESSION['hd.rustem_sort_tb_in'])){
     $stmt = $dbConnection->prepare('SELECT
-			    id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update, deadline_t, ok_date
+			    id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update, deadline_t, ok_date, approve_tickets
 			    from tickets
 			    where unit_id IN (' . $in_query . ')  and arch=:n
 			    order by ok_by asc, prio desc, id desc
@@ -877,7 +1012,7 @@ if (!isset($_SESSION['hd.rustem_sort_in'])) {
 }
 else{
   $stmt = $dbConnection->prepare('SELECT
-        id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update, deadline_t, ok_date
+        id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update, deadline_t, ok_date, approve_tickets
         from tickets
         where unit_id IN (' . $in_query . ')  and arch=:n
         '.$sort.'
@@ -900,18 +1035,18 @@ else{
 if (isset($_SESSION['hd.rustem_sort_in'])) {
     if ($_SESSION['hd.rustem_sort_in'] == "ok"){
 	$stmt = $dbConnection->prepare('SELECT
-			    id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update, deadline_t, ok_date
+			    id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update, deadline_t, ok_date, approve_tickets
 			    from tickets
 			    where ((user_to_id rlike :user_id and arch=:n) or
-			    (user_to_id=:n1 and unit_id IN (' . $in_query . ') and arch=:n2)) and status=:s '.$sort.'
+			    (user_to_id=:n1 and unit_id IN (' . $in_query . ') and arch=:n2)) and status=:s and approve_tickets=:a '.$sort.'
 			    limit :start_pos, :perpage');
-$paramss=array(':user_id'=>'[[:<:]]'.$user_id.'[[:>:]]',':s'=>'1', ':n'=>'0',':n1'=>'0',':n2'=>'0',':start_pos'=>$start_pos,':perpage'=>$perpage);
+$paramss=array(':user_id'=>'[[:<:]]'.$user_id.'[[:>:]]',':s'=>'1', ':a'=>'1', ':n'=>'0',':n1'=>'0',':n2'=>'0',':start_pos'=>$start_pos,':perpage'=>$perpage);
 $stmt->execute(array_merge($vv,$paramss));
     }
 
 	else if ($_SESSION['hd.rustem_sort_in'] == "free"){
 	$stmt = $dbConnection->prepare('SELECT
-			    id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update, deadline_t, ok_date
+			    id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update, deadline_t, ok_date, approve_tickets
 			    from tickets
 			    where ((user_to_id rlike :user_id and arch=:n) or
 			    (user_to_id=:n1 and unit_id IN (' . $in_query . ') and arch=:n2)) and lock_by=:lb and status=:s '.$sort.'
@@ -922,7 +1057,7 @@ $stmt->execute(array_merge($vv,$paramss));
 
     else if ($_SESSION['hd.rustem_sort_in'] == "ilock"){
 	$stmt = $dbConnection->prepare('SELECT
-			    id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update, deadline_t, ok_date
+			    id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update, deadline_t, ok_date, approve_tickets
 			    from tickets
 			    where ((user_to_id rlike :user_id and arch=:n) or
 			    (user_to_id=:n1 and unit_id IN (' . $in_query . ') and arch=:n2)) and lock_by=:lb and status=0 '.$sort.'
@@ -932,12 +1067,22 @@ $stmt->execute(array_merge($vv,$paramss));
     }
     else if ($_SESSION['hd.rustem_sort_in'] == "lock"){
 		$stmt = $dbConnection->prepare('SELECT
-			    id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update, deadline_t, ok_date
+			    id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update, deadline_t, ok_date, approve_tickets
 			    from tickets
 			    where ((user_to_id rlike :user_id and arch=:n) or
 			    (user_to_id=:n1 and unit_id IN (' . $in_query . ') and arch=:n2)) and (lock_by<>:lb and lock_by<>0) and (status=0) '.$sort.'
 			    limit :start_pos, :perpage');
 $paramss=array(':user_id'=>'[[:<:]]'.$user_id.'[[:>:]]',':lb'=>$user_id, ':n'=>'0',':n1'=>'0',':n2'=>'0',':start_pos'=>$start_pos,':perpage'=>$perpage);
+$stmt->execute(array_merge($vv,$paramss));
+    }
+    else if ($_SESSION['hd.rustem_sort_in'] == "approved"){
+	$stmt = $dbConnection->prepare('SELECT
+			    id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update, deadline_t, ok_date, approve_tickets
+			    from tickets
+			    where ((user_to_id rlike :user_id and arch=:n) or
+			    (user_to_id=:n1 and unit_id IN (' . $in_query . ') and arch=:n2)) and status=:s and approve_tickets=:a '.$sort.'
+			    limit :start_pos, :perpage');
+$paramss=array(':user_id'=>'[[:<:]]'.$user_id.'[[:>:]]',':s'=>'1', ':a'=>'0', ':n'=>'0',':n1'=>'0',':n2'=>'0',':start_pos'=>$start_pos,':perpage'=>$perpage);
 $stmt->execute(array_merge($vv,$paramss));
     }
 }
@@ -947,7 +1092,7 @@ $stmt->execute(array_merge($vv,$paramss));
 if (!isset($_SESSION['hd.rustem_sort_in'])) {
    if (!isset($_SESSION['hd.rustem_sort_tb_in'])){
 $stmt = $dbConnection->prepare('SELECT
-			    id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update, deadline_t, ok_date
+			    id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update, deadline_t, ok_date, approve_tickets
 			    from tickets
 			    where ((user_to_id rlike :user_id and arch=:n) or
 			    (user_to_id=:n1 and unit_id IN (' . $in_query . ') and arch=:n2))
@@ -958,7 +1103,7 @@ $stmt->execute(array_merge($vv,$paramss));
             }
             else{
               $stmt = $dbConnection->prepare('SELECT
-              			    id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update, deadline_t, ok_date
+              			    id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update, deadline_t, ok_date, approve_tickets
               			    from tickets
               			    where ((user_to_id rlike :user_id and arch=:n) or
               			    (user_to_id=:n1 and unit_id IN (' . $in_query . ') and arch=:n2))
@@ -983,18 +1128,18 @@ $stmt->execute(array_merge($vv,$paramss));
     	if ($_SESSION['hd.rustem_sort_in'] == "ok"){
 
         	$stmt = $dbConnection->prepare('SELECT
-			    id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update, deadline_t, ok_date
+			    id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update, deadline_t, ok_date, approve_tickets
 			    from tickets
 			    where arch=:n
-			    and status=:s
+			    and status=:s and approve_tickets=:a
           '.$sort.'
 			    limit :start_pos, :perpage');
-			    $stmt->execute(array(':n'=>'0',':s'=>'1',':start_pos'=>$start_pos,':perpage'=>$perpage));
+			    $stmt->execute(array(':n'=>'0',':s'=>'1',':a'=>'1',':start_pos'=>$start_pos,':perpage'=>$perpage));
 
     	}
     		    else if ($_SESSION['hd.rustem_sort_in'] == "free"){
 	    $stmt = $dbConnection->prepare('SELECT
-			    id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update, deadline_t, ok_date
+			    id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update, deadline_t, ok_date, approve_tickets
 			    from tickets
 			    where arch=:n
 			    and lock_by=:lb and status=:s
@@ -1004,7 +1149,7 @@ $stmt->execute(array_merge($vv,$paramss));
 
 	    else if ($_SESSION['hd.rustem_sort_in'] == "ilock"){
 	    $stmt = $dbConnection->prepare('SELECT
-			    id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update, deadline_t, ok_date
+			    id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update, deadline_t, ok_date, approve_tickets
 			    from tickets
 			    where arch=:n
 			    and lock_by=:lb and status=0
@@ -1013,7 +1158,7 @@ $stmt->execute(array_merge($vv,$paramss));
 			    $stmt->execute(array(':n'=>'0',':lb'=>$user_id,':start_pos'=>$start_pos,':perpage'=>$perpage));}
 	    else if ($_SESSION['hd.rustem_sort_in'] == "lock"){
 			    $stmt = $dbConnection->prepare('SELECT
-			    id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update, deadline_t, ok_date
+			    id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update, deadline_t, ok_date, approve_tickets
 			    from tickets
 			    where arch=:n
 			    and (lock_by<>:lb and lock_by<>0) and (status=0)
@@ -1021,6 +1166,18 @@ $stmt->execute(array_merge($vv,$paramss));
 			    limit :start_pos, :perpage');
 			    $stmt->execute(array(':n'=>'0',':lb'=>$user_id,':start_pos'=>$start_pos,':perpage'=>$perpage));
 	    }
+      if ($_SESSION['hd.rustem_sort_in'] == "approved"){
+
+        	$stmt = $dbConnection->prepare('SELECT
+			    id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update, deadline_t, ok_date, approve_tickets
+			    from tickets
+			    where arch=:n
+			    and status=:s and approve_tickets=:a
+          '.$sort.'
+			    limit :start_pos, :perpage');
+			    $stmt->execute(array(':n'=>'0',':s'=>'1',':a'=>'0',':start_pos'=>$start_pos,':perpage'=>$perpage));
+
+    	}
 
 
         }
@@ -1028,7 +1185,7 @@ $stmt->execute(array_merge($vv,$paramss));
          if (!isset($_SESSION['hd.rustem_sort_in'])) {
            if (!isset($_SESSION['hd.rustem_sort_tb_in'])){
             $stmt = $dbConnection->prepare('SELECT
-			    id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update, deadline_t, ok_date
+			    id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update, deadline_t, ok_date, approve_tickets
 			    from tickets
 			    where arch=:n
 			    order by ok_by asc, prio desc, id desc
@@ -1037,7 +1194,7 @@ $stmt->execute(array_merge($vv,$paramss));
         }
         else{
           $stmt = $dbConnection->prepare('SELECT
-        id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update, deadline_t, ok_date
+        id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update, deadline_t, ok_date, approve_tickets
         from tickets
         where arch=:n
         '.$sort.'
@@ -1114,6 +1271,46 @@ $stmt->execute(array_merge($vv,$paramss));
 ////////////////////////////Раскрашивает и подписывает кнопки/////////////////////////////////////////////////////////////////
 if ($row['is_read'] == "0") { $style="bold_for_new"; }
 if ($row['is_read'] <> "0") { $style=""; }
+                if (get_conf_param('approve_tickets') == 'true'){
+                  if (($row['status'] == "1") && ($row['approve_tickets'] == "1")) {
+                      $ob_text="<i class=\"fa fa-check-circle-o\"></i>";
+                      $ob_status="unok";
+                      $ob_tooltip=lang('t_list_a_nook');
+                      $style="success";
+
+                      if ($lb <> "0") {
+                          $lb_text="<i class=\"fa fa-lock\"></i>";
+                          $lb_status="unlock";
+                          $lb_tooltip=lang('t_list_a_unlock');
+                      }
+                      if ($lb == "0") {
+                          $lb_text="<i class=\"fa fa-unlock\"></i>";
+                          $lb_status="lock";
+                          $lb_tooltip=lang('t_list_a_lock');
+                      }
+
+
+                  }
+                  if (($row['status'] == "1") && ($row['approve_tickets'] == "0")) {
+                      $ob_text="<i class=\"fa fa-check-circle-o\"></i>";
+                      $ob_status="unok";
+                      $ob_tooltip=lang('t_list_a_nook');
+                      $style="info";
+
+                      if ($lb <> "0") {
+                          $lb_text="<i class=\"fa fa-lock\"></i>";
+                          $lb_status="unlock";
+                          $lb_tooltip=lang('t_list_a_unlock');
+                      }
+                      if ($lb == "0") {
+                          $lb_text="<i class=\"fa fa-unlock\"></i>";
+                          $lb_status="lock";
+                          $lb_tooltip=lang('t_list_a_lock');
+                      }
+
+
+                  }
+                }else{
                     if ($row['status'] == "1") {
                         $ob_text="<i class=\"fa fa-check-circle-o\"></i>";
                         $ob_status="unok";
@@ -1133,10 +1330,15 @@ if ($row['is_read'] <> "0") { $style=""; }
 
 
                     }
+                  }
 
                     if ($row['status'] == "0") {
                         $ob_text="<i class=\"fa fa-circle-o\"></i>";
+                        if (get_conf_param('approve_tickets') == 'true'){
+                          $ob_status="ok_wait";
+                        }else{
                         $ob_status="ok";
+                        }
                         $ob_tooltip=lang('t_list_a_ok');
                         if ($lb <> "0") {
                             $lb_text="<i class=\"fa fa-lock\"></i>";
@@ -1222,9 +1424,18 @@ if ($row['is_read'] <> "0") { $style=""; }
 
 
 ////////////////////////////Показывает labels//////////////////////////////////////////////////////////////
-                if ($row['status'] == 1) {$st=  "<span class=\"label label-success\"><i class=\"fa fa-check-circle\"></i> ".lang('t_list_a_oko')." ".nameshort(name_of_user_ret($ob))."</span>";
-                    $t_ago=get_date_ok($row['date_create'], $row['id']);
+                if (get_conf_param('approve_tickets') == 'true'){
+                  if (($row['status'] == 1) && ($row['approve_tickets'] == 1)) {$st=  "<span class=\"label label-success\"><i class=\"fa fa-check-circle\"></i> ".lang('t_list_a_oko')." ".nameshort(name_of_user_ret($ob))."</span>";
+                      $t_ago=get_date_ok($row['date_create'], $row['id']);
+                    }
+                  if (($row['status'] == 1) && ($row['approve_tickets'] == 0)) {$st=  "<span class=\"label label-info\"><i class=\"fa fa-exclamation-circle\"></i> ".lang('t_list_a_oko_wait')."</span>";
+                      $t_ago=get_date_ok_wait($row['date_create'], $row['id']);
+                  }
+                }else{
+                  if ($row['status'] == 1) {$st=  "<span class=\"label label-success\"><i class=\"fa fa-check-circle\"></i> ".lang('t_list_a_oko')." ".nameshort(name_of_user_ret($ob))."</span>";
+                      $t_ago=get_date_ok($row['date_create'], $row['id']);
                 }
+              }
                 if ($row['status'] == 0) {
                     $t_ago=$row['date_create'];
                     if ($lb <> 0) {

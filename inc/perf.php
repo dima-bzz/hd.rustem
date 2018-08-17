@@ -211,6 +211,20 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) {
                 </div>
                 </div>
               </div>
+
+              <div class="form-group">
+              <label for="approve_tickets" class="col-sm-4 control-label"><small><?=lang('CONF_approve_tickets');?></small></label>
+              <div class="col-sm-8">
+              <select class="chosen-select_no_search form-control input-sm" id="approve_tickets">
+              <option value="true" <?php if (get_conf_param('approve_tickets') == "true") {echo "selected";} ?>><?=lang('CONF_true');?></option>
+              <option value="false" <?php if (get_conf_param('approve_tickets') == "false") {echo "selected";} ?>><?=lang('CONF_false');?></option>
+            </select>
+            <p class="help-block"><small>
+            <?=lang('CONF_approve_tickets_info');?>
+            </small></p>
+              </div>
+            </div>
+            
               <div class="col-md-offset-3 col-md-6">
             <center>
                 <button type="submit" id="conf_edit_ticket" class="btn btn-success"><i class="fa fa-pencil"></i> <?=lang('CONF_act_edit');?></button>

@@ -111,8 +111,8 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                             <td rowspan="2">
                                 <center>
                                     <div class="btn-group-vertical">
-                                        <button id="action_aprove_yes" type="button" class="btn btn-success btn-xs" value="<?=$row['id'];?>"><?=lang('APPROVE_yes');?></button>
-                                        <button id="action_aprove_no" type="button" class="btn btn-danger btn-xs" value="<?=$row['id'];?>"><?=lang('APPROVE_no');?></button>
+                                        <button id="action_approve_yes" type="button" class="btn btn-success btn-xs" value="<?=$row['id'];?>"><?=lang('APPROVE_yes');?></button>
+                                        <button id="action_approve_no" type="button" class="btn btn-danger btn-xs" value="<?=$row['id'];?>"><?=lang('APPROVE_no');?></button>
                                     </div>
                                 </center>
 

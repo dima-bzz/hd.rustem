@@ -44,8 +44,8 @@ $CONF = array (
 
             $stmt = $dbConnection->prepare('SELECT id, ok_by, ok_date,date_create
 			    from tickets
-			    where arch=:n1 and ok_by !=:n2');
-	    $stmt->execute(array(':n1' => '0',':n2' => '0'));
+			    where arch=:n1 and ok_by !=:n2 and approve_tickets=:n3');
+	    $stmt->execute(array(':n1' => '0',':n2' => '0', ':n3' => '1'));
 	    $res1 = $stmt->fetchAll();
 foreach($res1 as $row) {
 

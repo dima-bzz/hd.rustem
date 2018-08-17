@@ -115,7 +115,8 @@ $url = parse_url($CONF['hostname']);
 	case 'config':include('inc/perf.php');	break;
 	case 'files': include('inc/files.php'); break;
 	case 'main_stats': include('inc/all_stats.php'); break;
-	case 'print_ticket': include('inc/print_ticket.php');	break;
+	case 'print': include('inc/print_ticket.php');	break;
+  case 'approval': include('inc/approve_tickets.php'); break;
 	default: include('404.php');
 }
 		}

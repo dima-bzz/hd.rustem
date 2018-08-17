@@ -1,4 +1,4 @@
-<div id="footer" style=" padding-bottom: 70px; ">
+<div id="footer">
     <div class="container" style=" padding: 20px; ">
         <div class="col-md-8">
             <p class="text-muted credit"><small>Designed by <a href="mailto:info@rustem.com.ua">Y.Snisar</a> (с) 2014.</p>

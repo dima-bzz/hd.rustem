@@ -25,6 +25,14 @@ if ($newt == 0) {
 	$newtickets="";
 }
 
+$ap_t=get_approve_tickets();
+if ($ap_t != 0) {
+	$approve_tickets = $ap_t;
+}
+if ($ap_t == 0) {
+	$approve_tickets="";
+}
+
 $ap=get_approve();
  if ($ap != 0) {
  // 	$apr="<span class=\"badge badge-danger\">".$ap."</span>";
@@ -71,11 +79,14 @@ $ap=get_approve();
   // if (validate_admin($_SESSION['helpdesk_user_id'])) {
     ?>
 		<li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-tags"></i> <?=lang('NAVBAR_tickets');?> <span class="badge" id="ap_ticket"><?=$newtickets?></span> <b class="caret"></b></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-tags"></i> <?=lang('NAVBAR_tickets');?> <span class="badge" id="ap_ticket"><?=$newtickets?></span> <?php if (get_conf_param('approve_tickets') == 'true'){ ?><span class="badge badge-primary" id="ap_tickets"><?=$approve_tickets?></span><?php } ?> <b class="caret"></b></a>
                 <ul class="dropdown-menu">
 
             <li <?=echoActiveClassIfRequestMatches("create")?>><a href="<?=$CONF['hostname']?>create"><i class="fa fa-tag"></i> <?=lang('NAVBAR_create_ticket');?></a></li>
             <li <?=echoActiveClassIfRequestMatches("list")?>><a href="<?=$CONF['hostname']?>list"><i class="fa fa-list-alt"></i> <?=lang('NAVBAR_list_ticket');?> <span class="badge" id="ap_ticket2"><?=$newtickets?></span></a></li>
+            <?php if (get_conf_param('approve_tickets') == 'true'){ ?>
+            <li <?=echoActiveClassIfRequestMatches("approval")?>><a href="<?=$CONF['hostname']?>approval"><i class="fa fa-exclamation-circle"></i> <?=lang('NAVBAR_approve_tickets');?> <span class="badge badge-primary" id="ap_tickets2"><?=$approve_tickets?></span></a></li>
+            <?php } ?>
                 </ul></li>
 		<?php
   // }

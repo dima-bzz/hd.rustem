@@ -42,6 +42,23 @@ CREATE TABLE IF NOT EXISTS `approved_info` (
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `approved_tickets`
+--
+
+CREATE TABLE IF NOT EXISTS `approved_tickets` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `t_id` int(11) DEFAULT NULL,
+  `user_init_id` int(11) DEFAULT NULL,
+  `unit_id` int(11) DEFAULT NULL,
+  `subj` varchar(512) DEFAULT NULL,
+  `user_from` int(11) DEFAULT NULL,
+  `date_app` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `clients`
 --
 
@@ -350,6 +367,7 @@ CREATE TABLE IF NOT EXISTS `tickets` (
   `work_t` longtext,
   `deadline_t` datetime NOT NULL,
   `permit_ok` int(11) DEFAULT '0',
+  `approve_tickets` int(11) DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
 
@@ -433,7 +451,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `jabber_noty_show` varchar(128) DEFAULT '1',
   `mail_noty_show` varchar(128) DEFAULT '1',
   `show_noty` varchar(128) DEFAULT 'bottomRight',
-  `noty` varchar(128) DEFAULT '1,2,3,4,5,6,7,8,9,10',
+  `noty` varchar(128) DEFAULT '1,2,3,4,5,6,7,8,9,10,11',
   `us_kill` tinyint(1) NOT NULL DEFAULT '1',
   `push_noty` int(11) NOT NULL DEFAULT '0',
   `push_noty_show` varchar(128) DEFAULT '1',

@@ -458,6 +458,9 @@ if (isset($_GET['ok'])) {
 <option value="8" <?php if (in_array("8",$jn)) {echo "selected";} ?>><?=lang('P_msg');?></option>
 <option value="9" <?php if (in_array("9",$jn)) {echo "selected";} ?>><?=lang('P_subj');?></option>
 <option value="10" <?php if (in_array("10",$jn)) {echo "selected";} ?>><?=lang('P_familiar');?></option>
+<?php if (get_conf_param('approve_tickets') == 'true'){ ?>
+<option value="11" <?php if (in_array("11",$jn)) {echo "selected";} ?>><?=lang('P_approve_tickets');?></option>
+<?php } ?>
 </select>    </div>
 </div>
 <div class="form-group">
@@ -491,6 +494,9 @@ if (isset($_GET['ok'])) {
 <option value="8" <?php if (in_array("8",$ph)) {echo "selected";} ?>><?=lang('P_msg');?></option>
 <option value="9" <?php if (in_array("9",$ph)) {echo "selected";} ?>><?=lang('P_subj');?></option>
 <option value="10" <?php if (in_array("10",$ph)) {echo "selected";} ?>><?=lang('P_familiar');?></option>
+<?php if (get_conf_param('approve_tickets') == 'true'){ ?>
+<option value="11" <?php if (in_array("11",$ph)) {echo "selected";} ?>><?=lang('P_approve_tickets');?></option>
+<?php } ?>
 </select>    </div>
 </div>
         <div class="form-group">
@@ -632,6 +638,9 @@ if ($val== $row['value']) {$opt_sel="selected";}
     <option value="8" <?php if (in_array("8",$n)) {echo "selected";} ?>><?=lang('P_msg');?></option>
     <option value="9" <?php if (in_array("9",$n)) {echo "selected";} ?>><?=lang('P_subj');?></option>
     <option value="10" <?php if (in_array("10",$n)) {echo "selected";} ?>><?=lang('P_familiar');?></option>
+    <?php if (get_conf_param('approve_tickets') == 'true'){ ?>
+    <option value="11" <?php if (in_array("11",$n)) {echo "selected";} ?>><?=lang('P_approve_tickets');?></option>
+    <?php } ?>
   </select>    </div>
     </div>
     <div class="form-group">
@@ -651,6 +660,9 @@ if ($val== $row['value']) {$opt_sel="selected";}
     <option value="8" <?php if (in_array("8",$m)) {echo "selected";} ?>><?=lang('P_msg');?></option>
     <option value="9" <?php if (in_array("9",$m)) {echo "selected";} ?>><?=lang('P_subj');?></option>
     <option value="10" <?php if (in_array("10",$m)) {echo "selected";} ?>><?=lang('P_familiar');?></option>
+    <?php if (get_conf_param('approve_tickets') == 'true'){ ?>
+    <option value="11" <?php if (in_array("11",$m)) {echo "selected";} ?>><?=lang('P_approve_tickets');?></option>
+    <?php } ?>
   </select>    </div>
     </div>
     <div class="form-group">
