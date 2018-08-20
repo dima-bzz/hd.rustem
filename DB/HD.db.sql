@@ -283,7 +283,8 @@ VALUES
   (26, 'jabber_pass', 'server_jabber_password'),
   (27, 'time_zone', 'Europe/Moscow'),
   (28, 'push_active', 'false'),
-  (29, 'push_api', 'pushbullet_api');
+  (29, 'push_api', 'pushbullet_api'),
+  (30, 'approve_tickets', 'false');
 
 UNLOCK TABLES;
 -- --------------------------------------------------------
