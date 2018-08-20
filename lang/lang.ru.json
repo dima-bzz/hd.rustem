@@ -328,7 +328,7 @@
 "TICKET_t_ok":"<strong>Внимание</strong><br><i class=\"fa fa-check-circle\"></i> Заявка успешно выполнена пользователем",
 "TICKET_t_ok_1":"Через некоторое время заявка перейдет в архив.",
 "TICKET_t_approve":"<strong>Внимание</strong><br><i class=\"fa fa-exclamation-circle \"></i> Заявка успешно выполнена пользователем",
-"TICKET_t_approve1":"Ожидает подтверждения!",
+"TICKET_t_approve1":"Ожидает подтверждения пользователем ",
 "TICKET_t_lock":"<strong>Внимание</strong><br><i class=\"fa fa-info-circle\"></i> В настоящее время с заявкой работает пользователь",
 "TICKET_t_lock_1":"Поэтому Вы не можете работать с заявкой.",
 "TICKET_t_lock_2":"Нажмите кнопку с заявкой ознакомился.",
