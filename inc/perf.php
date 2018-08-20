@@ -108,10 +108,18 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) {
                   <label for="hostname" class="col-sm-4 control-label"><small><?=lang('CONF_url');?></small></label>
                   <div class="col-sm-8">
                   <div class="input-group">
-                    <span class="input-group-addon">http://</span>
+                    <?php
+                      $prefix = parse_url(get_conf_param('hostname'));
+                      $url = $prefix["host"] . $prefix['path'];
+                      $http = ($prefix["scheme"] == "http") ? 'checked' : '';
+                      $https = ($prefix["scheme"] == "https") ? 'checked' : '';
+
+                     ?>
+                    <span class="input-group-addon"><input type="radio" value="http" <?=$http?> name="prefix" id="prefix" style="vertical-align:middle;margin-top:-2px;"> http://</span>
+                    <span class="input-group-addon"><input type="radio" value="https" <?=$https?> name="prefix" id="prefix" style="vertical-align:middle;margin-top:-2px;"> https://</span>
                   <input type="text" class="form-control input-sm" id="hostname" placeholder="<?php
                   $pos = strrpos($_SERVER['REQUEST_URI'], '/');
-                  echo $_SERVER['HTTP_HOST'].substr($_SERVER['REQUEST_URI'], 0, $pos + 1);?>" value="<?=preg_replace("/http:\/\//","",get_conf_param('hostname')); ?>">
+                  echo $_SERVER['HTTP_HOST'].substr($_SERVER['REQUEST_URI'], 0, $pos + 1);?>" value="<?=$url?>">
                 </div>
               </div>
                 </div>
@@ -224,7 +232,7 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) {
             </small></p>
               </div>
             </div>
-            
+
               <div class="col-md-offset-3 col-md-6">
             <center>
                 <button type="submit" id="conf_edit_ticket" class="btn btn-success"><i class="fa fa-pencil"></i> <?=lang('CONF_act_edit');?></button>

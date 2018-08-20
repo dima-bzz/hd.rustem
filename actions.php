@@ -2432,7 +2432,7 @@ update_val_by_key("push_api", $_POST['push_api']);
 if ($mode == "conf_edit_main") {
 update_val_by_key("name_of_firm", $_POST['name_of_firm']);
 update_val_by_key("title_header", $_POST['title_header']);
-update_val_by_key("hostname", 'http://'.$_POST['hostname']);
+update_val_by_key("hostname", $_POST['hostname']);
 update_val_by_key("first_login", $_POST['first_login']);
 update_val_by_key("shutdown", $_POST['shutdown']);
 update_val_by_key("pass_server", $_POST['pass_server']);

@@ -3138,16 +3138,19 @@ mode: 'edit_posada'
 //conf_edit_main
 $('body').on('click', 'button#conf_edit_main', function(event) {
 event.preventDefault();
+var prefix = $("input[type=radio][name=prefix]:checked").val();
+var hostname =  prefix + "://" + $("input#hostname").val();
 $.ajax({
 type: "POST",
 url: ACTIONPATH,
 data: "mode=conf_edit_main"+
 "&name_of_firm="+encodeURIComponent($("input#name_of_firm").val())+
 "&title_header="+encodeURIComponent($("input#title_header").val())+
-"&hostname="+encodeURIComponent($("input#hostname").val())+
+"&hostname="+encodeURIComponent(hostname)+
 "&mail="+encodeURIComponent($("input#mail").val())+
 "&first_login="+encodeURIComponent($("#first_login").val())+
 "&shutdown="+encodeURIComponent($("#permit_users_shutdown").val())+
+"&shutdown_main="+encodeURIComponent($("#permit_users_shutdown_main").val())+
 "&pass_server="+encodeURIComponent($("#pass_server").val())+
 "&time_zone="+encodeURIComponent($("#time_zone").val()),
 success: function(html) {
