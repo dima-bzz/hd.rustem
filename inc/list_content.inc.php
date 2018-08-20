@@ -363,7 +363,7 @@ if ($row['is_read'] <> "0") { $style=""; }
 
 
 ////////////////////////////Показывает labels//////////////////////////////////////////////////////////////
-              if (get_conf_param('approve_tickets') == 'true'){
+              if ((get_conf_param('approve_tickets') == 'true') && ($user_id_z != $row['user_init_id'])){
                 if (($row['status'] == 1) && ($row['approve_tickets'] == 1)) {$st=  "<span class=\"label label-success\"><i class=\"fa fa-check-circle\"></i> ".lang('t_list_a_oko')." ".nameshort(name_of_user_ret($ob))."</span>";
                     $t_ago=get_date_ok($row['date_create'], $row['id']);
                   }
@@ -607,7 +607,7 @@ foreach ($ee as $key=>$value) { $vv[":val_" . $key]=$value;}
 ////////////////////////////Раскрашивает и подписывает кнопки/////////////////////////////////////////////////////////////////
 if ($row['is_read'] == "0") { $style="bold_for_new"; }
 if ($row['is_read'] <> "0") { $style=""; }
-                if (get_conf_param('approve_tickets') == 'true'){
+                if ((get_conf_param('approve_tickets') == 'true') && ($user_id_z != $row['user_init_id'])){
                   if (($row['status'] == "1") && ($row['approve_tickets'] == "1")) {
                       $ob_text="<i class=\"fa fa-check-circle-o\"></i>";
                       $ob_status="unok";
@@ -756,7 +756,7 @@ if ($row['is_read'] <> "0") { $style=""; }
 
 
 ////////////////////////////Показывает labels//////////////////////////////////////////////////////////////
-                //   if (get_conf_param('approve_tickets') == 'true'){
+                //   if ((get_conf_param('approve_tickets') == 'true') && ($user_id_z != $row['user_init_id'])){
                 //     if (($row['status'] == 1) && ($row['approve_tickets'] == 1)) {$st=  "<span class=\"label label-success\"><i class=\"fa fa-check-circle\"></i> ".lang('t_list_a_oko')." ".nameshort(name_of_user_ret($ob))."</span>";
                 //         $t_ago=get_date_ok($row['date_create'], $row['id']);
                 //       }
@@ -781,7 +781,7 @@ if ($row['is_read'] <> "0") { $style=""; }
                 //   }
                 if ($arch == "1") {$st=  "<span class=\"label label-default\">".lang('t_list_a_arch')." </span>";}
                 if ($arch == "0") {
-                  if (get_conf_param('approve_tickets') == 'true'){
+                  if ((get_conf_param('approve_tickets') == 'true') && ($user_id_z != $row['user_init_id'])){
                       if (($row['status'] == 1) && ($row['approve_tickets'] == 1)) {$st=  "<span class=\"label label-success\"><i class=\"fa fa-check-circle\"></i> ".lang('t_list_a_oko')." ".nameshort(name_of_user_ret($ob))."</span>";}
                       if (($row['status'] == 1) && ($row['approve_tickets'] == 0)) {$st=  "<span class=\"label label-info\"><i class=\"fa fa-exclamation-circle\"></i> ".lang('t_list_a_oko_wait')."</span>";}
                     }else{
@@ -1271,7 +1271,7 @@ $stmt->execute(array_merge($vv,$paramss));
 ////////////////////////////Раскрашивает и подписывает кнопки/////////////////////////////////////////////////////////////////
 if ($row['is_read'] == "0") { $style="bold_for_new"; }
 if ($row['is_read'] <> "0") { $style=""; }
-                if (get_conf_param('approve_tickets') == 'true'){
+                if ((get_conf_param('approve_tickets') == 'true') && ($user_id_z != $row['user_init_id'])){
                   if (($row['status'] == "1") && ($row['approve_tickets'] == "1")) {
                       $ob_text="<i class=\"fa fa-check-circle-o\"></i>";
                       $ob_status="unok";
@@ -1334,7 +1334,7 @@ if ($row['is_read'] <> "0") { $style=""; }
 
                     if ($row['status'] == "0") {
                         $ob_text="<i class=\"fa fa-circle-o\"></i>";
-                        if (get_conf_param('approve_tickets') == 'true'){
+                        if ((get_conf_param('approve_tickets') == 'true') && ($user_id_z != $row['user_init_id'])){
                           $ob_status="ok_wait";
                         }else{
                         $ob_status="ok";
@@ -1424,7 +1424,7 @@ if ($row['is_read'] <> "0") { $style=""; }
 
 
 ////////////////////////////Показывает labels//////////////////////////////////////////////////////////////
-                if (get_conf_param('approve_tickets') == 'true'){
+                if ((get_conf_param('approve_tickets') == 'true') && ($user_id_z != $row['user_init_id'])){
                   if (($row['status'] == 1) && ($row['approve_tickets'] == 1)) {$st=  "<span class=\"label label-success\"><i class=\"fa fa-check-circle\"></i> ".lang('t_list_a_oko')." ".nameshort(name_of_user_ret($ob))."</span>";
                       $t_ago=get_date_ok($row['date_create'], $row['id']);
                     }

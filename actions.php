@@ -3359,7 +3359,7 @@ values (:ar, now(), :unow, :tid)');
 
             if ($st == "0") {
 
-                if (get_conf_param('approve_tickets') == 'true'){
+                if ((get_conf_param('approve_tickets') == 'true') && ($user != $userinit)){
                   $stmt = $dbConnection->prepare('update tickets set ok_by=:user, status=:s, ok_date=now(), last_update=now(), approve_tickets=:a where id=:tid');
                   $stmt->execute(array(':s'=>'1',':tid' => $tid,':user'=>$user, ':a' => '0'));
 
@@ -3379,8 +3379,8 @@ values (:ar, now(), :unow, :tid)');
             <?php
             }
             else{
-              $stmt = $dbConnection->prepare('update tickets set ok_by=:user, status=:s, ok_date=now(), last_update=now() where id=:tid');
-              $stmt->execute(array(':s'=>'1',':tid' => $tid,':user'=>$user));
+              $stmt = $dbConnection->prepare('update tickets set ok_by=:user, status=:s, ok_date=now(), last_update=now(), approve_tickets=:a where id=:tid');
+              $stmt->execute(array(':s'=>'1',':tid' => $tid,':user'=>$user, ':a'=>'1'));
 
 
               $unow=$_SESSION['helpdesk_user_id'];

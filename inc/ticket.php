@@ -58,8 +58,13 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                 }
               }
               else{
-                if (($status_ok == 1) && ($approve_tickets == 1)) {$st=  "<span class=\"label label-success\"><i class=\"fa fa-check-circle\"></i> ".lang('TICKET_status_ok')." ".nameshort(name_of_user_ret($ok_by))."</span>";}
-                if (($status_ok == 1) && ($approve_tickets == 0)) {$st=  "<span class=\"label label-info\"><i class=\"fa fa-exclamation-circle \"></i> ".lang('TICKET_status_ok')." ".nameshort(name_of_user_ret($ok_by))." ".lang('TICKET_status_approve')."</span>";}
+                if($ok_by != $user_init_idd){
+                  if (($status_ok == 1) && ($approve_tickets == 1)) {$st=  "<span class=\"label label-success\"><i class=\"fa fa-check-circle\"></i> ".lang('TICKET_status_ok')." ".nameshort(name_of_user_ret($ok_by))."</span>";}
+                  if (($status_ok == 1) && ($approve_tickets == 0)) {$st=  "<span class=\"label label-info\"><i class=\"fa fa-exclamation-circle \"></i> ".lang('TICKET_status_ok')." ".nameshort(name_of_user_ret($ok_by))." ".lang('TICKET_status_approve')."</span>";}
+                }
+                else{
+                  if ($status_ok == 1) {$st=  "<span class=\"label label-success\"><i class=\"fa fa-check-circle\"></i> ".lang('TICKET_status_ok')." ".nameshort(name_of_user_ret($ok_by))."</span>";}
+                }
                 if ($status_ok == 0) {
                     if ($lock_by <> 0) {$st=  "<span class=\"label label-warning\"><i class=\"fa fa-gavel\"></i> ".lang('TICKET_status_lock')." ".name_of_user_ret($lock_by)."</span>";}
                     if ($lock_by == 0) {$st=  "<span class=\"label label-primary\"><i class=\"fa fa-clock-o\"></i> ".lang('TICKET_status_new')."</span>";}
@@ -926,28 +931,37 @@ $lo3="yes";
                                             }
                                           }
                                           else{
-                                            if (($status_ok == 1) && ($approve_tickets == 1)) {
-                                                ?>
+                                            if($ok_by != $user_init_idd){
+                                              if (($status_ok == 1) && ($approve_tickets == 1)) {
+                                                  ?>
 
 
-                                                <div class="col-md-12" style="padding-top:20px;" id="msg_e">
-                                                    <div class="alert alert-success"> <?=lang('TICKET_t_ok');?> <strong> <?=name_of_user($ok_by)?></strong> <?=$ok_date;?>.<br> <?=lang('TICKET_t_ok_1');?></div>
-                                                </div>
+                                                  <div class="col-md-12" style="padding-top:20px;" id="msg_e">
+                                                      <div class="alert alert-success"> <?=lang('TICKET_t_ok');?> <strong> <?=name_of_user($ok_by)?></strong> <?=$ok_date;?>.<br> <?=lang('TICKET_t_ok_1');?></div>
+                                                  </div>
 
 
-                                            <?php
-                                              }
-                                            if (($status_ok == 1) && ($approve_tickets == 0)) {
-                                                ?>
+                                              <?php
+                                                }
+                                              if (($status_ok == 1) && ($approve_tickets == 0)) {
+                                                  ?>
 
 
-                                                <div class="col-md-12" style="padding-top:20px;" id="msg_e">
-                                                    <div class="alert alert-info"> <?=lang('TICKET_t_approve');?> <strong> <?=name_of_user($ok_by)?></strong> <?=$ok_date;?>.<br> <strong><?=lang('TICKET_t_approve1');?></strong></div>
-                                                </div>
+                                                  <div class="col-md-12" style="padding-top:20px;" id="msg_e">
+                                                      <div class="alert alert-info"> <?=lang('TICKET_t_approve');?> <strong> <?=name_of_user($ok_by)?></strong> <?=$ok_date;?>.<br> <strong><?=lang('TICKET_t_approve1');?> <?=name_of_user($user_init_idd)?></strong></div>
+                                                  </div>
 
 
-                                            <?php
-                                              }
+                                              <?php
+                                                }
+                                            }
+                                            else{
+                                              ?>
+                                              <div class="col-md-12" style="padding-top:20px;" id="msg_e">
+                                                  <div class="alert alert-success"> <?=lang('TICKET_t_ok');?> <strong> <?=name_of_user($ok_by)?></strong> <?=$ok_date;?>.<br> <?=lang('TICKET_t_ok_1');?></div>
+                                              </div>
+                                              <?php
+                                            }
                                           }
                                           if ($status_ok == 0) {
                                             if (strtotime($dtt) < strtotime($deadline_t) ){
