@@ -141,7 +141,9 @@ $mysql_password = $_POST['password'];
 $mysql_database = $_POST['db'];
 
 $pos = strrpos($_SERVER['REQUEST_URI'], '/');
-$sys_url= "http://".$_SERVER['HTTP_HOST'].substr($_SERVER['REQUEST_URI'], 0, $pos + 1);
+$protocol = strtolower(substr($_SERVER["SERVER_PROTOCOL"],0,5))=='https'?'https':'http';
+$protocol = isset($_SERVER["HTTPS"]) ? 'https' : 'http';
+$sys_url= $protocol."://".$_SERVER['HTTP_HOST'].substr($_SERVER['REQUEST_URI'], 0, $pos + 1);
 
 // Connect to MySQL server
 mysql_connect($mysql_host, $mysql_username, $mysql_password) or die('Error connecting to MySQL server: ' . mysql_error() . '<br><br><center>

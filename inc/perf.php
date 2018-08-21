@@ -110,7 +110,7 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) {
                   <div class="input-group">
                     <?php
                       $prefix = parse_url(get_conf_param('hostname'));
-                      $url = $prefix["host"] . $prefix['path'];
+                      $url = $prefix['host'].(isset($prefix['port']) ? ":".$prefix['port'] : "").(isset($prefix['path']) ? $prefix['path'] : "");
                       $http = ($prefix["scheme"] == "http") ? 'checked' : '';
                       $https = ($prefix["scheme"] == "https") ? 'checked' : '';
 
