@@ -369,6 +369,7 @@ CREATE TABLE IF NOT EXISTS `tickets` (
   `deadline_t` datetime NOT NULL,
   `permit_ok` int(11) DEFAULT '0',
   `approve_tickets` int(11) DEFAULT '1',
+  `approved` int(11) DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
 

@@ -45,12 +45,13 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
             $deadline_t = $row['deadline_t'];
             $permit_ok = $row['permit_ok'];
             $approve_tickets = $row['approve_tickets'];
+            $approved = $row['approved'];
 
 
 
             if ($arch == 1) {$st= "<span class=\"label label-default\"><i class=\"fa fa-archive\"></i> ".lang('TICKET_status_arch')."</span>";}
             if ($arch == 0) {
-              if (get_conf_param('approve_tickets') == 'false'){
+              if ($approved == 0){
                 if ($status_ok == 1) {$st=  "<span class=\"label label-success\"><i class=\"fa fa-check-circle\"></i> ".lang('TICKET_status_ok')." ".nameshort(name_of_user_ret($ok_by))."</span>";}
                 if ($status_ok == 0) {
                     if ($lock_by <> 0) {$st=  "<span class=\"label label-warning\"><i class=\"fa fa-gavel\"></i> ".lang('TICKET_status_lock')." ".name_of_user_ret($lock_by)."</span>";}
@@ -917,7 +918,7 @@ $lo3="yes";
                                       <?php
                                       }
                                       if ($arch == 0) {
-                                        if(get_conf_param('approve_tickets') == 'false'){
+                                        if($approved == 0){
                                           if ($status_ok == 1) {
                                               ?>
 

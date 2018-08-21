@@ -272,7 +272,7 @@ success: function(html){
 if (item.approve !== '0'){
   if ((item.approve == $( "#ap" ).html()) && ($( "#ap" ).html() != '')){
 $( "#ap" ).html( item.approve ).fadeIn(500);
-$( "#ap" ).html( item.approve )
+$( "#ap2" ).html( item.approve )
 
 }
 else{
@@ -288,7 +288,7 @@ $( "#ap2" ).empty().removeAttr( 'style' );
 if (item.new_tickets !== '0'){
   if ((item.new_tickets == $( "#ap_ticket" ).html()) && ($( "#ap_ticket" ).html() != '')){
 $( "#ap_ticket" ).html( item.new_tickets ).fadeIn(500);
-$( "#ap_ticket" ).html( item.new_tickets )
+$( "#ap_ticket2" ).html( item.new_tickets )
 
 }
 else{
@@ -304,7 +304,7 @@ $( "#ap_ticket2" ).empty().removeAttr( 'style' );
 if (item.approve_tickets !== '0'){
   if ((item.approve_tickets == $( "#ap_tickets" ).html()) && ($( "#ap_tickets" ).html() != '')){
 $( "#ap_tickets" ).html( item.approve_tickets ).fadeIn(500);
-$( "#ap_tickets" ).html( item.approve_tickets )
+$( "#ap_tickets2" ).html( item.approve_tickets )
 
 }
 else{
@@ -347,7 +347,7 @@ else{
   if (item.approve !== '0'){
     if ((item.approve == $( "#ap" ).html()) && ($( "#ap" ).html() != '')){
   $( "#ap" ).html( item.approve ).fadeIn(500);
-  $( "#ap" ).html( item.approve )
+  $( "#ap2" ).html( item.approve )
 
   }
   else{
@@ -363,7 +363,7 @@ else{
   if (item.approve_tickets !== '0'){
     if ((item.approve_tickets == $( "#ap_tickets" ).html()) && ($( "#ap_tickets" ).html() != '')){
   $( "#ap_tickets" ).html( item.approve ).fadeIn(500);
-  $( "#ap_tickets" ).html( item.approve )
+  $( "#ap_tickets2" ).html( item.approve )
 
   }
   else{
@@ -4714,6 +4714,8 @@ function enter_ticket() {
 $('#enter_ticket').html('<i class="fa fa-spinner fa-spin"></i>').prop('disabled', true);
 $('#reset_ticket').prop('disabled', true);
 
+var approved = !!($("#approved_tickets").prop('checked') != undefined) ? $("#approved_tickets").prop('checked') : "false";
+
 if( $("#users_do").val() === '' ) {
 	u_do='0';
 }
@@ -4746,6 +4748,7 @@ if( $("#users_do").val() != null ) {
                         "&unit_id="+encodeURIComponent($("#to").val())+
                         "&prio="+encodeURIComponent($("#prio").val())+
                         "&confirm="+encodeURIComponent($("#confirm").prop('checked'))+
+                        "&approved="+encodeURIComponent(approved)+
                         "&deadline_t="+encodeURIComponent($("#deadline_t").val())+
                         "&hashname="+encodeURIComponent($("#hashname").val())+
                         "&" + add_form+
@@ -4768,6 +4771,8 @@ if( $("#users_do").val() != null ) {
                 //uploadObj.startUpload();
                 $('#enter_ticket').html('<i class="fa fa-spinner fa-spin"></i>').prop('disabled', true);
 		$('#reset_ticket').prop('disabled', true);
+
+var approved = !!($("#approved_tickets").prop('checked') != undefined) ? $("#approved_tickets").prop('checked') : "false";
 
 if( $("#users_do").val() === '' ) {
     u_do='0';
@@ -4800,6 +4805,7 @@ if( $("#users_do").val() != null ) {
                         "&unit_id="+encodeURIComponent($("#to").val())+
                         "&prio="+encodeURIComponent($("#prio").val())+
                         "&confirm="+encodeURIComponent($("#confirm").prop('checked'))+
+                        "&approved="+encodeURIComponent(approved)+
                         "&deadline_t="+encodeURIComponent($("#deadline_t").val())+
                         "&hashname="+encodeURIComponent($("#hashname").val())+
                         "&" + add_form+

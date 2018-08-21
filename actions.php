@@ -3343,7 +3343,7 @@ values (:ar, now(), :unow, :tid)');
 
 
 
-            $stmt = $dbConnection->prepare('SELECT status, ok_by, user_init_id, subj, unit_id FROM tickets where id=:tid');
+            $stmt = $dbConnection->prepare('SELECT status, ok_by, user_init_id, subj, unit_id, approved FROM tickets where id=:tid');
             $stmt->execute(array(':tid' => $tid));
             $fio = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -3352,6 +3352,7 @@ values (:ar, now(), :unow, :tid)');
             $userinit=$fio['user_init_id'];
             $subj=$fio['subj'];
       	    $unit=$fio['unit_id'];
+            $approved=$fio['approved'];
 
             $ps=priv_status($ob);
 
@@ -3359,12 +3360,13 @@ values (:ar, now(), :unow, :tid)');
 
             if ($st == "0") {
 
-                if ((get_conf_param('approve_tickets') == 'true') && ($user != $userinit)){
-                  $stmt = $dbConnection->prepare('update tickets set ok_by=:user, status=:s, ok_date=now(), last_update=now(), approve_tickets=:a where id=:tid');
-                  $stmt->execute(array(':s'=>'1',':tid' => $tid,':user'=>$user, ':a' => '0'));
+                if (($user != $userinit) && ($approved == '1')){
 
+                  $stmt = $dbConnection->prepare('update tickets set ok_by=:user, status=:s, ok_date=now(), last_update=now() where id=:tid');
+                  $stmt->execute(array(':s'=>'1',':tid' => $tid,':user'=>$user));
 
                   $unow=$_SESSION['helpdesk_user_id'];
+
 
                   $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, ticket_id) values (:ok, now(), :unow, :tid)');
                   $stmt->execute(array(':ok'=>'ok_wait',':tid' => $tid,':unow'=>$unow));
@@ -3379,9 +3381,9 @@ values (:ar, now(), :unow, :tid)');
             <?php
             }
             else{
+
               $stmt = $dbConnection->prepare('update tickets set ok_by=:user, status=:s, ok_date=now(), last_update=now(), approve_tickets=:a where id=:tid');
               $stmt->execute(array(':s'=>'1',':tid' => $tid,':user'=>$user, ':a'=>'1'));
-
 
               $unow=$_SESSION['helpdesk_user_id'];
 
@@ -3414,7 +3416,7 @@ values (:ar, now(), :unow, :tid)');
 
 
 
-            $stmt = $dbConnection->prepare('SELECT status, ok_by, arch, user_init_id FROM tickets where id=:tid');
+            $stmt = $dbConnection->prepare('SELECT status, ok_by, arch, user_init_id, approved FROM tickets where id=:tid');
             $stmt->execute(array(':tid' => $tid));
             $fio = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -3423,6 +3425,7 @@ values (:ar, now(), :unow, :tid)');
             $st=$fio['status'];
             $ob=$fio['ok_by'];
             $uinitd=$fio['user_init_id'];
+            $approved=$fio['approved'];
 
             $ps=priv_status($user);
 
@@ -3434,8 +3437,7 @@ values (:ar, now(), :unow, :tid)');
                 if ( ($ob == $user) || ($ps == "0") || ($ps == "2") || ($uinitd == $user)) {
 
 
-
-                    if (get_conf_param('approve_tickets') == 'true'){
+                    if ($approved == '1'){
                       $stmt = $dbConnection->prepare('update tickets set ok_by=:n, status=:n1, arch=:n2, ok_date=:n3, last_update=now(), approve_tickets=:n4 where id=:tid');
                       $stmt->execute(array(':tid' => $tid, ':n'=>'0',':n1'=>'0',':n2'=>'0',':n3'=>'0', ':n4'=>'0'));
                     }
@@ -3450,10 +3452,9 @@ values (:ar, now(), :unow, :tid)');
 
 
 
-                    $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, ticket_id)
-values (:no_ok, now(), :unow, :tid)');
+                    $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, ticket_id) values (:no_ok, now(), :unow, :tid)');
                     $stmt->execute(array(':tid' => $tid, ':unow'=>$unow,':no_ok'=>'no_ok'));
-                    if (get_conf_param('approve_tickets') == 'true'){
+                    if ($approved == '1'){
                     $stmt = $dbConnection->prepare('delete from approved_tickets where t_id=:tid');
                     $stmt->execute(array(':tid' => $tid));
                     }
@@ -4460,12 +4461,12 @@ echo $e->getMessage(); //Boring error messages from anything else!
             $subj=strip_tags(xss_clean(($_POST['subj'])));
             $msg=strip_tags(xss_clean(($_POST['msg'])));
             $status='0';
-            if (get_conf_param('approve_tickets') == 'true') {$approve_tickets = 0;} else {$approve_tickets = 1;}
             $unit_id=($_POST['unit_id']);
             $prio=($_POST['prio']);
             $deadline_t=($_POST['deadline_t']);
-            $confirm = $_POST['confirm'];
+            $approve_tickets = $_POST['approved'];
             if ($confirm == "true") {$confirm=1;} else {$confirm=0;}
+            if ($approve_tickets == "true") {$approve_tickets=0;$approved=1;} else {$approve_tickets=1;$approved=0;}
 
             $client_fio=trim(strip_tags(xss_clean(($_POST['fio']))));
             $client_tel=trim(strip_tags(xss_clean(($_POST['tel']))));
@@ -4545,8 +4546,8 @@ $client_posada	Должность клиента
 
 
                 $stmt = $dbConnection->prepare('INSERT INTO tickets
-				(id, user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio, last_update, deadline_t, permit_ok, approve_tickets) VALUES (:max_id_res_ticket, :user_init_id, :user_to_id, now(),:subj, :msg,:max_id,:unit_id, :status, :hashname, :prio, now(), :deadline_t, :permit_ok, :approve)');
-                $stmt->execute(array(':max_id_res_ticket'=>$max_id_res_ticket,':user_init_id'=>$user_init_id,':user_to_id'=>$user_to_id,':subj'=>$subj,':msg'=>$msg,':max_id'=>$max_id,':unit_id'=>$unit_id,':status'=>$status,':hashname'=>$hashname,':prio'=>$prio, ':deadline_t'=>$deadline_t, ':permit_ok'=>$confirm, ':approve'=>$approve_tickets));
+				(id, user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio, last_update, deadline_t, permit_ok, approve_tickets, approved) VALUES (:max_id_res_ticket, :user_init_id, :user_to_id, now(),:subj, :msg,:max_id,:unit_id, :status, :hashname, :prio, now(), :deadline_t, :permit_ok, :approve, :approved)');
+                $stmt->execute(array(':max_id_res_ticket'=>$max_id_res_ticket,':user_init_id'=>$user_init_id,':user_to_id'=>$user_to_id,':subj'=>$subj,':msg'=>$msg,':max_id'=>$max_id,':unit_id'=>$unit_id,':status'=>$status,':hashname'=>$hashname,':prio'=>$prio, ':deadline_t'=>$deadline_t, ':permit_ok'=>$confirm, ':approve'=>$approve_tickets, ':approved' => $approved));
 
 
 
@@ -4645,8 +4646,8 @@ if ($CONF_PUSH['active'] == "true") {
 
 
                 $stmt = $dbConnection->prepare('INSERT INTO tickets
-				(id, user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio, last_update, deadline_t, permit_ok, approve_tickets) VALUES (:max_id_res_ticket, :user_init_id, :user_to_id, now(),:subj, :msg,:max_id,:unit_id, :status, :hashname, :prio, now(), :deadline_t, :permit_ok, :approve)');
-                $stmt->execute(array(':max_id_res_ticket'=>$max_id_res_ticket,':user_init_id'=>$user_init_id,':user_to_id'=>$user_to_id,':subj'=>$subj,':msg'=>$msg,':max_id'=>$client_id_param,':unit_id'=>$unit_id,':status'=>$status,':hashname'=>$hashname,':prio'=>$prio, ':deadline_t'=>$deadline_t, ':permit_ok'=>$confirm, ':approve'=>$approve_tickets));
+				(id, user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio, last_update, deadline_t, permit_ok, approve_tickets, approved) VALUES (:max_id_res_ticket, :user_init_id, :user_to_id, now(),:subj, :msg,:max_id,:unit_id, :status, :hashname, :prio, now(), :deadline_t, :permit_ok, :approve, :approved)');
+                $stmt->execute(array(':max_id_res_ticket'=>$max_id_res_ticket,':user_init_id'=>$user_init_id,':user_to_id'=>$user_to_id,':subj'=>$subj,':msg'=>$msg,':max_id'=>$client_id_param,':unit_id'=>$unit_id,':status'=>$status,':hashname'=>$hashname,':prio'=>$prio, ':deadline_t'=>$deadline_t, ':permit_ok'=>$confirm, ':approve'=>$approve_tickets, ':approved' => $approved));
 
 
                 $stmt = $dbConnection->prepare('SELECT field_hash, field_name FROM dop_fields');

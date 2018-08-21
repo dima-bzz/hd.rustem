@@ -233,6 +233,19 @@ else if (get_user_status_text($row['value']) == "offline") {$s="status-offline-i
           </label>
         </div></div></div></div></div>
 
+      <?php if ($CONF['approve_tickets'] == 'true'){ ?>
+      <div class="control-group">
+      <div class="controls">
+                <div class="form-group">
+              <label for="approved" class="col-sm-2 control-label"><small><?=lang('NEW_ok_approved');?>: </small></label>
+      <div class="checkbox">
+      	       <div class="col-sm-10">
+      		  <label>
+             <input type="checkbox" id="approved_tickets" /> <small><?=lang('NEW_ok_approved_text');?></small>
+          </label>
+        </div></div></div></div></div>
+<?php } ?>
+
 
 <div class="control-group">
 <div class="controls">
