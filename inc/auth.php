@@ -127,14 +127,18 @@ include_once("head.inc.php");
     $(document).ready(function() {
       // $('form[name=auth]').submit(function(){
         $("input[name=password]").focusout(function(){
-          $(this).val($.md5($(this).val()));
+          if($(this).val() != ""){
+            $(this).val($.md5($(this).val()));
+          }
         })
         $("input[name=password]").keydown(function (e) {
+          if($(this).val() != ""){
             if (e.keyCode == 13) {
                 $(this).val($.md5($(this).val()));
                 $('form[name=auth]').submit();
                 return false;
             }
+          }
         });
       // })
         $("#main_login").hide().fadeIn(500);
