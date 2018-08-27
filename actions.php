@@ -2290,6 +2290,7 @@ foreach ($ee2 as $key2=>$value2) { $vv2[":vall_" . $key2]=$value2;}
 
         if ($mode == "approve_t_yes") {
             $id=($_POST['id']);
+            $uid=$_SESSION['helpdesk_user_id'];
 
 
 
@@ -2305,7 +2306,10 @@ foreach ($ee2 as $key2=>$value2) { $vv2[":vall_" . $key2]=$value2;}
             $stmt = $dbConnection->prepare('update tickets set status=:n, ok_by=:from,last_update=now(),approve_tickets=:n2 where id=:qt_id');
             $stmt->execute(array(':n' => 1, ':qt_id' => $qt_id, ':from' => $q_from, ':n2' => 1));
 
-	          $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, ticket_id) values (:ok, now(), :unow, :tid)');
+            $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, ticket_id) values (:ok_approved, now(), :unow, :tid)');
+            $stmt->execute(array(':ok_approved'=>'ok_approved',':tid' => $qt_id,':unow'=>$uid));
+
+	          $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, ticket_id) values (:ok, DATE_ADD(NOW(), INTERVAL 1 SECOND), :unow, :tid)');
             $stmt->execute(array(':ok'=>'ok',':tid' => $qt_id,':unow'=>$q_from));
 
 

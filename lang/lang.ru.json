@@ -354,6 +354,7 @@
 "TICKET_t_a_arch":"заявка перенесена в архив",
 "TICKET_t_a_ok":"заявка отмечена как выполнена",
 "TICKET_t_a_ok_wait":"запрос на выполение заявки отправлен",
+"TICKET_t_a_ok_approved":"заявка подтверждена",
 "TICKET_t_a_nook":"заявка отмечена как не выполнена",
 "TICKET_t_a_lock":"заявка взята в работу",
 "TICKET_t_a_unlock":"заявка снята с обработки",
@@ -599,7 +600,7 @@
 "APPROVE_tickets_app":"Подтвердить?",
 "APPROVE_tickets_yes":"Да",
 "APPROVE_tickets_no":"Нет",
-"APPROVE_tickets_want":"хочет выполнить заявку",
+"APPROVE_tickets_want":"сообщает о выполнение заявки",
 
 
 "POSADA_title":"Должности",

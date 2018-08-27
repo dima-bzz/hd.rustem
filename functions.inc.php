@@ -488,6 +488,7 @@ function view_log($tid) {
 
                           if ($t_action == 'ok') {$icon_action="fa fa-check-circle-o"; $text_action=lang('TICKET_t_a_ok');}
                           if ($t_action == 'ok_wait') {$icon_action="fa fa-exclamation-circle "; $text_action=lang('TICKET_t_a_ok_wait');}
+                          if ($t_action == 'ok_approved') {$icon_action="fa fa-check"; $text_action=lang('TICKET_t_a_ok_approved');}
                           if ($t_action == 'no_ok') {$icon_action="fa fa-circle-o"; $text_action=lang('TICKET_t_a_nook');}
                           if ($t_action == 'lock') {$icon_action="fa fa-lock"; $text_action=lang('TICKET_t_a_lock');}
                           if ($t_action == 'unlock') {$icon_action="fa fa-unlock"; $text_action=lang('TICKET_t_a_unlock');}
