@@ -284,7 +284,8 @@ VALUES
   (27, 'time_zone', 'Europe/Moscow'),
   (28, 'push_active', 'false'),
   (29, 'push_api', 'pushbullet_api'),
-  (30, 'approve_tickets', 'false');
+  (30, 'approve_tickets', 'false'),
+  (31, 'system_version', '2.21.2');
 
 UNLOCK TABLES;
 -- --------------------------------------------------------

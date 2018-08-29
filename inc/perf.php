@@ -46,7 +46,7 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) {
 
 <?=lang('CONF_info');?>
 <hr>
-<?=lang('CONF_version')." ".get_version()?>
+<?=lang('CONF_version')." ".$CONF['system_version']?>
 <br>
 <?=lang('CONF_version_1');?>
 </small>

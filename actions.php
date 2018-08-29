@@ -4209,7 +4209,7 @@ values (:comment, now(), :user_comment, :tid_comment)');
 }
 }
 if ($mode == "conf_check_update"){
-$v = get_version();
+$v = $CONF['system_version'];
 $c = curl_init();
 curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($c, CURLOPT_USERAGENT,'Awesome-Octocat-App');
@@ -4220,7 +4220,7 @@ curl_close($c);
 $api = json_decode($content, true);
 $v_g = $api['tag_name'];
 $url = $api['zipball_url'];
-if ($v == $v_g){
+if ($v >= $v_g){
   ?>
   <div class="alert_conf" style="margin-bottom: -20px;">
         <center>

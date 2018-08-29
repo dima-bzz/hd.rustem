@@ -28,7 +28,8 @@ $CONF = array (
 'file_types' => '('.get_conf_param('file_types').')',
 'file_size' => get_conf_param('file_size'),
 'approve_tickets' => get_conf_param('approve_tickets'),
-'time_zone' => get_conf_param('time_zone')
+'time_zone' => get_conf_param('time_zone'),
+'system_version' => get_conf_param('system_version')
 );
 $CONF_MAIL = array (
 'active'	=> get_conf_param('mail_active'),
@@ -67,11 +68,6 @@ include_once('inc/pushbullet.inc.php');
 $forhostname=substr($CONF['hostname'], -1);
 if ($forhostname == "/") {$CONF['hostname']=$CONF['hostname'];}
 else if ($forhostname <> "/") {$CONF['hostname']=$CONF['hostname']."/";}
-
-function get_version(){
-  $v = '2.21.3';
-  return $v;
-}
 
 function get_user_lang(){
     global $dbConnection;
