@@ -420,6 +420,11 @@ RewriteRule ^([a-zA-Z0-9_-]+)/$ index.php?page=$1  [QSA,L]
                 <td width="100px;">
                     <?php
     $filename=realpath(dirname(dirname(__FILE__)))."/conf.php";
+    if (!file_exists($filename)) {
+      $fp = fopen($filename, "w");
+      fclose($fp);
+      chmod($filename, 0777);
+    }
     if (!is_writable($filename)) {
       $error = false;
       ?>
