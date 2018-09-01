@@ -722,6 +722,13 @@
 "Select_users":"Выберите пользователей",
 "Update_browser" : "Ваш браузер не поддерживает HTML Notifications, его необходимо обновить.",
 "Disable_browser_noty" : "Вы запретили показывать уведомления",
-"Select_time_zone" : "Выберите временную зону"
+"Select_time_zone" : "Выберите временную зону",
+"Update_start" : "Обновление начато.",
+"Update_error_bd" : "Не удалось обновить БД по причине:",
+"Update_version" : "обновляю нумерацию системы до ",
+"Update_end" : "Обновление закончено.",
+"Update_end_info" : "Удалите файл update.php!",
+"Update_end_error" : "При обновление найдены ошибки.",
+"Update_uppps" : "Что-то пошло не так!"
 
 }
