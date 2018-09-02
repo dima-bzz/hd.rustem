@@ -92,7 +92,7 @@ if (is_writable($backup)){
   	$vr = '2.12.3';
   	$log = 'добавляю в таблицу perf информацию о версии системы';
     $sql = 'INSERT INTO perf (id,param) VALUES (:id,:param)';
-    $param = array(':id'=>'34', ':param'=>'system_version');
+    $param = array(':id'=>'31', ':param'=>'system_version');
     work_base($log, $sql, $param, $vr);
   }
 
