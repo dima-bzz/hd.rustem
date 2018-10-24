@@ -207,8 +207,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
             </center>
         </div>
         <div id="content">
-
-
+			<div class="table-responsive">
             <?php
 
 
@@ -243,8 +242,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 
 
             ?>
-
-
+			</div>
         </div>
 
         <div id="alert-content"></div>
@@ -275,10 +273,10 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
     case 'free': 	$button_sort_in['free']="active";		break;
     case 'ilock': 	$button_sort_in['ilock']="active";		break;
     case 'lock': 	$button_sort_in['lock']="active";		break;
+    case 'approved': 	$button_sort_in['approved']="active";		break;
     default: $button_sort_in['main']="active";
 }
         }
-
                 ?>
 
 
@@ -296,6 +294,9 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
   <button  id="sort_list" value="ilock" data-toggle="tooltip" data-placement="bottom" title="<?=lang('ticket_sort_ilock')?>" type="button" class="btn btn-warning <?=$button_sort_in['ilock'];?>"><i class="fa fa-gavel"></i> </button>
 
   <button  id="sort_list" value="lock" data-toggle="tooltip" data-placement="bottom" title="<?=lang('ticket_sort_lock')?>" type="button" class="btn btn-default <?=$button_sort_in['lock'];?>"><i class="fa fa-gavel"></i> </button>
+
+  <button id="sort_list" value="approved" data-toggle="tooltip" data-placement="bottom" title="<?=lang('ticket_sort_approved')?>" type="button" class="btn btn-info <?=$button_sort_in['approved'];?>"><i class="fa fa-exclamation-circle"></i> </button>
+
 
 </div>
 
@@ -340,6 +341,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
     case 'free': 	$button_sort_out['free']="active";		break;
     case 'ilock': 	$button_sort_out['ilock']="active";		break;
     case 'lock': 	$button_sort_out['lock']="active";		break;
+    case 'approved': 	$button_sort_out['approved']="active";		break;
     default: $button_sort_out['main']="active";
 }
         }
@@ -351,13 +353,15 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 
   <button id="sort_list" value="main" type="button" class="btn btn-primary <?=$button_sort_out['main'];?>" data-toggle="tooltip" data-placement="bottom" title="<?=lang('ticket_sort_def')?>"><i class="fa fa-home"></i> </button>
 
-        <button  id="sort_list" value="free" data-toggle="tooltip" data-placement="bottom" title="<?=lang('STATS_t_free')?>" type="button" class="btn btn-info <?=$button_sort_out['free'];?>"><i class="fa fa-circle-thin"></i> </button>
+  <button  id="sort_list" value="free" data-toggle="tooltip" data-placement="bottom" title="<?=lang('STATS_t_free')?>" type="button" class="btn btn-info <?=$button_sort_out['free'];?>"><i class="fa fa-circle-thin"></i> </button>
 
   <button id="sort_list" value="ok" data-toggle="tooltip" data-placement="bottom" title="<?=lang('ticket_sort_ok')?>" type="button" class="btn btn-success <?=$button_sort_out['ok'];?>"><i class="fa fa-check-circle"></i> </button>
 
   <button id="sort_list" value="ilock" data-toggle="tooltip" data-placement="bottom" title="<?=lang('ticket_sort_ilock')?>" type="button" class="btn btn-warning <?=$button_sort_out['ilock'];?>"><i class="fa fa-gavel"></i> </button>
 
   <button id="sort_list" value="lock" data-toggle="tooltip" data-placement="bottom" title="<?=lang('ticket_sort_lock')?>" type="button" class="btn btn-default <?=$button_sort_out['lock'];?>"><i class="fa fa-gavel"></i> </button>
+
+  <button id="sort_list" value="approved" data-toggle="tooltip" data-placement="bottom" title="<?=lang('ticket_sort_approved')?>" type="button" class="btn btn-info <?=$button_sort_out['approved'];?>"><i class="fa fa-exclamation-circle"></i> </button>
 
 </div>
 
