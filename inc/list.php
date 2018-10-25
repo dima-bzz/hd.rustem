@@ -3,10 +3,8 @@ session_start();
 include_once("functions.inc.php");
 $CONF['title_header'] = lang('LIST_title') . " - ".lang('MAIN_TITLE');
 if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
-
     include("head.inc.php");
     include("navbar.inc.php");
-
     if (isset($_GET['in'])) {
         $status_in = "active";
         $priv_val = priv_status($_SESSION['helpdesk_user_id']);
@@ -17,7 +15,6 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
         } else if ($priv_val == "2") {
             $text = $CONF['name_of_firm'];
         }
-
     } else if (isset($_GET['out'])) {
         $status_out = "active";
         $priv_val = priv_status($_SESSION['helpdesk_user_id']);
@@ -60,10 +57,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
             $text = $CONF['name_of_firm'];
         }
     }
-
-
     $newt = get_total_tickets_free();
-
     if ($newt != 0) {
         $newtickets = "(" . $newt . ")";
     }
@@ -210,8 +204,6 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 
 
             <?php
-
-
             if (isset($_GET['in'])) {
                 $_POST['menu'] = "in";
                 $_POST['page'] = "1";
@@ -222,26 +214,20 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 
             <?php
             }
-
             if (isset($_GET['out'])) {
                 $_POST['menu'] = "out";
                 $_POST['page'] = "1";
                 include_once("list_content.inc.php");
             }
-
             if (isset($_GET['arch'])) {
                 $_POST['menu'] = "arch";
                 $_POST['page'] = "1";
                 include_once("list_content.inc.php");
             }
-
-
             if (isset($_GET['find'])) {
                 $_POST['menu'] = "find";
                 include_once("list_content.inc.php");
             }
-
-
             ?>
 
 
@@ -250,15 +236,9 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
         <div id="alert-content"></div>
 
         <?php
-
-
-
 	    if (isset($_GET['in'])) {
                 $r = "in";
-
         if (isset($_SESSION['hd.rustem_list_in'])) {
-
-
           switch($_SESSION['hd.rustem_list_in']) {
     case '10': 	$ac['10']="active";		break;
     case '15': 	$ac['15']="active";		break;
@@ -266,10 +246,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
     default: $ac['10']="active";
 }
         }
-
         if (isset($_SESSION['hd.rustem_sort_in'])) {
-
-
           switch($_SESSION['hd.rustem_sort_in']) {
     case 'ok': 		$button_sort_in['ok']="active";		break;
     case 'free': 	$button_sort_in['free']="active";		break;
@@ -324,10 +301,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
             <?php } ?>
             <?php if (isset($_GET['out'])) {
                 $r = "out";
-
                         if (isset($_SESSION['hd.rustem_list_out'])) {
-
-
           switch($_SESSION['hd.rustem_list_out']) {
     case '10': 	$ac['10']="active";		break;
     case '15': 	$ac['15']="active";		break;
@@ -336,8 +310,6 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 }
         }
                 if (isset($_SESSION['hd.rustem_sort_out'])) {
-
-
           switch($_SESSION['hd.rustem_sort_out']) {
     case 'ok': 		$button_sort_out['ok']="active";		break;
     case 'free': 	$button_sort_out['free']="active";		break;
@@ -390,8 +362,6 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
             <?php if (isset($_GET['arch'])) {
                 $r = "arch";
                         if (isset($_SESSION['hd.rustem_list_arch'])) {
-
-
           switch($_SESSION['hd.rustem_list_arch']) {
     case '10': 	$ac['10']="active";		break;
     case '15': 	$ac['15']="active";		break;
@@ -414,18 +384,12 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 
                 </div>
             <?php }
-
 $nn = get_last_ticket($_POST['menu'], $user_id);
-
         if ($nn == 0) {
-
-
             ?>
             <input type="hidden" id="curent_page" value="null">
             <input type="hidden" id="page_type" value="<?= $_POST['menu'] ?>">
         <?php
-
-
         }
         else if ($nn <> 0) {
 ?>
