@@ -263,6 +263,7 @@ if ($_POST['menu'] == 'list' ) {
 <div class="panel panel-default">
   <div class="panel-heading"><?=lang('USERS_list');?></div>
   <div class="panel-body">
+	<div class="table-responsive">
   <table class="table table-bordered">
         <thead>
           <tr>
@@ -315,6 +316,7 @@ if ($_POST['menu'] == 'list' ) {
         <?php } ?>
        </tbody>
       </table>
+	  </div>
   </div>
 </div>
 <?php
