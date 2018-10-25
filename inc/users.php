@@ -8,10 +8,10 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) {
    include("navbar.inc.php");
 
 
-if (isset($_GET['create'])) {
+if (isset($_GET['adduser'])) {
 	$status_create="active";
 }
-else if (isset($_GET['list'])) {
+else if (isset($_GET['alluser'])) {
 	$status_list="active";
 }
 else {
