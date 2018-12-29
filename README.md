@@ -45,24 +45,3 @@ HELPDESK веб-система, для организации учёта вып�
 <li>Access to mail (для отправки писем)</li>
 <img src="https://cloud.githubusercontent.com/assets/3504940/4213057/8c8d9c5a-38ad-11e4-809d-818a16bdfc13.jpg"/>
 </ul>
-
-<h4>Ссылки и обсуждения</h4>
-<ul>
-<li><a href="http://habrahabr.ru/post/227277/">http://habrahabr.ru/post/227277/</a></li>
-<li><a href="http://hd.rustem.com.ua/">http://hd.rustem.com.ua/</a></li>
-</ul>
-
-
-<h4>Благодарности за вклад в проект</h4>
-<ul>
-<li>
-<a href='https://github.com/dima-bzz'>dima-bzz</a> (<a href='https://money.yandex.ru/to/410011841761556'>Яндекс.Деньги</a>)
-</li>
-<li><a href='https://github.com/Vaflan'>Vaflan</a></li>
-<li><a href='https://github.com/insp63'>insp63</a></li>
-</ul>
-
-<h4>Вопросы по внедрению и разработке ($)</h4>
-<ul>
-<li>Skype: rustem_ck</li>
-</ul>
